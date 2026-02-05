@@ -1,8 +1,10 @@
-export default function Chessboard() {
+import { Chessboard } from "react-chessboard";
+
+export default function ChessboardView() {
   return (
     <div>
       <h1>Chess</h1>
-      <h1>WIIIII</h1>
+      <Chessboard />
     </div>
   );
 }
