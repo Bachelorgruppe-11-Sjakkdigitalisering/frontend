@@ -22,21 +22,9 @@ export default function Navbar() {
           setValue(newValue);
         }}
       >
-        <BottomNavigationAction
-          sx={{ color: "#C0C6DC" }}
-          label="Hjem"
-          icon={<HouseRounded />}
-        />
-        <BottomNavigationAction
-          sx={{ color: "#C0C6DC" }}
-          label="Database"
-          icon={<InboxRounded />}
-        />
-        <BottomNavigationAction
-          sx={{ color: "#C0C6DC" }}
-          label="Innstillinger"
-          icon={<Settings />}
-        />
+        <BottomNavigationAction label="Hjem" icon={<HouseRounded />} />
+        <BottomNavigationAction label="Database" icon={<InboxRounded />} />
+        <BottomNavigationAction label="Innstillinger" icon={<Settings />} />
       </BottomNavigation>
     </Paper>
   );

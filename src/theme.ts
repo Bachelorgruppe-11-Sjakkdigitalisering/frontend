@@ -5,6 +5,9 @@ declare module "@mui/material/styles" {
   interface TypeBackground {
     nav: string;
   }
+  interface TypeText {
+    nav: string;
+  }
 }
 
 export const appTheme = createTheme({
@@ -17,6 +20,7 @@ export const appTheme = createTheme({
     text: {
       primary: "#1D1B20",
       secondary: "#F8F9FF",
+      nav: "#C2C7CF",
     },
   },
   components: {
@@ -24,6 +28,22 @@ export const appTheme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           backgroundColor: theme.palette.background.nav,
+        }),
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.text.nav,
+          "&.Mui-selected": {
+            color: theme.palette.text.nav,
+          },
+          "&.Mui-selected .MuiSvgIcon-root": {
+            // The background color when active
+            backgroundColor: "#3B4857",
+            borderRadius: 16,
+            width: "3rem",
+          },
         }),
       },
     },
