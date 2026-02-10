@@ -27,15 +27,41 @@ export default function Navbar() {
 
   if (isDesktop) {
     return (
-      <Drawer variant="permanent">
+      <Drawer
+        variant="permanent"
+        sx={{
+          "& .MuiDrawer-paper": {
+            backgroundColor: theme.palette.background.nav,
+          },
+        }}
+      >
         <List>
           {NAV_ITEMS.map((item, index) => (
             <ListItem key={item.label}>
               <ListItemButton
                 selected={value === index}
                 onClick={() => setValue(index)}
+                sx={{
+                  color: theme.palette.text.nav,
+                  borderRadius: 100,
+                  "&:hover": {
+                    backgroundColor: "#485464",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#3B4857",
+                    "&:hover": {
+                      backgroundColor: "#485464",
+                    },
+                  },
+                }}
               >
-                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemIcon
+                  sx={{
+                    color: theme.palette.text.nav,
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItemButton>
             </ListItem>
