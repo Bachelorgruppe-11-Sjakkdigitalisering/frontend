@@ -31,7 +31,12 @@ export default function Navbar() {
         variant="permanent"
         sx={{
           "& .MuiDrawer-paper": {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
             backgroundColor: theme.palette.background.nav,
+            borderTopRightRadius: 16,
+            borderBottomRightRadius: 16,
           },
         }}
       >
@@ -86,6 +91,9 @@ export default function Navbar() {
         value={value}
         onChange={(_event, newValue) => {
           setValue(newValue);
+        }}
+        sx={{
+          minHeight: 64,
         }}
       >
         <BottomNavigationAction label="Hjem" icon={<HouseRounded />} />
