@@ -1,9 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import ChessboardView from "./components/Chessboard";
+import { appTheme } from "./theme";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <ChessboardView />
+    <ThemeProvider theme={appTheme}>
+      <CssBaseline />
+      <ChessboardView />
+    </ThemeProvider>
   </StrictMode>,
 );
