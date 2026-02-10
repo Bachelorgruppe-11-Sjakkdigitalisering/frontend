@@ -1,9 +1,49 @@
 import { HouseRounded, InboxRounded, Settings } from "@mui/icons-material";
-import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useState } from "react";
+
+const NAV_ITEMS = [
+  { label: "Hjem", icon: <HouseRounded /> },
+  { label: "Database", icon: <InboxRounded /> },
+  { label: "Innstillinger", icon: <Settings /> },
+];
 
 export default function Navbar() {
   const [value, setValue] = useState(0);
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  if (isDesktop) {
+    return (
+      <Drawer variant="permanent">
+        <List>
+          {NAV_ITEMS.map((item, index) => (
+            <ListItem key={item.label}>
+              <ListItemButton
+                selected={value === index}
+                onClick={() => setValue(index)}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.label} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    );
+  }
 
   return (
     <Paper
