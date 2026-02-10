@@ -21,3 +21,11 @@ Deretter kan du starte applikasjonen med:
 Dette vil starte en 'development' server på [http://localhost:5173/](http://localhost:5173/).
 
 For å avslutte serveren, trykk `ctrl + c` i terminalvinduet.
+
+## Tester
+
+Vi bruker Storyboard for testing av komponenter.
+
+For å kjøre Storyboard, bruk kommandoen:
+
+`npm run storyboard`
