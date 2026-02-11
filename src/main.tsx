@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import ChessboardView from "./components/Chessboard";
+import ChessboardView from "./components/chessboards/Chessboard";
 import { appTheme } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar/Navbar";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

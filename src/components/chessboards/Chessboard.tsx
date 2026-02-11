@@ -10,16 +10,13 @@ export default function ChessboardView() {
   };
 
   return (
-    <div>
-      <h1>Eksempelposisjon fra et random parti jeg har spilt:</h1>
-      <div
-        className="wrapper"
-        style={{
-          width: 500,
-        }}
-      >
-        <Chessboard options={options} />
-      </div>
+    <div
+      className="wrapper"
+      style={{
+        width: 500,
+      }}
+    >
+      <Chessboard options={options} />
     </div>
   );
 }
