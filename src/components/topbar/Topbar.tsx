@@ -6,6 +6,11 @@ type TopbarProps = {
   title: string;
 };
 
+/**
+ * Topbar which includes a button to go back to prev page, and a title of the page the user is on.
+ * @param title The title of the page the user is currently on.
+ * @returns A React component.
+ */
 export default function Topbar({ title }: TopbarProps) {
   return (
     <div className="topbar-container">
