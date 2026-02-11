@@ -22,6 +22,9 @@ export const appTheme = createTheme({
       secondary: "#F8F9FF",
       nav: "#C2C7CF",
     },
+    primary: {
+      main: "#32618D",
+    },
   },
   components: {
     MuiBottomNavigation: {
@@ -44,6 +47,16 @@ export const appTheme = createTheme({
             borderRadius: 16,
             width: "3rem",
           },
+        }),
+      },
+    },
+
+    MuiButton: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderRadius: "100px",
+          padding: "10px 16px",
+          boxShadow: "none",
         }),
       },
     },
