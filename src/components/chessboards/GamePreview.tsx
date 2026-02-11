@@ -1,6 +1,10 @@
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
+import "./GamePreview.css";
+import { Skeleton } from "@mui/material";
 
 type GamePreviewType = {
+  loading?: boolean;
+  width?: number;
   fen: string;
   player1Name: string;
   player1Time: string;
@@ -9,6 +13,8 @@ type GamePreviewType = {
 };
 
 export default function GamePreview({
+  loading = false,
+  width = 180,
   fen,
   player1Name,
   player1Time,
@@ -17,29 +23,33 @@ export default function GamePreview({
 }: GamePreviewType) {
   const options: ChessboardOptions = {
     position: fen,
-    boardStyle: { borderRadius: 16 },
+    boardStyle: { borderRadius: 8, width: width },
+    allowDragging: false,
+    allowDrawingArrows: false,
   };
 
+  if (loading) {
+    return (
+      <div>
+        <Skeleton variant="text" width={width} />
+        <Skeleton variant="rounded">
+          <Chessboard options={options} />
+        </Skeleton>
+        <Skeleton variant="text" width={width} />
+      </div>
+    );
+  }
+
   return (
-    <div
-      style={{
-        width: 180,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <p style={{ padding: 0, margin: 0 }}>{player1Name}</p>
-        <p style={{ padding: 0, margin: 0 }}>{player1Time}</p>
+    <div style={{ width: width, cursor: "pointer" }}>
+      <div className="player-wrapper">
+        <p className="no-padding-margin">{player1Name}</p>
+        <p className="no-padding-margin">{player1Time}</p>
       </div>
       <Chessboard options={options} />
-      <div>
-        <p>{player2Name}</p>
-        <p>{player2Time}</p>
+      <div className="player-wrapper">
+        <p className="no-padding-margin">{player2Name}</p>
+        <p className="no-padding-margin">{player2Time}</p>
       </div>
     </div>
   );
