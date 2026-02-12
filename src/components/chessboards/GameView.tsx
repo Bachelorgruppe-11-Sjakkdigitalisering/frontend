@@ -1,4 +1,4 @@
-import { Avatar, Slider, Typography } from "@mui/material";
+import { Avatar, Typography } from "@mui/material";
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
@@ -40,7 +40,8 @@ export default function GameView({
       </div>
 
       <div className="board-eval">
-        <Evalbar evalValue={50.0} />
+        {/* bruk apiet https://chess-api.com for å hente ut disse verdiene for den gitte posisjonen */}
+        <Evalbar winChance={51.0} evalLabel={0.2} />
         <Chessboard options={options} />
       </div>
 

@@ -1,20 +1,20 @@
 import { Slider, Typography, useTheme } from "@mui/material";
 
 type EvalbarProps = {
-  evalValue: number;
+  winChance: number;
+  evalLabel: number;
 };
 
-export default function Evalbar({ evalValue }: EvalbarProps) {
+export default function Evalbar({ winChance, evalLabel }: EvalbarProps) {
   const theme = useTheme();
 
   return (
     <div
       style={{
         height: "inherit",
-        width: "1.5rem",
+        width: "2rem",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: "transparent",
         borderRadius: "16px",
       }}
     >
@@ -25,7 +25,6 @@ export default function Evalbar({ evalValue }: EvalbarProps) {
           left: 0,
           width: "100%",
           zIndex: 2,
-          backgroundColor: "transparent",
           textAlign: "center",
           paddingTop: "2px",
         }}
@@ -35,14 +34,15 @@ export default function Evalbar({ evalValue }: EvalbarProps) {
           sx={{
             fontWeight: "bold",
             color: "white",
+            mixBlendMode: "difference",
           }}
         >
-          {evalValue}
+          {evalLabel}
         </Typography>
       </div>
       <Slider
         orientation="vertical"
-        value={evalValue}
+        value={winChance}
         min={0}
         max={100}
         disabled
