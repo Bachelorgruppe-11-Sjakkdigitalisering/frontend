@@ -24,6 +24,8 @@ export const appTheme = createTheme({
     },
     primary: {
       main: "#32618D",
+      light: "#9DCAFC",
+      dark: "#3B4857",
     },
   },
   components: {
@@ -53,7 +55,7 @@ export const appTheme = createTheme({
 
     MuiButton: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: () => ({
           borderRadius: "100px",
           padding: "10px 16px",
           boxShadow: "none",

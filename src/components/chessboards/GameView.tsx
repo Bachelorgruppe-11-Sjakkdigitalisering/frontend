@@ -1,6 +1,7 @@
 import { Avatar, Slider, Typography } from "@mui/material";
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
+import Evalbar from "../evalbar/Evalbar";
 
 /* TODO: man må kanskje hente avatar her hvis vi skal ha med det? */
 type GameViewProps = {
@@ -39,14 +40,7 @@ export default function GameView({
       </div>
 
       <div className="board-eval">
-        <Slider /* TODO: lage gene eval bar komponent?? må hvertfall styles bedre */
-          aria-label="Game Evaluation"
-          orientation="vertical"
-          sx={{ height: "inherit" }}
-          value={50}
-          max={100}
-          disabled
-        />
+        <Evalbar evalValue={50.0} />
         <Chessboard options={options} />
       </div>
 
