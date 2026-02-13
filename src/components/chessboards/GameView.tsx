@@ -23,6 +23,7 @@ export default function GameView({
   status,
 }: GameViewProps) {
   const { data, isLoading, error } = useStockfish(fen);
+  console.log(data);
 
   // default state for eval bar if loading or error
   let evalbarProps = { height: 50, label: 0.0 };
@@ -33,6 +34,7 @@ export default function GameView({
 
   const options: ChessboardOptions = {
     position: fen,
+    boardStyle: { borderRadius: "16px" },
   };
 
   return (
@@ -50,7 +52,6 @@ export default function GameView({
       </div>
 
       <div className="board-eval">
-        {/* bruk apiet https://chess-api.com for å hente ut disse verdiene for den gitte posisjonen */}
         <Evalbar
           winChance={evalbarProps.height}
           evalLabel={evalbarProps.label}
