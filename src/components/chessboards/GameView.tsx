@@ -2,6 +2,7 @@ import { Avatar, Typography } from "@mui/material";
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
+import { useStockfish } from "../../hooks/useStockfish";
 
 /* TODO: man må kanskje hente avatar her hvis vi skal ha med det? */
 type GameViewProps = {
@@ -21,6 +22,15 @@ export default function GameView({
   blackPlayerTime,
   status,
 }: GameViewProps) {
+  const { data, isLoading, error } = useStockfish(fen);
+
+  // default state for eval bar if loading or error
+  let evalbarProps = { height: 50, label: 0.0 };
+
+  if (data) {
+    evalbarProps = { height: data.winChance, label: data.eval };
+  }
+
   const options: ChessboardOptions = {
     position: fen,
   };
@@ -41,7 +51,10 @@ export default function GameView({
 
       <div className="board-eval">
         {/* bruk apiet https://chess-api.com for å hente ut disse verdiene for den gitte posisjonen */}
-        <Evalbar winChance={51.0} evalLabel={0.2} />
+        <Evalbar
+          winChance={evalbarProps.height}
+          evalLabel={evalbarProps.label}
+        />
         <Chessboard options={options} />
       </div>
 
