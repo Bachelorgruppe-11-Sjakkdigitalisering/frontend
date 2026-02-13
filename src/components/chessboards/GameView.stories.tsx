@@ -99,9 +99,20 @@ export const Stalemate: Story = {
   },
 };
 
-export const Checkmate: Story = {
+export const CheckmateWhite: Story = {
   args: {
-    fen: "7k/5Q2/8/8/8/8/8/7K b - - 0 1",
+    fen: "7k/7Q/7K/8/8/8/8/8 b - - 0 1",
+    whitePlayerName: "Dennis Johansen",
+    whitePlayerTime: "01:58",
+    blackPlayerName: "Herman Lundby-Holen",
+    blackPlayerTime: "00:57",
+    status: "FINISHED",
+  },
+};
+
+export const CheckmateBlack: Story = {
+  args: {
+    fen: "7K/7q/7k/8/8/8/8/8 w - - 0 1",
     whitePlayerName: "Dennis Johansen",
     whitePlayerTime: "01:58",
     blackPlayerName: "Herman Lundby-Holen",

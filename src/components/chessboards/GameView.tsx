@@ -3,6 +3,7 @@ import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
 import { useStockfish } from "../../hooks/useStockfish";
+import { BLACK, Chess, WHITE } from "chess.js";
 
 /* TODO: man må kanskje hente avatar her hvis vi skal ha med det? */
 type GameViewProps = {
@@ -22,13 +23,37 @@ export default function GameView({
   blackPlayerTime,
   status,
 }: GameViewProps) {
-  const { data, isLoading, error } = useStockfish(fen);
-  console.log(data);
+  // fetch stockfish data
+  // TODO: kanskje flytt denne til siden der man også skal vise de neste beste trekkene?? kan heller passe props nedover eller lagre i minnet (useRef)
+  const { data } = useStockfish(fen);
 
-  // default state for eval bar if loading or error
+  // analyze position locally to check if game is over (checkmate or stalemate)
+  const game = new Chess(fen);
+
+  // default state for eval bar if loading
   let evalbarProps = { height: 50, label: 0.0 };
 
-  if (data) {
+  // determine what to show on the bar
+  if (game.isCheckmate()) {
+    // if it is checkmate, check whos turn it is to determine who lost
+    if (game.turn() === WHITE) {
+      // if white's turn, they lost, black won
+      evalbarProps = { height: 0, label: -100 };
+    } else if (game.turn() === BLACK) {
+      // white won
+      evalbarProps = { height: 100, label: 100 };
+    }
+  } else if (
+    game.isDraw() ||
+    game.isStalemate() ||
+    game.isThreefoldRepetition()
+  ) {
+    // draw
+    evalbarProps = { height: 50, label: 0 };
+  }
+
+  if (data && !data.error) {
+    // game is ongoing with no error
     evalbarProps = { height: data.winChance, label: data.eval };
   }
 
