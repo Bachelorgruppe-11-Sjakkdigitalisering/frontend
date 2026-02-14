@@ -12,18 +12,22 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const NAV_ITEMS = [
-  { label: "Hjem", icon: <HouseRounded /> },
-  { label: "Database", icon: <InboxRounded /> },
-  { label: "Innstillinger", icon: <Settings /> },
+  { label: "Hjem", icon: <HouseRounded />, path: "/" },
+  { label: "Database", icon: <InboxRounded />, path: "/database" },
+  { label: "Innstillinger", icon: <Settings />, path: "/settings" },
 ];
 
 export default function Navbar() {
-  const [value, setValue] = useState(0);
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // determine the active state
+  const currentPath = location.pathname;
 
   if (isDesktop) {
     return (
@@ -41,11 +45,12 @@ export default function Navbar() {
         }}
       >
         <List>
-          {NAV_ITEMS.map((item, index) => (
+          {NAV_ITEMS.map((item) => (
             <ListItem key={item.label}>
               <ListItemButton
-                selected={value === index}
-                onClick={() => setValue(index)}
+                LinkComponent={Link}
+                selected={currentPath === item.path}
+                onClick={() => navigate(item.path)}
                 sx={{
                   color: theme.palette.text.nav,
                   borderRadius: 100,
@@ -88,17 +93,22 @@ export default function Navbar() {
     >
       <BottomNavigation
         showLabels
-        value={value}
+        value={currentPath}
         onChange={(_event, newValue) => {
-          setValue(newValue);
+          navigate(newValue);
         }}
         sx={{
           minHeight: 64,
         }}
       >
-        <BottomNavigationAction label="Hjem" icon={<HouseRounded />} />
-        <BottomNavigationAction label="Database" icon={<InboxRounded />} />
-        <BottomNavigationAction label="Innstillinger" icon={<Settings />} />
+        {NAV_ITEMS.map((item) => (
+          <BottomNavigationAction
+            key={item.label}
+            label={item.label}
+            icon={item.icon}
+            value={item.path}
+          />
+        ))}
       </BottomNavigation>
     </Paper>
   );
