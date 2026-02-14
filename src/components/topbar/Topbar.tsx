@@ -1,9 +1,11 @@
 import { Button, Typography } from "@mui/material";
 import "./Topbar.css";
 import { ArrowBack } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router";
 
 type TopbarProps = {
   title: string;
+  route: string;
 };
 
 /**
@@ -11,10 +13,17 @@ type TopbarProps = {
  * @param title The title of the page the user is currently on.
  * @returns A React component.
  */
-export default function Topbar({ title }: TopbarProps) {
+export default function Topbar({ title, route }: TopbarProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="topbar-container">
-      <Button variant="contained" startIcon={<ArrowBack />}>
+      <Button
+        LinkComponent={Link}
+        variant="contained"
+        startIcon={<ArrowBack />}
+        onClick={() => navigate(route)}
+      >
         Gå tilbake
       </Button>
       <Typography variant="subtitle2">{title}</Typography>

@@ -1,8 +1,12 @@
+import { useMediaQuery, useTheme } from "@mui/material";
 import GamePreview from "../components/chessboards/GamePreview";
 
 export default function HomePage() {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
   return (
-    <div>
+    <div style={{ marginLeft: isDesktop ? "13rem" : "0px" }}>
       <h1>Her kommer hjemskjermen til å leve</h1>
       <GamePreview
         gameId="1"
