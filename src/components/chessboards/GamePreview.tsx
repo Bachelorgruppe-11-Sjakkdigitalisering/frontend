@@ -1,8 +1,10 @@
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GamePreview.css";
 import { Skeleton } from "@mui/material";
+import { useNavigate } from "react-router";
 
 type GamePreviewType = {
+  gameId: string;
   loading?: boolean;
   width?: number;
   fen: string;
@@ -13,6 +15,7 @@ type GamePreviewType = {
 };
 
 export default function GamePreview({
+  gameId,
   loading = false,
   width = 180,
   fen,
@@ -21,11 +24,17 @@ export default function GamePreview({
   player2Name,
   player2Time,
 }: GamePreviewType) {
+  const navigate = useNavigate();
+
   const options: ChessboardOptions = {
     position: fen,
-    boardStyle: { borderRadius: 8, width: width },
+    boardStyle: { borderRadius: 8, width: width, pointerEvents: "none" },
     allowDragging: false,
     allowDrawingArrows: false,
+  };
+
+  const handleClick = () => {
+    navigate(`/game/${gameId}`);
   };
 
   if (loading) {
@@ -41,7 +50,14 @@ export default function GamePreview({
   }
 
   return (
-    <div style={{ width: width, cursor: "pointer" }}>
+    <div
+      onClick={handleClick}
+      style={{
+        width: width,
+        cursor: "pointer",
+        transition: "transform 0.1s ease-in-out",
+      }}
+    >
       <div className="player-wrapper">
         <p className="no-padding-margin">{player1Name}</p>
         <p className="no-padding-margin">{player1Time}</p>
