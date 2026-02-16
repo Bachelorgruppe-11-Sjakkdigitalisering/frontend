@@ -1,4 +1,10 @@
-import { Button, ButtonGroup, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Skeleton,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Topbar from "../components/topbar/Topbar";
 import GameView from "../components/chessboards/GameView";
 import {
@@ -10,6 +16,7 @@ import {
 import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import MoveList from "../components/movelist/MoveList";
+import { useStockfish } from "../hooks/useStockfish";
 
 type Move = {
   san: string;
@@ -92,6 +99,9 @@ export default function GameDetailsPage() {
   const handleEnd = () => setCurrentMoveIndex(history.length - 1);
   const handleMoveClick = (index: number) => setCurrentMoveIndex(index);
 
+  // fetch stockfish data
+  const { data: stockfishData, isLoading } = useStockfish(currentFen);
+
   return (
     <div
       style={{
@@ -136,6 +146,7 @@ export default function GameDetailsPage() {
                   ? "WHITE_TO_MOVE"
                   : "BLACK_TO_MOVE"
             }
+            stockfishData={stockfishData}
           />
         </div>
 
@@ -199,8 +210,18 @@ export default function GameDetailsPage() {
             }}
           >
             <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
-            <p style={{ margin: 0 }}>+0.2 3.Nc3 d5</p>
-            <p style={{ margin: 0 }}>+0.2 3.Nc3 d5</p>
+            {isLoading ? (
+              <Skeleton />
+            ) : (
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                {/* Move and Evaluation */}
+                <span>{stockfishData.san}</span>
+                <span>
+                  {stockfishData.eval > 0 ? "+" : ""}
+                  {stockfishData.eval}
+                </span>
+              </div>
+            )}
           </div>
 
           <div

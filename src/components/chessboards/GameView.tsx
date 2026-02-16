@@ -2,7 +2,7 @@ import { Avatar, Typography } from "@mui/material";
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
-import { useStockfish } from "../../hooks/useStockfish";
+import { type StockfishResponse } from "../../hooks/useStockfish";
 import { BLACK, Chess, WHITE } from "chess.js";
 
 /* TODO: man må kanskje hente avatar her hvis vi skal ha med det? */
@@ -13,6 +13,7 @@ type GameViewProps = {
   blackPlayerName: string;
   blackPlayerTime: string;
   status: "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED";
+  stockfishData: StockfishResponse | null;
 };
 
 export default function GameView({
@@ -22,11 +23,8 @@ export default function GameView({
   blackPlayerName,
   blackPlayerTime,
   status,
+  stockfishData,
 }: GameViewProps) {
-  // fetch stockfish data
-  // TODO: kanskje flytt denne til siden der man også skal vise de neste beste trekkene?? kan heller passe props nedover eller lagre i minnet (useRef)
-  const { data } = useStockfish(fen);
-
   // analyze position locally to check if game is over (checkmate or stalemate)
   const game = new Chess(fen);
 
@@ -52,9 +50,12 @@ export default function GameView({
     evalbarProps = { height: 50, label: 0 };
   }
 
-  if (data && !data.error) {
+  if (stockfishData && !stockfishData.error) {
     // game is ongoing with no error
-    evalbarProps = { height: data.winChance, label: data.eval };
+    evalbarProps = {
+      height: stockfishData.winChance,
+      label: stockfishData.eval,
+    };
   }
 
   const options: ChessboardOptions = {

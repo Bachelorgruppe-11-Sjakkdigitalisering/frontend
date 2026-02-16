@@ -1,6 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchEvaluation from "../api/stockfish";
 
+export type StockfishResponse = {
+  eval: number;
+  winChance: number;
+  san: string;
+  move: string;
+  continuationArr: string[];
+  mate: number | null;
+  error: string;
+};
+
 export function useStockfish(fen: string) {
   return useQuery({
     queryKey: ["stockfish", fen], // this makes it so we automatically refetch whenever fen changes
