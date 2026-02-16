@@ -7,10 +7,61 @@ import {
   SkipNext,
   SkipPrevious,
 } from "@mui/icons-material";
+import { useMemo, useState } from "react";
+import { Chess } from "chess.js";
+import MoveList from "../components/movelist/MoveList";
+
+type Move = {
+  san: string;
+  fen: string;
+  color: "w" | "b";
+};
+
+// example PGN for testing
+const SAMPLE_PGN = `
+[Event "FIDE World Cup 2023"]
+[White "Carlsen, Magnus"]
+[Black "Praggnanandhaa, R"]
+1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 Nf6 5. a4 d6 6. c3 a6 7. O-O Ba7 8. Re1 O-O 9. Nbd2 Ne7 10. Bb3 Ng6 11. Nc4 c6
+`;
 
 export default function GameDetailsPage() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  // state to track the current move index (-1 = start position)
+  const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
+
+  // load PGN and parse the history once
+  const { history, startFen } = useMemo(() => {
+    const game = new Chess();
+    game.loadPgn(SAMPLE_PGN); // TODO: load PGN fra backend her i fremtiden
+
+    // extract fen after every move
+    const historyWithFens: Array<Move> = [];
+    const tempGame = new Chess(); // start fresh
+
+    // get the simple move list
+    const moves = game.history();
+
+    moves.forEach((moveSan) => {
+      tempGame.move(moveSan);
+      historyWithFens.push({
+        san: moveSan,
+        fen: tempGame.fen(),
+        color: tempGame.turn() === "w" ? "b" : "w",
+      });
+    });
+
+    return {
+      history: historyWithFens,
+      startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    };
+  }, []);
+
+  // determine the fen to display based on the index
+  const currentFen =
+    currentMoveIndex === -1 ? startFen : history[currentMoveIndex].fen;
 
   return (
     <div
@@ -32,7 +83,7 @@ export default function GameDetailsPage() {
         }}
       >
         <GameView
-          fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+          fen={currentFen}
           whitePlayerName="Dennis Johansen"
           whitePlayerTime="10:00"
           blackPlayerName="Herman Lundby-Holen"
@@ -58,19 +109,19 @@ export default function GameDetailsPage() {
               order: isDesktop ? "3" : "1",
             }}
           >
-            <Button>
+            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
               <FastRewind />
             </Button>
 
-            <Button>
+            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
               <SkipPrevious />
             </Button>
 
-            <Button>
+            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
               <SkipNext />
             </Button>
 
-            <Button>
+            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
               <FastForward />
             </Button>
           </ButtonGroup>
@@ -79,7 +130,7 @@ export default function GameDetailsPage() {
             style={{
               width: "100%",
               padding: "0.5rem 1rem",
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.primary.dark,
               borderRadius: "16px",
               color: theme.palette.text.secondary,
               order: isDesktop ? "1" : "2",
@@ -94,14 +145,17 @@ export default function GameDetailsPage() {
             style={{
               order: isDesktop ? "2" : "3",
               height: "100%",
-              backgroundColor: theme.palette.primary.main,
+              backgroundColor: theme.palette.primary.dark,
               color: theme.palette.text.secondary,
               borderRadius: "16px",
               padding: "0.5rem 1rem",
             }}
           >
-            <p style={{ margin: 0 }}>1. e4 e5</p>
-            <p style={{ margin: 0 }}>2. d4 d5</p>
+            <MoveList
+              history={history}
+              currentMoveIndex={currentMoveIndex}
+              onMoveClick={() => console.log("test")}
+            />
           </div>
         </div>
       </div>
