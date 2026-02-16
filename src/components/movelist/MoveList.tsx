@@ -50,11 +50,25 @@ export default function MoveList({
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: "100%",
+        overflowY: "auto",
+        backgroundColor: theme.palette.primary.dark,
+        borderRadius: "16px",
+        padding: "0.5rem",
+        display: "grid",
+        gridTemplateColumns: "30px 1fr 1fr",
+        alignContent: "start",
+        gap: ".5rem",
+      }}
+    >
       {movePairs.map((pair) => (
         <div key={pair.moveNumber} style={{ display: "contents" }}>
           {/* move number */}
-          <Typography>{pair.moveNumber}</Typography>
+          <Typography variant="body2" sx={{ alignContent: "center" }}>
+            {pair.moveNumber}.
+          </Typography>
           {/* white move */}
           <MoveButton
             move={pair.white}
@@ -84,7 +98,24 @@ const MoveButton = forwardRef<HTMLButtonElement, MoveButtonProps>(
     const theme = useTheme();
 
     return (
-      <button ref={ref} onClick={onClick} style={{}}>
+      <button
+        ref={ref}
+        onClick={onClick}
+        style={{
+          backgroundColor: isActive
+            ? theme.palette.primary.main
+            : "transparent",
+          color: theme.palette.text.secondary,
+          border: "none",
+          cursor: "pointer",
+          padding: "4px 8px",
+          borderRadius: "16px",
+          textAlign: "left",
+          fontWeight: isActive ? "bold" : "normal",
+          fontSize: "1rem",
+          transition: "background-color 0.2s",
+        }}
+      >
         {move.san}
       </button>
     );
