@@ -19,10 +19,29 @@ type Move = {
 
 // example PGN for testing
 const SAMPLE_PGN = `
-[Event "FIDE World Cup 2023"]
-[White "Carlsen, Magnus"]
-[Black "Praggnanandhaa, R"]
-1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. d3 Nf6 5. a4 d6 6. c3 a6 7. O-O Ba7 8. Re1 O-O 9. Nbd2 Ne7 10. Bb3 Ng6 11. Nc4 c6
+[Event "casual correspondence game"]
+[Site "https://lichess.org/bYQcuyrd"]
+[Date "2026.02.15"]
+[Round "-"]
+[White "lichess AI level 4"]
+[Black "Hermzy"]
+[Result "0-1"]
+[GameId "bYQcuyrd"]
+[UTCDate "2026.02.15"]
+[UTCTime "13:39:11"]
+[WhiteElo "?"]
+[BlackElo "1500"]
+[Variant "Standard"]
+[TimeControl "-"]
+[ECO "B12"]
+[Opening "Caro-Kann Defense"]
+[Termination "Normal"]
+[Annotator "lichess.org"]
+
+1. e4 c6 2. d4 d5 { B12 Caro-Kann Defense } 3. Bd3 dxe4 4. Bxe4 Nf6 5. Bf3 Bf5 6. c3 e6 7. Bf4 Bd6 8. Ne2 O-O 9. Bxd6 Qxd6 10. Na3 Bg4 11. Nc4 Qc7 12. Nd2 Nbd7 13. O-O Rfe8 14. Ng3 e5 15. Bxg4 Nxg4 16. Nf5 Ndf6 17. f3 Nxh2 18. Kxh2 exd4+ 19. f4 dxc3 20. bxc3 Rad8 21. Qc2 Ng4+ 22. Kg3 Ne3 23. Nxe3 Rxe3+ 24. Kh2 Re2 25. Qe4 Rxe4 26. Nxe4 Re8 27. Nd2 g5 28. Nc4 gxf4 29. Rae1 Rxe1 30. Rxe1 f3+ 31. Re5 f6 32. gxf3 fxe5 33. Ne3 e4+ 34. Kh1 exf3 35. Ng4 Qf4 36. Nf2 Qh4+ 37. Kg1 Qg3+ 38. Kf1 Qg2+ 39. Ke1 Qg1+ 40. Kd2 Qxf2+ 41. Kc1 Qe1+ 42. Kb2 f2 43. Kc2 f1=Q 44. Kb3 Qb1+ 45. Ka3 Qa6# { Black wins by checkmate. } 0-1
+
+
+
 `;
 
 export default function GameDetailsPage() {
@@ -62,6 +81,7 @@ export default function GameDetailsPage() {
   // determine the fen to display based on the index
   const currentFen =
     currentMoveIndex === -1 ? startFen : history[currentMoveIndex].fen;
+  const currentTurn = currentFen.split(" ")[1]; // "w" or "b"
 
   // handle move and button clicks
   const handleNext = () =>
@@ -81,41 +101,57 @@ export default function GameDetailsPage() {
         display: "flex",
         flexDirection: "column",
         gap: "0.5rem",
+        height: isDesktop ? "100dvh" : "auto",
+        boxSizing: "border-box",
       }}
     >
       <Topbar title="Sjakk-VM runde 1" route="/" />
+
       <div
         style={{
           display: "flex",
           flexDirection: isDesktop ? "row" : "column",
           gap: "0.5rem",
+          height: isDesktop ? "100%" : "auto",
+          overflow: "hidden",
         }}
       >
-        <GameView
-          fen={currentFen}
-          whitePlayerName="Dennis Johansen"
-          whitePlayerTime="10:00"
-          blackPlayerName="Herman Lundby-Holen"
-          blackPlayerTime="10:00"
-          status="PENDING"
-        />
+        {/* left column */}
+        <div style={{ flex: isDesktop ? "1 1 65%" : "none", height: "100%" }}>
+          <GameView
+            fen={currentFen}
+            whitePlayerName="Dennis Johansen"
+            whitePlayerTime="10:00"
+            blackPlayerName="Herman Lundby-Holen"
+            blackPlayerTime="10:00"
+            status={
+              currentMoveIndex === -1
+                ? "PENDING"
+                : currentTurn === "w"
+                  ? "WHITE_TO_MOVE"
+                  : "BLACK_TO_MOVE"
+            }
+          />
+        </div>
 
+        {/* right column */}
         <div
           style={{
-            width: "100%",
+            flex: isDesktop ? "1 1 35%" : "none",
             display: "flex",
             flexDirection: "column",
             gap: "0.5rem",
+            height: "100%",
           }}
         >
           <ButtonGroup
             variant="contained"
             disableElevation
             aria-label="Buttons for going backwards and forwards in the game"
+            fullWidth
             sx={{
-              display: "flex",
-              justifyContent: "center",
               order: isDesktop ? "3" : "1",
+              flexShrink: 0,
             }}
           >
             <Button
@@ -149,12 +185,12 @@ export default function GameDetailsPage() {
 
           <div
             style={{
-              width: "100%",
               padding: "0.5rem 1rem",
               backgroundColor: theme.palette.primary.dark,
               borderRadius: "16px",
               color: theme.palette.text.secondary,
               order: isDesktop ? "1" : "2",
+              flexShrink: 0,
             }}
           >
             <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
@@ -165,11 +201,10 @@ export default function GameDetailsPage() {
           <div
             style={{
               order: isDesktop ? "2" : "3",
-              height: "100%",
-              backgroundColor: theme.palette.primary.dark,
-              color: theme.palette.text.secondary,
-              borderRadius: "16px",
-              padding: "0.5rem 1rem",
+              flex: 1,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <MoveList
