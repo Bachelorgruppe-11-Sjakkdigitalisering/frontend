@@ -63,6 +63,15 @@ export default function GameDetailsPage() {
   const currentFen =
     currentMoveIndex === -1 ? startFen : history[currentMoveIndex].fen;
 
+  // handle move and button clicks
+  const handleNext = () =>
+    setCurrentMoveIndex((prev) => Math.min(prev + 1, history.length - 1));
+  const handlePrev = () =>
+    setCurrentMoveIndex((prev) => Math.max(prev - 1, -1));
+  const handleStart = () => setCurrentMoveIndex(-1);
+  const handleEnd = () => setCurrentMoveIndex(history.length - 1);
+  const handleMoveClick = (index: number) => setCurrentMoveIndex(index);
+
   return (
     <div
       style={{
@@ -109,19 +118,31 @@ export default function GameDetailsPage() {
               order: isDesktop ? "3" : "1",
             }}
           >
-            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
+            <Button
+              onClick={handleStart}
+              style={{ backgroundColor: theme.palette.primary.dark }}
+            >
               <FastRewind />
             </Button>
 
-            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
+            <Button
+              onClick={handlePrev}
+              style={{ backgroundColor: theme.palette.primary.dark }}
+            >
               <SkipPrevious />
             </Button>
 
-            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
+            <Button
+              onClick={handleNext}
+              style={{ backgroundColor: theme.palette.primary.dark }}
+            >
               <SkipNext />
             </Button>
 
-            <Button style={{ backgroundColor: theme.palette.primary.dark }}>
+            <Button
+              onClick={handleEnd}
+              style={{ backgroundColor: theme.palette.primary.dark }}
+            >
               <FastForward />
             </Button>
           </ButtonGroup>
@@ -154,7 +175,7 @@ export default function GameDetailsPage() {
             <MoveList
               history={history}
               currentMoveIndex={currentMoveIndex}
-              onMoveClick={() => console.log("test")}
+              onMoveClick={handleMoveClick}
             />
           </div>
         </div>
