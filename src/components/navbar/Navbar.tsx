@@ -88,6 +88,7 @@ export default function Navbar() {
         bottom: 0,
         left: 0,
         right: 0,
+        zIndex: 100,
       }}
       elevation={0}
     >

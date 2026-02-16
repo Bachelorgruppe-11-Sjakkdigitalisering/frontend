@@ -117,7 +117,12 @@ export default function GameDetailsPage() {
         }}
       >
         {/* left column */}
-        <div style={{ flex: isDesktop ? "1 1 65%" : "none", height: "100%" }}>
+        <div
+          style={{
+            flex: isDesktop ? "2" : "none",
+            height: "100%",
+          }}
+        >
           <GameView
             fen={currentFen}
             whitePlayerName="Dennis Johansen"
@@ -137,7 +142,7 @@ export default function GameDetailsPage() {
         {/* right column */}
         <div
           style={{
-            flex: isDesktop ? "1 1 35%" : "none",
+            flex: isDesktop ? "1" : "none",
             display: "flex",
             flexDirection: "column",
             gap: "0.5rem",
