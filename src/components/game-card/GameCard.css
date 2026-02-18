@@ -1,0 +1,17 @@
+.game-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 1em;
+  width: 100%;
+}
+
+.player-trophy-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+}

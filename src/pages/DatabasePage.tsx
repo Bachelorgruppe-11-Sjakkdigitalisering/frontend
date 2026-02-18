@@ -13,6 +13,7 @@ import "../main.css";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useState } from "react";
 import PlayerCard from "../components/player-card/PlayerCard";
+import GameCard from "../components/game-card/GameCard";
 
 export default function DatabasePage() {
   const theme = useTheme();
@@ -68,7 +69,7 @@ export default function DatabasePage() {
         fullWidth={isDesktop ? false : true}
       >
         <ToggleButton value="games">Partisøk</ToggleButton>
-        <ToggleButton value="player">Spillersøk</ToggleButton>
+        <ToggleButton value="players">Spillersøk</ToggleButton>
       </ToggleButtonGroup>
 
       {/* filter dropdown button */}
@@ -82,8 +83,23 @@ export default function DatabasePage() {
       {/* result text */}
       <Typography variant="subtitle1">Resultater for ...</Typography>
 
-      {/* result card */}
-      <PlayerCard name="Navn" />
+      {/* result cards */}
+      {searchType === "players" ? (
+        <PlayerCard name="Herman Lundby-Holen" />
+      ) : searchType === "games" ? (
+        <>
+          <GameCard
+            whiteName="Herman Lundby-Holen"
+            blackName="Dennis Johansen"
+            whiteWin={true}
+          />
+          <GameCard
+            whiteName="Herman Lundby-Holen"
+            blackName="Dennis Johansen"
+            whiteWin={false}
+          />
+        </>
+      ) : null}
     </div>
   );
 }
