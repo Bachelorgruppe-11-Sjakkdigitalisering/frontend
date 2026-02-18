@@ -46,9 +46,6 @@ const SAMPLE_PGN = `
 [Annotator "lichess.org"]
 
 1. e4 c6 2. d4 d5 { B12 Caro-Kann Defense } 3. Bd3 dxe4 4. Bxe4 Nf6 5. Bf3 Bf5 6. c3 e6 7. Bf4 Bd6 8. Ne2 O-O 9. Bxd6 Qxd6 10. Na3 Bg4 11. Nc4 Qc7 12. Nd2 Nbd7 13. O-O Rfe8 14. Ng3 e5 15. Bxg4 Nxg4 16. Nf5 Ndf6 17. f3 Nxh2 18. Kxh2 exd4+ 19. f4 dxc3 20. bxc3 Rad8 21. Qc2 Ng4+ 22. Kg3 Ne3 23. Nxe3 Rxe3+ 24. Kh2 Re2 25. Qe4 Rxe4 26. Nxe4 Re8 27. Nd2 g5 28. Nc4 gxf4 29. Rae1 Rxe1 30. Rxe1 f3+ 31. Re5 f6 32. gxf3 fxe5 33. Ne3 e4+ 34. Kh1 exf3 35. Ng4 Qf4 36. Nf2 Qh4+ 37. Kg1 Qg3+ 38. Kf1 Qg2+ 39. Ke1 Qg1+ 40. Kd2 Qxf2+ 41. Kc1 Qe1+ 42. Kb2 f2 43. Kc2 f1=Q 44. Kb3 Qb1+ 45. Ka3 Qa6# { Black wins by checkmate. } 0-1
-
-
-
 `;
 
 export default function GameDetailsPage() {
