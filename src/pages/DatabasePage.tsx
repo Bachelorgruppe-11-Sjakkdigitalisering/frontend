@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   ButtonGroup,
   InputAdornment,
@@ -13,6 +12,7 @@ import {
 import "../main.css";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useState } from "react";
+import PlayerCard from "../components/player-card/PlayerCard";
 
 export default function DatabasePage() {
   const theme = useTheme();
@@ -28,7 +28,17 @@ export default function DatabasePage() {
   };
 
   return (
-    <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
+    <div
+      className={isDesktop ? "desktop-margins" : "mobile-margins"}
+      style={{
+        padding: "1em",
+        display: "flex",
+        flexDirection: "column",
+        margin: "0 auto",
+        gap: "0.5em",
+        maxWidth: "540px",
+      }}
+    >
       {/* search field */}
       <TextField
         variant="outlined"
@@ -55,6 +65,7 @@ export default function DatabasePage() {
         value={searchType}
         exclusive
         onChange={handleChange}
+        fullWidth={isDesktop ? false : true}
       >
         <ToggleButton value="games">Partisøk</ToggleButton>
         <ToggleButton value="player">Spillersøk</ToggleButton>
@@ -72,10 +83,7 @@ export default function DatabasePage() {
       <Typography variant="subtitle1">Resultater for ...</Typography>
 
       {/* result card */}
-      <div>
-        <Avatar />
-        <Typography variant="body1">Resultat...</Typography>
-      </div>
+      <PlayerCard name="Navn" />
     </div>
   );
 }
