@@ -13,7 +13,7 @@ type GameViewProps = {
   blackPlayerName: string;
   blackPlayerTime: string;
   status: "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED";
-  stockfishData: StockfishResponse | null;
+  stockfishData?: StockfishResponse | null;
 };
 
 export default function GameView({
