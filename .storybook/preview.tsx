@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/react-vite";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { appTheme } from "../src/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,9 @@ const preview: Preview = {
       <ThemeProvider theme={appTheme}>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <Story />
+          <BrowserRouter>
+            <Story />
+          </BrowserRouter>
         </QueryClientProvider>
       </ThemeProvider>
     ),
