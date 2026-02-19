@@ -1,7 +1,7 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
 
-type Move = {
+export type Move = {
   san: string;
   fen: string;
   color: "w" | "b";
