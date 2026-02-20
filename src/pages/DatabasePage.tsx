@@ -85,7 +85,7 @@ export default function DatabasePage() {
 
       {/* result cards */}
       {searchType === "players" ? (
-        <PlayerCard name="Herman Lundby-Holen" />
+        <PlayerCard name="Herman Lundby-Holen" playerId="1" />
       ) : searchType === "games" ? (
         <>
           <GameCard

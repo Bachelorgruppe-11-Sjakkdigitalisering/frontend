@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
 import GameDetailsPage from "./pages/GameDetailsPage";
 import DatabasePage from "./pages/DatabasePage";
+import PlayerPage from "./pages/PlayerPage";
 
 const queryClient = new QueryClient();
 
@@ -23,10 +24,13 @@ createRoot(document.getElementById("root")!).render(
 
           {/* here are all the routes/pages of the application */}
           <Routes>
+            {/* home page */}
             <Route path="/" element={<HomePage />} />
             {/* :gameId is a dynamic parameter we can read from the component */}
             {/* this allows us to use this one page for all kinds of games */}
+            {/* the same goes for :playerId */}
             <Route path="/game/:gameId" element={<GameDetailsPage />} />
+            <Route path="/player/:playerId" element={<PlayerPage />} />
             {/* database page */}
             <Route path="/database" element={<DatabasePage />} />
           </Routes>
