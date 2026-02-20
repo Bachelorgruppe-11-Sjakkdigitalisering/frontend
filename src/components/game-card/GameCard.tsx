@@ -1,19 +1,27 @@
 import { EmojiEvents } from "@mui/icons-material";
 import { Typography, useTheme } from "@mui/material";
 import "./GameCard.css";
+import { useNavigate } from "react-router";
 
 type GameCardProps = {
   whiteName: string;
   blackName: string;
   whiteWin: boolean;
+  gameId: string;
 };
 
 export default function GameCard({
   whiteName,
   blackName,
   whiteWin,
+  gameId,
 }: GameCardProps) {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/game/${gameId}`);
+  };
 
   return (
     <div
@@ -21,7 +29,9 @@ export default function GameCard({
       style={{
         backgroundColor: theme.palette.background.nav,
         color: theme.palette.text.secondary,
+        cursor: "pointer",
       }}
+      onClick={handleClick}
     >
       <div className="player-trophy-wrapper">
         {whiteWin ? <EmojiEvents sx={{ fontSize: 40 }} /> : null}

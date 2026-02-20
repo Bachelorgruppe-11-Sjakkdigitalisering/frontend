@@ -92,11 +92,13 @@ export default function DatabasePage() {
             whiteName="Herman Lundby-Holen"
             blackName="Dennis Johansen"
             whiteWin={true}
+            gameId="1"
           />
           <GameCard
             whiteName="Herman Lundby-Holen"
             blackName="Dennis Johansen"
             whiteWin={false}
+            gameId="2"
           />
         </>
       ) : null}

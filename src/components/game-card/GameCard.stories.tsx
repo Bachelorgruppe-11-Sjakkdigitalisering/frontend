@@ -15,6 +15,7 @@ export const WhitePlayerWin: Story = {
     whiteName: "Herman Lundby-Holen",
     blackName: "Dennis Johansen",
     whiteWin: true,
+    gameId: "1",
   },
 };
 
@@ -23,5 +24,6 @@ export const BlackPlayerWin: Story = {
     whiteName: "Herman Lundby-Holen",
     blackName: "Dennis Johansen",
     whiteWin: false,
+    gameId: "1",
   },
 };
