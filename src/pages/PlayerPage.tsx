@@ -16,7 +16,17 @@ export default function PlayerPage() {
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
   return (
-    <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
+    <div
+      className={isDesktop ? "desktop-margins" : "mobile-margins"}
+      style={{
+        padding: "1em",
+        display: "flex",
+        flexDirection: "column",
+        margin: "0 auto",
+        gap: "0.5em",
+        maxWidth: "540px",
+      }}
+    >
       {/* top bar */}
       <Topbar title="Spillerprofil" route="/database" />
 
@@ -35,7 +45,7 @@ export default function PlayerPage() {
       </ButtonGroup>
 
       {/* game cards */}
-      <div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5em" }}>
         <GameCard
           whiteName="Herman Lundby-Holen"
           blackName="Dennis Johansen"
