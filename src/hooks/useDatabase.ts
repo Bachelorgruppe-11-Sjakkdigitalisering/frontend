@@ -1,6 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchArchivedGames from "../api/database";
 
+export type ArchivedGamesResponse = {
+  id: number;
+  white_player: string;
+  black_player: string;
+  result: "1-0" | "0-1" | "1/2-1/2";
+  tournament_name: string;
+  date_played: string; // TODO: dette er kanskje feil datatype
+  pgn: string;
+};
+
 export function useDatabase(playerName: string) {
   return useQuery({
     queryKey: ["database", playerName], // this makes it so we automatically refetch whenever playerName changes
