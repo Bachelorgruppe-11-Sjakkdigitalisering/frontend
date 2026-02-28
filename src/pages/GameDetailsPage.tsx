@@ -21,6 +21,7 @@ import MoveList from "../components/movelist/MoveList";
 import { useStockfish } from "../hooks/useStockfish";
 import { useParams } from "react-router";
 import useGame from "../hooks/useGame";
+import useLiveGame from "../hooks/useLiveGame";
 
 type Move = {
   san: string;
@@ -28,15 +29,29 @@ type Move = {
   color: "w" | "b";
 };
 
-export default function GameDetailsPage() {
+export default function GameDetailsPage({
+  isLive = false,
+}: {
+  isLive?: boolean;
+}) {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const { gameId } = useParams<{ gameId: string }>();
   const {
-    data: gameData,
-    isLoading: isGameLoading,
-    isError: isGameError,
-  } = useGame(gameId);
+    data: liveData,
+    isLoading: isLiveLoading,
+    isError: isLiveError,
+  } = useLiveGame(gameId, isLive);
+  const {
+    data: archiveData,
+    isLoading: isArchiveLoading,
+    isError: isArchiveError,
+  } = useGame(gameId, isLive);
+
+  // merge states based on the mode
+  const gameData = isLive ? liveData : archiveData;
+  const isGameLoading = isLive ? isLiveLoading : isArchiveLoading;
+  const isGameError = isLive ? isLiveError : isArchiveError;
 
   // state to track the current move index (-1 = start position)
   const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);

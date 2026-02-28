@@ -34,7 +34,7 @@ export default function GamePreview({
   };
 
   const handleClick = () => {
-    navigate(`/game/${gameId}`);
+    navigate(`/live/${gameId}`);
   };
 
   if (loading) {

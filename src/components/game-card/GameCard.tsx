@@ -20,7 +20,7 @@ export default function GameCard({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/game/${gameId}`);
+    navigate(`/archive/${gameId}`);
   };
 
   return (

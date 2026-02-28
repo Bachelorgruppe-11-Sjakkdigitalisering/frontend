@@ -26,10 +26,16 @@ createRoot(document.getElementById("root")!).render(
           <Routes>
             {/* home page */}
             <Route path="/" element={<HomePage />} />
-            {/* :gameId is a dynamic parameter we can read from the component */}
-            {/* this allows us to use this one page for all kinds of games */}
-            {/* the same goes for :playerId */}
-            <Route path="/game/:gameId" element={<GameDetailsPage />} />
+            {/* game page for both live and archived games */}
+            <Route
+              path="/live/:gameId"
+              element={<GameDetailsPage isLive={true} />}
+            />
+            <Route
+              path="/archive/:gameId"
+              element={<GameDetailsPage isLive={false} />}
+            />
+            {/* player page */}
             <Route path="/player/:playerId" element={<PlayerPage />} />
             {/* database page */}
             <Route path="/database" element={<DatabasePage />} />
