@@ -15,3 +15,13 @@ export default async function fetchArchivedGames(playerName: string) {
 
   return response.json();
 }
+
+export async function fetchArchivedGameDetails(gameId: string | undefined) {
+  const response = await fetch(`http://127.0.0.1:8000/api/archive/${gameId}`);
+
+  if (!response.ok) {
+    throw new Error("Could not fetch game.");
+  }
+
+  return response.json();
+}
