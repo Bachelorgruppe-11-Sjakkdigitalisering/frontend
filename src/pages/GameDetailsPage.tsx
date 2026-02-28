@@ -22,6 +22,7 @@ import { useStockfish } from "../hooks/useStockfish";
 import { useParams } from "react-router";
 import useGame from "../hooks/useGame";
 import useLiveGame from "../hooks/useLiveGame";
+import "../main.css";
 
 type Move = {
   san: string;
@@ -112,7 +113,7 @@ export default function GameDetailsPage({
   // TODO: endre dette til skeleton i fremtiden?
   if (isGameLoading) {
     return (
-      <div>
+      <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
         <CircularProgress />
       </div>
     );
@@ -121,7 +122,7 @@ export default function GameDetailsPage({
   // error handling
   if (isGameError || !gameData) {
     return (
-      <div>
+      <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
         <Alert severity="error">Kunne ikke laste partiet.</Alert>
       </div>
     );
@@ -129,9 +130,8 @@ export default function GameDetailsPage({
 
   return (
     <div
+      className={isDesktop ? "desktop-margins" : "mobile-margins"}
       style={{
-        marginLeft: isDesktop ? "13rem" : "0px",
-        marginBottom: isDesktop ? "0" : "64px",
         padding: "1rem",
         display: "flex",
         flexDirection: "column",
