@@ -1,6 +1,8 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
+  CircularProgress,
   Skeleton,
   useMediaQuery,
   useTheme,
@@ -17,6 +19,8 @@ import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
 import MoveList from "../components/movelist/MoveList";
 import { useStockfish } from "../hooks/useStockfish";
+import { useParams } from "react-router";
+import useGame from "../hooks/useGame";
 
 type Move = {
   san: string;
@@ -24,41 +28,31 @@ type Move = {
   color: "w" | "b";
 };
 
-// example PGN for testing
-const SAMPLE_PGN = `
-[Event "casual correspondence game"]
-[Site "https://lichess.org/bYQcuyrd"]
-[Date "2026.02.15"]
-[Round "-"]
-[White "lichess AI level 4"]
-[Black "Hermzy"]
-[Result "0-1"]
-[GameId "bYQcuyrd"]
-[UTCDate "2026.02.15"]
-[UTCTime "13:39:11"]
-[WhiteElo "?"]
-[BlackElo "1500"]
-[Variant "Standard"]
-[TimeControl "-"]
-[ECO "B12"]
-[Opening "Caro-Kann Defense"]
-[Termination "Normal"]
-[Annotator "lichess.org"]
-
-1. e4 c6 2. d4 d5 { B12 Caro-Kann Defense } 3. Bd3 dxe4 4. Bxe4 Nf6 5. Bf3 Bf5 6. c3 e6 7. Bf4 Bd6 8. Ne2 O-O 9. Bxd6 Qxd6 10. Na3 Bg4 11. Nc4 Qc7 12. Nd2 Nbd7 13. O-O Rfe8 14. Ng3 e5 15. Bxg4 Nxg4 16. Nf5 Ndf6 17. f3 Nxh2 18. Kxh2 exd4+ 19. f4 dxc3 20. bxc3 Rad8 21. Qc2 Ng4+ 22. Kg3 Ne3 23. Nxe3 Rxe3+ 24. Kh2 Re2 25. Qe4 Rxe4 26. Nxe4 Re8 27. Nd2 g5 28. Nc4 gxf4 29. Rae1 Rxe1 30. Rxe1 f3+ 31. Re5 f6 32. gxf3 fxe5 33. Ne3 e4+ 34. Kh1 exf3 35. Ng4 Qf4 36. Nf2 Qh4+ 37. Kg1 Qg3+ 38. Kf1 Qg2+ 39. Ke1 Qg1+ 40. Kd2 Qxf2+ 41. Kc1 Qe1+ 42. Kb2 f2 43. Kc2 f1=Q 44. Kb3 Qb1+ 45. Ka3 Qa6# { Black wins by checkmate. } 0-1
-`;
-
 export default function GameDetailsPage() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const { gameId } = useParams<{ gameId: string }>();
+  const {
+    data: gameData,
+    isLoading: isGameLoading,
+    isError: isGameError,
+  } = useGame(gameId);
 
   // state to track the current move index (-1 = start position)
   const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
 
   // load PGN and parse the history once
   const { history, startFen } = useMemo(() => {
+    // if data hasn't loaded yet, return empty defaults
+    if (!gameData || !gameData.pgn) {
+      return {
+        history: [],
+        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      };
+    }
+
     const game = new Chess();
-    game.loadPgn(SAMPLE_PGN); // TODO: load PGN fra backend her i fremtiden
+    game.loadPgn(gameData.pgn);
 
     // extract fen after every move
     const historyWithFens: Array<Move> = [];
@@ -80,7 +74,7 @@ export default function GameDetailsPage() {
       history: historyWithFens,
       startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     };
-  }, []);
+  }, [gameData]); // rerun if game data changes
 
   // determine the fen to display based on the index
   const currentFen =
@@ -99,6 +93,25 @@ export default function GameDetailsPage() {
   // fetch stockfish data
   const { data: stockfishData, isLoading } = useStockfish(currentFen);
 
+  // loading state
+  // TODO: endre dette til skeleton i fremtiden?
+  if (isGameLoading) {
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  // error handling
+  if (isGameError || !gameData) {
+    return (
+      <div>
+        <Alert severity="error">Kunne ikke laste partiet.</Alert>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -112,7 +125,10 @@ export default function GameDetailsPage() {
         boxSizing: "border-box",
       }}
     >
-      <Topbar title="Sjakk-VM runde 1" route="/" />
+      <Topbar
+        title={`${gameData.white_player} vs ${gameData.black_player}`}
+        route="/database"
+      />
 
       <div
         style={{
@@ -132,9 +148,9 @@ export default function GameDetailsPage() {
         >
           <GameView
             fen={currentFen}
-            whitePlayerName="Dennis Johansen"
+            whitePlayerName={gameData.white_player}
             whitePlayerTime="10:00"
-            blackPlayerName="Herman Lundby-Holen"
+            blackPlayerName={gameData.black_player}
             blackPlayerTime="10:00"
             status={
               currentMoveIndex === -1
