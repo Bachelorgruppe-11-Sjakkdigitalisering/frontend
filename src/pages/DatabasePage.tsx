@@ -122,8 +122,8 @@ export default function DatabasePage() {
           {archivedGames?.map((game: ArchivedGamesResponse) => (
             <GameCard
               key={game.id}
-              whiteName={game.white_player}
-              blackName={game.black_player}
+              whiteName={game.white_player_name}
+              blackName={game.black_player_name}
               whiteWin={game.result === "1-0"} // TODO: finn hvordan håndtere remis
               gameId={game.id.toString()}
             />

@@ -3,8 +3,10 @@ import fetchArchivedGames from "../api/database";
 
 export type ArchivedGamesResponse = {
   id: number;
-  white_player: string;
-  black_player: string;
+  white_player_name: string;
+  white_player_id: number;
+  black_player_name: string;
+  black_player_id: number;
   result: "1-0" | "0-1" | "1/2-1/2";
   tournament_name: string;
   date_played: string; // TODO: dette er kanskje feil datatype

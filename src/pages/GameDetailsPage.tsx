@@ -141,7 +141,7 @@ export default function GameDetailsPage({
       }}
     >
       <Topbar
-        title={`${gameData.white_player} vs ${gameData.black_player}`}
+        title={`${gameData.white_player_name} vs ${gameData.black_player_name}`}
         route="/database"
       />
 
@@ -163,9 +163,9 @@ export default function GameDetailsPage({
         >
           <GameView
             fen={currentFen}
-            whitePlayerName={gameData.white_player}
+            whitePlayerName={gameData.white_player_name}
             whitePlayerTime="10:00"
-            blackPlayerName={gameData.black_player}
+            blackPlayerName={gameData.black_player_name}
             blackPlayerTime="10:00"
             status={
               currentMoveIndex === -1
