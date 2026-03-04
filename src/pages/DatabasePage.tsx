@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import PlayerCard from "../components/player-card/PlayerCard";
 import GameCard from "../components/game-card/GameCard";
 import { useDatabase, type ArchivedGamesResponse } from "../hooks/useDatabase";
+import { usePlayers, type PlayerResponse } from "../hooks/usePlayers";
 
 export default function DatabasePage() {
   const theme = useTheme();
@@ -37,8 +38,17 @@ export default function DatabasePage() {
     };
   }, [inputValue]);
 
-  // call api hook to fetch archived games
-  const { data: archivedGames, isLoading, isError } = useDatabase(query);
+  // call api hook to fetch archived games and players
+  const {
+    data: archivedGames,
+    isLoading: gamesLoading,
+    isError: gamesError,
+  } = useDatabase(query);
+  const {
+    data: players,
+    isLoading: playersLoading,
+    isError: playersError,
+  } = usePlayers(query);
 
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -46,6 +56,10 @@ export default function DatabasePage() {
   ) => {
     setSearchType(newSearchType);
   };
+
+  // determine which loading/error state to show based on the active tab
+  const isLoading = searchType === "games" ? gamesLoading : playersLoading;
+  const isError = searchType === "games" ? gamesError : playersError;
 
   return (
     <div
@@ -103,7 +117,11 @@ export default function DatabasePage() {
 
       {/* result text */}
       <Typography variant="subtitle1">
-        {query ? `Resultater for "${query}"` : "Viser alle nylige partier"}
+        {query
+          ? `Resultater for "${query}"`
+          : !query && searchType === "games"
+            ? "Viser alle tidligere spilte partier"
+            : "Viser alle spillere"}
       </Typography>
 
       {/* error state */}
@@ -111,8 +129,18 @@ export default function DatabasePage() {
 
       {/* result cards */}
       {searchType === "players" ? (
-        // TODO: oppdater her når vi har et spiller endpoint
-        <PlayerCard name="Herman Lundby-Holen" playerId="1" />
+        <>
+          {players?.length === 0 && (
+            <Typography variant="body2">Ingen spillere funnet.</Typography>
+          )}
+          {players?.map((player: PlayerResponse) => (
+            <PlayerCard
+              key={player.id}
+              name={player.name}
+              playerId={player.id.toString()}
+            />
+          ))}
+        </>
       ) : searchType === "games" ? (
         <>
           {archivedGames?.length === 0 && (

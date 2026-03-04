@@ -1,6 +1,6 @@
 export default async function fetchPlayers(playerName: string) {
   const queryParam = playerName
-    ? `?player=${encodeURIComponent(playerName)}`
+    ? `?search=${encodeURIComponent(playerName)}`
     : "";
 
   const response = await fetch(
