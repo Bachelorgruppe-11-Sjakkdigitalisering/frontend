@@ -1,7 +1,9 @@
 import {
+  Alert,
   Avatar,
   Button,
   ButtonGroup,
+  CircularProgress,
   Typography,
   useMediaQuery,
   useTheme,
@@ -10,10 +12,31 @@ import "../main.css";
 import { ArrowDropDown } from "@mui/icons-material";
 import GameCard from "../components/game-card/GameCard";
 import Topbar from "../components/topbar/Topbar";
+import { useParams } from "react-router";
+import { usePlayerGames, usePlayerProfile } from "../hooks/usePlayer";
+import type { ArchivedGamesResponse } from "../hooks/useDatabase";
 
 export default function PlayerPage() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  // get player id from parameter
+  const { playerId } = useParams<{ playerId: string }>();
+
+  // fetch data
+  const {
+    data: profileData,
+    isLoading: profileLoading,
+    isError: profileError,
+  } = usePlayerProfile(playerId);
+  const {
+    data: gamesData,
+    isLoading: gamesLoading,
+    isError: gamesError,
+  } = usePlayerGames(playerId);
+
+  const isLoading = profileLoading || gamesLoading;
+  const isError = profileError || gamesError;
 
   return (
     <div
@@ -30,11 +53,22 @@ export default function PlayerPage() {
       {/* top bar */}
       <Topbar title="Spillerprofil" route="/database" />
 
-      {/* player name and avatar */}
-      <div>
-        <Avatar />
-        <Typography variant="h3">Herman Lundby-Holen</Typography>
-      </div>
+      {/* loading and error states */}
+      {isLoading && <CircularProgress />}
+      {isError && <Alert severity="error">Kunne ikke hente spillerdata.</Alert>}
+
+      {/* player name and stats */}
+      {!isLoading && !isError && profileData && (
+        <div>
+          <Avatar />
+          <Typography variant="h3">{profileData.player.name}</Typography>
+          <Typography variant="body2" color="text.primary">
+            {profileData.stats.total_games} partier spilt -{" "}
+            {profileData.stats.wins}S / {profileData.stats.draws}R /{" "}
+            {profileData.stats.losses}T
+          </Typography>
+        </div>
+      )}
 
       {/* filter dropdown button */}
       <ButtonGroup variant="contained" disableElevation>
@@ -46,30 +80,21 @@ export default function PlayerPage() {
 
       {/* game cards */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5em" }}>
-        <GameCard
-          whiteName="Herman Lundby-Holen"
-          blackName="Dennis Johansen"
-          whiteWin={true}
-          gameId="1"
-        />
-        <GameCard
-          whiteName="Herman Lundby-Holen"
-          blackName="Hans Olav Lahlum"
-          whiteWin={false}
-          gameId="2"
-        />
-        <GameCard
-          whiteName="Herman Lundby-Holen"
-          blackName="Dennis Johansen"
-          whiteWin={true}
-          gameId="1"
-        />
-        <GameCard
-          whiteName="Herman Lundby-Holen"
-          blackName="Dennis Johansen"
-          whiteWin={true}
-          gameId="1"
-        />
+        {gamesData?.length === 0 ? (
+          <Typography variant="body2">
+            Ingen partier funnet for denne spilleren.
+          </Typography>
+        ) : (
+          gamesData?.map((game: ArchivedGamesResponse) => (
+            <GameCard
+              key={game.id}
+              whiteName={game.white_player_name}
+              blackName={game.black_player_name}
+              whiteWin={game.result === "1-0"} // TODO: finn hvordan håndtere remis
+              gameId={game.id.toString()}
+            />
+          ))
+        )}
       </div>
     </div>
   );
