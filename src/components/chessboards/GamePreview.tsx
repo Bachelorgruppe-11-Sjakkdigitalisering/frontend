@@ -28,7 +28,12 @@ export default function GamePreview({
 
   const options: ChessboardOptions = {
     position: fen,
-    boardStyle: { borderRadius: 8, width: width, pointerEvents: "none" },
+    boardStyle: {
+      borderRadius: 8,
+      width: width,
+      height: width,
+      pointerEvents: "none",
+    },
     allowDragging: false,
     allowDrawingArrows: false,
   };
@@ -50,14 +55,7 @@ export default function GamePreview({
   }
 
   return (
-    <div
-      onClick={handleClick}
-      style={{
-        width: width,
-        cursor: "pointer",
-        transition: "transform 0.1s ease-in-out",
-      }}
-    >
+    <div onClick={handleClick} className="game-preview">
       <div className="player-wrapper">
         <p className="no-padding-margin">{player1Name}</p>
         <p className="no-padding-margin">{player1Time}</p>

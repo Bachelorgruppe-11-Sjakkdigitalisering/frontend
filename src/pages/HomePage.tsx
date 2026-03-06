@@ -21,68 +21,91 @@ export default function HomePage() {
   };
 
   return (
-    <div className={isDesktop ? "desktop-margins" : "mobile-margins centered"}>
+    <div
+      className={
+        isDesktop ? "desktop-margins centered" : "mobile-margins centered"
+      }
+      style={isDesktop ? { maxWidth: "800px" } : {}}
+    >
       {/* logo */}
       <div>
         <h1>LOGO</h1>
       </div>
 
       {/* switch between live games and newly played games */}
-      {!isDesktop && (
-        <ToggleButtonGroup
-          color="primary"
-          aria-label="Velg mellom live parti og tidligere spilte partier"
-          value={gameType}
-          exclusive
-          onChange={handleChange}
-          fullWidth={true}
+      <ToggleButtonGroup
+        color="primary"
+        aria-label="Velg mellom live parti og tidligere spilte partier"
+        value={gameType}
+        exclusive
+        onChange={handleChange}
+        fullWidth={true}
+      >
+        <ToggleButton
+          value="live"
+          sx={{
+            borderRadius: 100,
+            fontSize: "0.8rem",
+          }}
         >
-          <ToggleButton
-            value="live"
-            sx={{
-              borderRadius: 100,
-              fontSize: "0.8rem",
-            }}
-          >
-            Pågående partier
-          </ToggleButton>
-          <ToggleButton
-            value="players"
-            sx={{
-              borderRadius: 100,
-              fontSize: "0.8rem",
-            }}
-          >
-            Nylig spilte partier
-          </ToggleButton>
-        </ToggleButtonGroup>
-      )}
+          Pågående partier
+        </ToggleButton>
+        <ToggleButton
+          value="players"
+          sx={{
+            borderRadius: 100,
+            fontSize: "0.8rem",
+          }}
+        >
+          Nylig spilte partier
+        </ToggleButton>
+      </ToggleButtonGroup>
 
       {/* game previews */}
-      <GamePreview
-        gameId="1"
-        fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-        player1Name="Herman Lundby-Holen"
-        player1Time="00:23"
-        player2Name="Dennis Johansen"
-        player2Time="00:14"
-      />
-      <GamePreview
-        gameId="1"
-        fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-        player1Name="Herman Lundby-Holen"
-        player1Time="00:23"
-        player2Name="Dennis Johansen"
-        player2Time="00:14"
-      />
-      <GamePreview
-        gameId="1"
-        fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-        player1Name="Herman Lundby-Holen"
-        player1Time="00:23"
-        player2Name="Dennis Johansen"
-        player2Time="00:14"
-      />
+      <div
+        style={
+          isDesktop
+            ? {
+                display: "flex",
+                flexWrap: "wrap",
+                cursor: "pointer",
+              }
+            : {}
+        }
+      >
+        <GamePreview
+          gameId="1"
+          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
+          player1Name="Herman Lundby-Holen"
+          player1Time="00:23"
+          player2Name="Dennis Johansen"
+          player2Time="00:14"
+        />
+        <GamePreview
+          gameId="1"
+          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
+          player1Name="Herman Lundby-Holen"
+          player1Time="00:23"
+          player2Name="Dennis Johansen"
+          player2Time="00:14"
+        />
+        <GamePreview
+          gameId="1"
+          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
+          player1Name="Herman Lundby-Holen"
+          player1Time="00:23"
+          player2Name="Dennis Johansen"
+          player2Time="00:14"
+        />
+        <GamePreview
+          gameId="1"
+          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
+          player1Name="Herman Lundby-Holen"
+          player1Time="00:23"
+          player2Name="Dennis Johansen"
+          player2Time="00:14"
+        />
+      </div>
     </div>
   );
 }
