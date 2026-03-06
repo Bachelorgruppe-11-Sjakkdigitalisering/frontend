@@ -43,10 +43,9 @@ export default function PlayerPage() {
     <div
       className={isDesktop ? "desktop-margins" : "mobile-margins"}
       style={{
-        padding: "1em",
         display: "flex",
         flexDirection: "column",
-        margin: "0 auto",
+        margin: "0 auto 64px auto",
         gap: "0.5em",
         maxWidth: "800px",
       }}

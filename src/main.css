@@ -1,7 +1,16 @@
 .desktop-margins {
   margin-left: 13rem;
+  padding: 1em;
 }
 
 .mobile-margins {
   margin-bottom: 64px;
+  padding: 1em;
+}
+
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
 }
