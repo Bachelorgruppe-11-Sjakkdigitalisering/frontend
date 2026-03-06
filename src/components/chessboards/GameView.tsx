@@ -4,14 +4,16 @@ import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
 import { type StockfishResponse } from "../../hooks/useStockfish";
 import { BLACK, Chess, WHITE } from "chess.js";
+import { useNavigate } from "react-router";
 
-/* TODO: man må kanskje hente avatar her hvis vi skal ha med det? */
 type GameViewProps = {
   fen: string;
   whitePlayerName: string;
   whitePlayerTime: string;
+  whitePlayerId: string;
   blackPlayerName: string;
   blackPlayerTime: string;
+  blackPlayerId: string;
   status: "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED";
   stockfishData?: StockfishResponse | null;
 };
@@ -20,17 +22,19 @@ export default function GameView({
   fen,
   whitePlayerName,
   whitePlayerTime,
+  whitePlayerId,
   blackPlayerName,
   blackPlayerTime,
+  blackPlayerId,
   status,
   stockfishData,
 }: GameViewProps) {
+  const navigate = useNavigate();
+
   // analyze position locally to check if game is over (checkmate or stalemate)
   const game = new Chess(fen);
-
   // default state for eval bar if loading
   let evalbarProps = { height: 50, label: 0.0 };
-
   // determine what to show on the bar
   if (game.isCheckmate()) {
     // if it is checkmate, check whos turn it is to determine who lost
@@ -66,7 +70,11 @@ export default function GameView({
   return (
     <div className="game-view">
       <div className="player-info">
-        <div className="flex-row">
+        <div
+          className="flex-row"
+          onClick={() => navigate(`/player/${blackPlayerId}`)}
+          style={{ cursor: "pointer" }}
+        >
           <Avatar />
           <Typography variant="subtitle2">{blackPlayerName}</Typography>
         </div>
@@ -86,7 +94,11 @@ export default function GameView({
       </div>
 
       <div className="player-info">
-        <div className="flex-row">
+        <div
+          className="flex-row"
+          onClick={() => navigate(`/player/${whitePlayerId}`)}
+          style={{ cursor: "pointer" }}
+        >
           <Avatar />
           <Typography variant="subtitle2">{whitePlayerName}</Typography>
         </div>

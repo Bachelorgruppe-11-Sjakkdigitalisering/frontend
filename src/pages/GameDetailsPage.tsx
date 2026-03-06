@@ -186,8 +186,10 @@ export default function GameDetailsPage({
             fen={currentFen}
             whitePlayerName={gameData.white_player_name}
             whitePlayerTime={gameData.white_time}
+            whitePlayerId={gameData.white_player_id}
             blackPlayerName={gameData.black_player_name}
             blackPlayerTime={gameData.black_time}
+            blackPlayerId={gameData.black_player_id}
             status={
               currentMoveIndex === -1
                 ? "PENDING"
