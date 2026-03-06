@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 type PlayerStatsProps = {
   wins: number;
@@ -13,6 +13,16 @@ export default function PlayerStats({
   losses,
   totalGames,
 }: PlayerStatsProps) {
+  const total = totalGames || 1; // prevents dividing by 0 if there are no games
+  const winPct = (wins / total) * 100;
+  const drawPct = (draws / total) * 100;
+  const lossPct = (losses / total) * 100;
+
+  // calculate where each segment begins
+  const winStart = 0;
+  const drawStart = winPct;
+  const lossStart = winPct + drawPct;
+
   return (
     <Box
       sx={{
@@ -27,20 +37,52 @@ export default function PlayerStats({
         {totalGames} partier spilt
       </Typography>
 
-      <Stack direction="row" justifyContent="space-between" mb={0.5}>
-        {/* wins */}
-        <Typography variant="body2" color="success.main" fontWeight="bold">
-          {wins} Vunnet
-        </Typography>
-        {/* draws */}
-        <Typography variant="body2" color="text.secondary" fontWeight="bold">
-          {draws} Remis
-        </Typography>
-        {/* losses */}
-        <Typography variant="body2" color="error.main" fontWeight="bold">
-          {losses} Tapt
-        </Typography>
-      </Stack>
+      <Box sx={{ position: "relative", width: "100%", height: 24, mb: 0.5 }}>
+        {wins > 0 && (
+          <Typography
+            variant="body2"
+            color="success.main"
+            fontWeight="bold"
+            sx={{
+              position: "absolute",
+              left: `${winStart}%`,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {wins} Vunnet
+          </Typography>
+        )}
+
+        {draws > 0 && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            fontWeight="bold"
+            sx={{
+              position: "absolute",
+              left: `${drawStart}%`,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {drawPct < 5 ? `${draws}R` : `${draws} Remis`}
+          </Typography>
+        )}
+
+        {losses > 0 && (
+          <Typography
+            variant="body2"
+            color="error.main"
+            fontWeight="bold"
+            sx={{
+              position: "absolute",
+              left: `${lossStart}%`,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {losses} Tapt
+          </Typography>
+        )}
+      </Box>
 
       <Box
         sx={{
@@ -54,21 +96,21 @@ export default function PlayerStats({
         {/* wins */}
         <Box
           sx={{
-            width: `${(wins / totalGames) * 100 || 0}%`,
+            width: `${winPct}%`,
             bgcolor: "success.main",
           }}
         />
         {/* draws */}
         <Box
           sx={{
-            width: `${(draws / totalGames) * 100 || 0}%`,
+            width: `${drawPct}%`,
             bgcolor: "text.secondary",
           }}
         />
         {/* losses */}
         <Box
           sx={{
-            width: `${(losses / totalGames) * 100 || 0}%`,
+            width: `${lossPct}%`,
             bgcolor: "error.main",
           }}
         />
