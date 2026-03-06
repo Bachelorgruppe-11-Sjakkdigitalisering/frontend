@@ -27,13 +27,16 @@ export default function PlayerStats({
       sx={{
         width: "100%",
         mt: 1,
-        p: 5,
+        px: 5,
+        py: 4,
         bgcolor: "background.nav",
-        borderRadius: 16,
+        borderRadius: "16px",
       }}
     >
-      <Typography variant="h4" sx={{ mb: 1 }} color="text.secondary">
-        {totalGames} partier spilt
+      <Typography variant="h5" sx={{ mb: 1 }} color="text.secondary">
+        {totalGames > 1
+          ? `${totalGames} partier spilt`
+          : `${totalGames} parti spilt`}
       </Typography>
 
       <Box sx={{ position: "relative", width: "100%", height: 24, mb: 0.5 }}>

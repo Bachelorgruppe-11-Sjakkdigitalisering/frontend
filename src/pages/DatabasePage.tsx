@@ -70,7 +70,7 @@ export default function DatabasePage() {
         flexDirection: "column",
         margin: "0 auto",
         gap: "0.5em",
-        maxWidth: "540px",
+        maxWidth: "800px",
       }}
     >
       {/* search field */}

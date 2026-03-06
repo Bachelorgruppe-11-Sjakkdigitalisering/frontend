@@ -15,6 +15,7 @@ import Topbar from "../components/topbar/Topbar";
 import { useParams } from "react-router";
 import { usePlayerGames, usePlayerProfile } from "../hooks/usePlayer";
 import type { ArchivedGamesResponse } from "../hooks/useDatabase";
+import PlayerStats from "../components/player-stats/PlayerStats";
 
 export default function PlayerPage() {
   const theme = useTheme();
@@ -47,7 +48,7 @@ export default function PlayerPage() {
         flexDirection: "column",
         margin: "0 auto",
         gap: "0.5em",
-        maxWidth: "540px",
+        maxWidth: "800px",
       }}
     >
       {/* top bar */}
@@ -62,11 +63,12 @@ export default function PlayerPage() {
         <div>
           <Avatar />
           <Typography variant="h3">{profileData.player.name}</Typography>
-          <Typography variant="body2" color="text.primary">
-            {profileData.stats.total_games} partier spilt -{" "}
-            {profileData.stats.wins}S / {profileData.stats.draws}R /{" "}
-            {profileData.stats.losses}T
-          </Typography>
+          <PlayerStats
+            wins={profileData.stats.wins}
+            draws={profileData.stats.draws}
+            losses={profileData.stats.losses}
+            totalGames={profileData.stats.total_games}
+          />
         </div>
       )}
 
