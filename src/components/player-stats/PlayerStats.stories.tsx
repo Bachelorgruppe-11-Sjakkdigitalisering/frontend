@@ -81,3 +81,12 @@ export const ExtremeWinAmount: Story = {
     totalGames: 202,
   },
 };
+
+export const NoGamesPlayed: Story = {
+  args: {
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    totalGames: 0,
+  },
+};

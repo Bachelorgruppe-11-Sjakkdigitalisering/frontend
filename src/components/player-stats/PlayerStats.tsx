@@ -39,96 +39,102 @@ export default function PlayerStats({
           : `${totalGames} parti spilt`}
       </Typography>
 
-      <Box sx={{ position: "relative", width: "100%", height: 24, mb: 0.5 }}>
-        {wins > 0 && (
-          <Typography
-            variant="body2"
-            color="success.main"
-            fontWeight="bold"
+      {totalGames > 0 && (
+        <>
+          <Box
+            sx={{ position: "relative", width: "100%", height: 24, mb: 0.5 }}
+          >
+            {wins > 0 && (
+              <Typography
+                variant="body2"
+                color="success.main"
+                fontWeight="bold"
+                sx={{
+                  position: "absolute",
+                  left: `${winStart}%`,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {winPct < 10 && winPct > 1
+                  ? `${wins}V`
+                  : winPct < 1
+                    ? ""
+                    : `${wins} Vunnet`}
+              </Typography>
+            )}
+
+            {draws > 0 && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                fontWeight="bold"
+                sx={{
+                  position: "absolute",
+                  left: `${drawStart}%`,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {drawPct < 10 && drawPct > 1
+                  ? `${draws}R`
+                  : drawPct < 1
+                    ? ""
+                    : `${draws} Remis`}
+              </Typography>
+            )}
+
+            {losses > 0 && (
+              <Typography
+                variant="body2"
+                color="error.main"
+                fontWeight="bold"
+                sx={{
+                  position: "absolute",
+                  right: 0,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {lossPct < 10 && lossPct > 1
+                  ? `${losses}T`
+                  : lossPct < 1
+                    ? ""
+                    : `${losses} Tapt`}
+              </Typography>
+            )}
+          </Box>
+
+          <Box
             sx={{
-              position: "absolute",
-              left: `${winStart}%`,
-              whiteSpace: "nowrap",
+              display: "flex",
+              height: 15,
+              borderRadius: 5,
+              overflow: "hidden",
+              bgcolor: "text.main",
             }}
           >
-            {winPct < 10 && winPct > 1
-              ? `${wins}V`
-              : winPct < 1
-                ? ""
-                : `${wins} Vunnet`}
-          </Typography>
-        )}
-
-        {draws > 0 && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            fontWeight="bold"
-            sx={{
-              position: "absolute",
-              left: `${drawStart}%`,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {drawPct < 10 && drawPct > 1
-              ? `${draws}R`
-              : drawPct < 1
-                ? ""
-                : `${draws} Remis`}
-          </Typography>
-        )}
-
-        {losses > 0 && (
-          <Typography
-            variant="body2"
-            color="error.main"
-            fontWeight="bold"
-            sx={{
-              position: "absolute",
-              right: 0,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {lossPct < 10 && lossPct > 1
-              ? `${losses}T`
-              : lossPct < 1
-                ? ""
-                : `${losses} Tapt`}
-          </Typography>
-        )}
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          height: 15,
-          borderRadius: 5,
-          overflow: "hidden",
-          bgcolor: "text.main",
-        }}
-      >
-        {/* wins */}
-        <Box
-          sx={{
-            width: `${winPct}%`,
-            bgcolor: "success.main",
-          }}
-        />
-        {/* draws */}
-        <Box
-          sx={{
-            width: `${drawPct}%`,
-            bgcolor: "text.secondary",
-          }}
-        />
-        {/* losses */}
-        <Box
-          sx={{
-            width: `${lossPct}%`,
-            bgcolor: "error.main",
-          }}
-        />
-      </Box>
+            {/* wins */}
+            <Box
+              sx={{
+                width: `${winPct}%`,
+                bgcolor: "success.main",
+              }}
+            />
+            {/* draws */}
+            <Box
+              sx={{
+                width: `${drawPct}%`,
+                bgcolor: "text.secondary",
+              }}
+            />
+            {/* losses */}
+            <Box
+              sx={{
+                width: `${lossPct}%`,
+                bgcolor: "error.main",
+              }}
+            />
+          </Box>
+        </>
+      )}
     </Box>
   );
 }
