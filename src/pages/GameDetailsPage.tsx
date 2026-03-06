@@ -58,38 +58,50 @@ export default function GameDetailsPage({
   const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
 
   // load PGN and parse the history once
-  const { history, startFen } = useMemo(() => {
+  const { history, startFen, hasPgnError } = useMemo(() => {
     // if data hasn't loaded yet, return empty defaults
     if (!gameData || !gameData.pgn) {
       return {
         history: [],
         startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        hasPgnError: false,
       };
     }
 
-    const game = new Chess();
-    game.loadPgn(gameData.pgn);
+    try {
+      const game = new Chess();
+      game.loadPgn(gameData.pgn);
 
-    // extract fen after every move
-    const historyWithFens: Array<Move> = [];
-    const tempGame = new Chess(); // start fresh
+      // extract fen after every move
+      const historyWithFens: Array<Move> = [];
+      const tempGame = new Chess(); // start fresh
 
-    // get the simple move list
-    const moves = game.history();
+      // get the simple move list
+      const moves = game.history();
 
-    moves.forEach((moveSan) => {
-      tempGame.move(moveSan);
-      historyWithFens.push({
-        san: moveSan,
-        fen: tempGame.fen(),
-        color: tempGame.turn() === "w" ? "b" : "w",
+      moves.forEach((moveSan) => {
+        tempGame.move(moveSan);
+        historyWithFens.push({
+          san: moveSan,
+          fen: tempGame.fen(),
+          color: tempGame.turn() === "w" ? "b" : "w",
+        });
       });
-    });
 
-    return {
-      history: historyWithFens,
-      startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    };
+      return {
+        history: historyWithFens,
+        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        hasPgnError: false,
+      };
+    } catch (error) {
+      console.error("Feil ved lasting av PGN eller ulovlig trekk:", error);
+      // return safe defaults and flag error
+      return {
+        history: [],
+        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        hasPgnError: true,
+      };
+    }
   }, [gameData]); // rerun if game data changes
 
   // determine the fen to display based on the index
@@ -145,6 +157,15 @@ export default function GameDetailsPage({
         route="/database"
       />
 
+      {/* if pgn error, show error message */}
+      {hasPgnError && (
+        <Alert severity="warning">
+          Vi oppdaget et ulovlig trekk eller en feil i PGN-filen for dette
+          partiet. <br />
+          Partiet kan ikke spilles av.
+        </Alert>
+      )}
+
       <div
         style={{
           display: "flex",
@@ -164,9 +185,9 @@ export default function GameDetailsPage({
           <GameView
             fen={currentFen}
             whitePlayerName={gameData.white_player_name}
-            whitePlayerTime="10:00"
+            whitePlayerTime={gameData.white_time}
             blackPlayerName={gameData.black_player_name}
-            blackPlayerTime="10:00"
+            blackPlayerTime={gameData.black_time}
             status={
               currentMoveIndex === -1
                 ? "PENDING"
