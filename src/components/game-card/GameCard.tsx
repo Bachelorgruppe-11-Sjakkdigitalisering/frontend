@@ -1,4 +1,4 @@
-import { EmojiEvents } from "@mui/icons-material";
+import { EmojiEvents, StarHalf } from "@mui/icons-material";
 import { Typography, useTheme } from "@mui/material";
 import "./GameCard.css";
 import { useNavigate } from "react-router";
@@ -6,14 +6,14 @@ import { useNavigate } from "react-router";
 type GameCardProps = {
   whiteName: string;
   blackName: string;
-  whiteWin: boolean;
+  result: "1-0" | "1/2-1/2" | "0-1";
   gameId: string;
 };
 
 export default function GameCard({
   whiteName,
   blackName,
-  whiteWin,
+  result,
   gameId,
 }: GameCardProps) {
   const theme = useTheme();
@@ -22,6 +22,10 @@ export default function GameCard({
   const handleClick = () => {
     navigate(`/archive/${gameId}`);
   };
+
+  const whiteWon = result === "1-0";
+  const blackWon = result === "0-1";
+  const isDraw = result === "1/2-1/2";
 
   return (
     <div
@@ -34,13 +38,17 @@ export default function GameCard({
       onClick={handleClick}
     >
       <div className="player-trophy-wrapper">
-        {whiteWin ? <EmojiEvents sx={{ fontSize: 40 }} /> : null}
+        {whiteWon ? <EmojiEvents sx={{ fontSize: 40 }} /> : null}
+        {isDraw ? <StarHalf sx={{ fontSize: 40 }} /> : null}
         <Typography variant="body1">{whiteName}</Typography>
       </div>
+
       <Typography variant="body1"> vs </Typography>
+
       <div className="player-trophy-wrapper">
         <Typography variant="body1">{blackName}</Typography>
-        {!whiteWin ? <EmojiEvents sx={{ fontSize: 40 }} /> : null}
+        {blackWon ? <EmojiEvents sx={{ fontSize: 40 }} /> : null}
+        {isDraw ? <StarHalf sx={{ fontSize: 40 }} /> : null}
       </div>
     </div>
   );

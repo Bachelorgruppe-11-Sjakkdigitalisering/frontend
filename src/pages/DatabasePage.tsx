@@ -76,16 +76,23 @@ export default function DatabasePage() {
       {/* search field */}
       <TextField
         variant="outlined"
-        label="Søk..."
-        placeholder="Søk..."
+        placeholder="Søk etter spillernavn..."
         type="search"
         aria-label="Søkefelt"
         fullWidth
         onChange={(e) => setInputValue(e.target.value)}
+        sx={{
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "100px",
+          },
+        }}
         slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
           input: {
             endAdornment: (
-              <InputAdornment position="start">
+              <InputAdornment position="end">
                 {/* show a spinner while fetching */}
                 {isLoading ? <CircularProgress /> : <Search />}
               </InputAdornment>
@@ -94,26 +101,48 @@ export default function DatabasePage() {
         }}
       />
 
-      {/* search type button group */}
-      <ToggleButtonGroup
-        color="primary"
-        aria-label="Type søk"
-        value={searchType}
-        exclusive
-        onChange={handleChange}
-        fullWidth={isDesktop ? false : true}
+      <div
+        style={
+          isDesktop
+            ? { display: "flex", justifyContent: "space-between", gap: "0.5em" }
+            : { display: "flex", flexDirection: "column", gap: "0.5em" }
+        }
       >
-        <ToggleButton value="games">Partisøk</ToggleButton>
-        <ToggleButton value="players">Spillersøk</ToggleButton>
-      </ToggleButtonGroup>
+        {/* search type button group */}
+        <ToggleButtonGroup
+          color="primary"
+          aria-label="Type søk"
+          value={searchType}
+          exclusive
+          onChange={handleChange}
+          fullWidth={true}
+        >
+          <ToggleButton
+            value="games"
+            sx={{
+              borderRadius: 100,
+            }}
+          >
+            Partisøk
+          </ToggleButton>
+          <ToggleButton
+            value="players"
+            sx={{
+              borderRadius: 100,
+            }}
+          >
+            Spillersøk
+          </ToggleButton>
+        </ToggleButtonGroup>
 
-      {/* filter dropdown button */}
-      <ButtonGroup variant="contained" disableElevation>
-        <Button>Filter</Button>
-        <Button>
-          <ArrowDropDown />
-        </Button>
-      </ButtonGroup>
+        {/* filter dropdown button */}
+        <ButtonGroup variant="contained" disableElevation>
+          <Button>Filter</Button>
+          <Button>
+            <ArrowDropDown />
+          </Button>
+        </ButtonGroup>
+      </div>
 
       {/* result text */}
       <Typography variant="subtitle1">
@@ -152,7 +181,7 @@ export default function DatabasePage() {
               key={game.id}
               whiteName={game.white_player_name}
               blackName={game.black_player_name}
-              whiteWin={game.result === "1-0"} // TODO: finn hvordan håndtere remis
+              result={game.result}
               gameId={game.id.toString()}
             />
           ))}
