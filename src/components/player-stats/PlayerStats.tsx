@@ -21,7 +21,6 @@ export default function PlayerStats({
   // calculate where each segment begins
   const winStart = 0;
   const drawStart = winPct;
-  const lossStart = winPct + drawPct;
 
   return (
     <Box
@@ -49,7 +48,11 @@ export default function PlayerStats({
               whiteSpace: "nowrap",
             }}
           >
-            {wins} Vunnet
+            {winPct < 10 && winPct > 1
+              ? `${wins}V`
+              : winPct < 1
+                ? ""
+                : `${wins} Vunnet`}
           </Typography>
         )}
 
@@ -64,7 +67,11 @@ export default function PlayerStats({
               whiteSpace: "nowrap",
             }}
           >
-            {drawPct < 5 ? `${draws}R` : `${draws} Remis`}
+            {drawPct < 10 && drawPct > 1
+              ? `${draws}R`
+              : drawPct < 1
+                ? ""
+                : `${draws} Remis`}
           </Typography>
         )}
 
@@ -75,11 +82,15 @@ export default function PlayerStats({
             fontWeight="bold"
             sx={{
               position: "absolute",
-              left: `${lossStart}%`,
+              right: 0,
               whiteSpace: "nowrap",
             }}
           >
-            {losses} Tapt
+            {lossPct < 10 && lossPct > 1
+              ? `${losses}T`
+              : lossPct < 1
+                ? ""
+                : `${losses} Tapt`}
           </Typography>
         )}
       </Box>
