@@ -1,11 +1,16 @@
 import {
+  Alert,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import GamePreview from "../components/chessboards/GamePreview";
 import { useState } from "react";
+import useAllLiveGames, {
+  type AllLiveGamesResponse,
+} from "../hooks/useAllLiveGames";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -19,6 +24,12 @@ export default function HomePage() {
   ) => {
     setGameType(newGameType);
   };
+
+  const {
+    data: liveGames,
+    isLoading: liveGamesLoading,
+    isError: liveGamesError,
+  } = useAllLiveGames();
 
   return (
     <div
@@ -69,42 +80,48 @@ export default function HomePage() {
                 display: "flex",
                 flexWrap: "wrap",
                 cursor: "pointer",
+                width: "100%",
               }
             : {}
         }
       >
-        <GamePreview
-          gameId="1"
-          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-          player1Name="Herman Lundby-Holen"
-          player1Time="00:23"
-          player2Name="Dennis Johansen"
-          player2Time="00:14"
-        />
-        <GamePreview
-          gameId="1"
-          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-          player1Name="Herman Lundby-Holen"
-          player1Time="00:23"
-          player2Name="Dennis Johansen"
-          player2Time="00:14"
-        />
-        <GamePreview
-          gameId="1"
-          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-          player1Name="Herman Lundby-Holen"
-          player1Time="00:23"
-          player2Name="Dennis Johansen"
-          player2Time="00:14"
-        />
-        <GamePreview
-          gameId="1"
-          fen="rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14"
-          player1Name="Herman Lundby-Holen"
-          player1Time="00:23"
-          player2Name="Dennis Johansen"
-          player2Time="00:14"
-        />
+        {liveGamesLoading && (
+          <GamePreview
+            gameId=""
+            fen=""
+            blackPlayerName=""
+            blackPlayerTime=""
+            whitePlayerName=""
+            whitePlayerTime=""
+            loading={true}
+          />
+        )}
+
+        {liveGamesError && (
+          <Alert severity="warning">
+            Klarte ikke hente partier. Prøv igjen senere.
+          </Alert>
+        )}
+
+        {liveGames?.length === 0 ? (
+          // <Typography variant="body2">
+          //   Det finnes for øyeblikket ingen aktive partier.
+          // </Typography>
+          <Alert severity="info">
+            Det finnes for øyeblikket ingen pågående partier.
+          </Alert>
+        ) : (
+          liveGames?.map((game: AllLiveGamesResponse) => (
+            <GamePreview
+              gameId={game.board_id.toString()}
+              fen={game.fen}
+              blackPlayerName={game.black_player_name}
+              whitePlayerName={game.white_player_name}
+              blackPlayerTime={game.black_time}
+              whitePlayerTime={game.white_time}
+            />
+          ))
+        )}
       </div>
     </div>
   );

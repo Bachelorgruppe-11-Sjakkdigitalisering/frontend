@@ -8,10 +8,10 @@ type GamePreviewType = {
   loading?: boolean;
   width?: number;
   fen: string;
-  player1Name: string;
-  player1Time: string;
-  player2Name: string;
-  player2Time: string;
+  blackPlayerName: string;
+  blackPlayerTime: string;
+  whitePlayerName: string;
+  whitePlayerTime: string;
 };
 
 export default function GamePreview({
@@ -19,10 +19,10 @@ export default function GamePreview({
   loading = false,
   width = 180,
   fen,
-  player1Name,
-  player1Time,
-  player2Name,
-  player2Time,
+  blackPlayerName: player1Name,
+  blackPlayerTime: player1Time,
+  whitePlayerName: player2Name,
+  whitePlayerTime: player2Time,
 }: GamePreviewType) {
   const navigate = useNavigate();
 
