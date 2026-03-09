@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Tooltip, Typography } from "@mui/material";
 import "./Topbar.css";
 import { ArrowBack } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router";
@@ -23,10 +23,25 @@ export default function Topbar({ title, route }: TopbarProps) {
         variant="contained"
         startIcon={<ArrowBack />}
         onClick={() => navigate(route)}
+        sx={{
+          textWrap: "nowrap",
+          minWidth: "10em",
+        }}
       >
         Gå tilbake
       </Button>
-      <Typography variant="subtitle2">{title}</Typography>
+      <Tooltip title={title}>
+        <Typography
+          variant="subtitle2"
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            textWrap: "nowrap",
+          }}
+        >
+          {title}
+        </Typography>
+      </Tooltip>
     </div>
   );
 }
