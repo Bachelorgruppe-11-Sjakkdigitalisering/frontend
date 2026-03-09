@@ -14,7 +14,7 @@ export const WhitePlayerWin: Story = {
   args: {
     whiteName: "Herman Lundby-Holen",
     blackName: "Dennis Johansen",
-    whiteWin: true,
+    result: "1-0",
     gameId: "1",
   },
 };
@@ -23,7 +23,16 @@ export const BlackPlayerWin: Story = {
   args: {
     whiteName: "Herman Lundby-Holen",
     blackName: "Dennis Johansen",
-    whiteWin: false,
+    result: "0-1",
+    gameId: "1",
+  },
+};
+
+export const IsDraw: Story = {
+  args: {
+    whiteName: "Herman Lundby-Holen",
+    blackName: "Dennis Johansen",
+    result: "1/2-1/2",
     gameId: "1",
   },
 };
