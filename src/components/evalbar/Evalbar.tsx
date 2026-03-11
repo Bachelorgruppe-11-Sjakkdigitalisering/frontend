@@ -1,10 +1,33 @@
 import { Slider, Typography, useTheme } from "@mui/material";
 
+/**
+ * Defines the properties for the {@link Evalbar} component.
+ */
 type EvalbarProps = {
+  /**
+   * The calculated win chances in the game:
+   * - If game is at 50 win chance, the game is totally even and headed for a draw.
+   * - If a game is at 0 win chance, the black player has mate on the board.
+   * - If a game is at 100 win chance, the white player has mate on the board.
+   */
   winChance: number;
+  /** The eval label to display (e.g., "1.7", "-3.4") */
   evalLabel: number;
 };
 
+/**
+ * A UI component that displays the evaluation of the current position on the chess board.
+ * * It renders a slider that displays the position of the win chance and with the
+ * label displayed at the top.
+ *
+ * @example
+ * ```ts
+ * <Evalbar
+ *  winChance={54}
+ *  evalLabel={0.6}
+ * />
+ * ```
+ */
 export default function Evalbar({ winChance, evalLabel }: EvalbarProps) {
   const theme = useTheme();
 
