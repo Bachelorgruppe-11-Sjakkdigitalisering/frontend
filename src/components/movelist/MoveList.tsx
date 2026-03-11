@@ -1,15 +1,34 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
 
+/**
+ * Represents a single executed chess move.
+ */
 export type Move = {
+  /** Standard Algebraic Notation (e.g., "Nf3", "e4", "O-O") */
   san: string;
+  /** Forsynth-Edwards Notation string representing the board state after this move. */
   fen: string;
+  /**
+   * The color of the piece that made the move:
+   * - "w" for white
+   * - "b" for black
+   */
   color: "w" | "b";
 };
 
+/**
+ * Properties for the {@link MoveList} component.
+ */
 type MoveListProps = {
+  /** An array of all moves made in the game so far. */
   history: Move[];
-  currentMoveIndex: number; // -1 means start of game
+  /**
+   * The index of the currently viewed move in the history array.
+   * A value of `-1` indicates the starting position (no moves played or viewed).
+   */
+  currentMoveIndex: number;
+  /** Callback fired when a user clicks a specific move to review that board state. */
   onMoveClick: (index: number) => void;
 };
 
@@ -19,6 +38,11 @@ type MoveButtonProps = {
   onClick: () => void;
 };
 
+/**
+ * A scrollable list displaying the history of chess moves in standard paired notation.
+ * * Automatically groups a `history` array into White/Black turn pairs.
+ * * Automatically scrolls the active move into view when `currentMoveIndex` changes.
+ */
 export default function MoveList({
   history,
   currentMoveIndex,
@@ -27,7 +51,7 @@ export default function MoveList({
   const theme = useTheme();
   const activeRef = useRef<HTMLButtonElement>(null);
 
-  // auto-scroll to the active move
+  // Make sure the currently active move is always visible in the scrllable area
   useEffect(() => {
     if (activeRef.current) {
       activeRef.current.scrollIntoView({
@@ -37,13 +61,13 @@ export default function MoveList({
     }
   }, [currentMoveIndex]);
 
-  // group moves into pairs
+  // Transform the history array into turn pairs (e.g., [1. e4 e5], [2. Nf3 Nc6])
   const movePairs = [];
   for (let i = 0; i < history.length; i += 2) {
     movePairs.push({
       moveNumber: Math.floor(i / 2) + 1,
       white: history[i],
-      black: history[i + 1] || null, // black might not have moved yet
+      black: history[i + 1] || null, // Handle incomplete turns (White moved, Black hasn't)
       whiteIndex: i,
       blackIndex: i + 1,
     });
@@ -96,6 +120,10 @@ export default function MoveList({
   );
 }
 
+/**
+ * Internal helper component representing a single clickable move.
+ * Uses `forwardRef` to allow the parent `MoveList` to manage scroll position.
+ */
 const MoveButton = forwardRef<HTMLButtonElement, MoveButtonProps>(
   ({ move, isActive, onClick }, ref) => {
     const theme = useTheme();
