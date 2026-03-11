@@ -28,13 +28,15 @@ type GameCardProps = {
  * based on the games's result. It is fully interactive and will navigate the user
  * to the detailed archive view of the game upon clicking.
  *
- * @example
+ * @example Usage of component:
+ * ```ts
  * <GameCard
  *  whiteName="Magnus Carlsen"
  *  blackName="Hikaru Nakamura"
  *  result="1/2-1/2"
  *  gameId="12345"
  * />
+ * ```
  */
 export default function GameCard({
   whiteName,
