@@ -1,12 +1,35 @@
 import { Box, Typography } from "@mui/material";
 
+/**
+ * Defines the properties for the {@link PlayerStats} component.
+ */
 type PlayerStatsProps = {
+  /** The amount of wins for a player. */
   wins: number;
+  /** The amount of draws for a player. */
   draws: number;
+  /** The amount of losses for a player. */
   losses: number;
+  /** The total amount of games the player has played. */
   totalGames: number;
 };
 
+/**
+ * A UI card component that displays a summary of the player's stats.
+ * * It calculates the percentage of each stat and displays them in a bar
+ * together with percentage of wins, draws and losses. It also displayes the
+ * total amount of games.
+ *
+ * @example Usage of component:
+ * ```ts
+ * <PlayerStats
+ *  wins={10}
+ *  draws={20}
+ *  losses={5}
+ *  totalGames={35}
+ * />
+ * ```
+ */
 export default function PlayerStats({
   wins,
   draws,
