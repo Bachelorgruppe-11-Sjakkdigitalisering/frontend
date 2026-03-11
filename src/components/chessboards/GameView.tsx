@@ -6,18 +6,46 @@ import { type StockfishResponse } from "../../hooks/useStockfish";
 import { BLACK, Chess, WHITE } from "chess.js";
 import { useNavigate } from "react-router";
 
+/**
+ * Defines the properties for the {@link GameView} component.
+ */
 type GameViewProps = {
+  /** The standard Forsynth-Edwards Notation string representing the current board state. */
   fen: string;
+  /** The display name of the player with the white pieces. */
   whitePlayerName: string;
+  /** The formatted time string (e.g., "10:00", "05:23") for the player with the white pieces. */
   whitePlayerTime: string;
+  /** The unique UUID of the player with the white pieces from the database. */
   whitePlayerId: string;
+  /** The display name of the player with the black pieces. */
   blackPlayerName: string;
+  /** The formatted time string (e.g., "10:00", "05:23") for the player with the black pieces. */
   blackPlayerTime: string;
+  /** The unique UUID of the player with the black pieces from the database. */
   blackPlayerId: string;
+  /**
+   * The current phase or turn state of the game. Used to highlight active timers.
+   * Must be one of the following:
+   * - "WHITE_TO_MOVE"
+   * - "BLACK_TO_MOVE"
+   * - "PENDING"
+   * - "FINISHED"
+   */
   status: "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED";
+  /** Optional evaluation from the Stockfish engine. */
   stockfishData?: StockfishResponse | null;
 };
 
+/**
+ * A component that renders the main chess viewing area, including the board,
+ * player profiles, timers, and an engine evaluation bar.
+ *
+ * **Logic:**
+ * This component parses the `fen` locally using `chess.js` to immediately detect terminal
+ * states (checkmate, stalemate). This prevents the UI from waiting on asynchrounous data
+ * to render game-over evaluations.
+ */
 export default function GameView({
   fen,
   whitePlayerName,
