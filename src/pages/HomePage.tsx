@@ -45,10 +45,17 @@ export default function HomePage() {
 
   return (
     <div
+      style={
+        isDesktop
+          ? {
+              maxWidth: "800px",
+              margin: "0 auto",
+            }
+          : {}
+      }
       className={
         isDesktop ? "desktop-margins centered" : "mobile-margins centered"
       }
-      style={isDesktop ? { maxWidth: "800px" } : {}}
     >
       {/* logo */}
       <div>
