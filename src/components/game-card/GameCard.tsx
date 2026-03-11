@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
  * Defines the properties for the {@link GameCard} component.
  */
 type GameCardProps = {
-  /** The display name of the player with the white pieces */
+  /** The display name of the player with the white pieces. */
   whiteName: string;
   /** The display name of the player with the black pieces. */
   blackName: string;

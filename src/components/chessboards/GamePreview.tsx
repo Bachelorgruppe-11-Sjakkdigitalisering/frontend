@@ -3,17 +3,32 @@ import "./GamePreview.css";
 import { Skeleton } from "@mui/material";
 import { useNavigate } from "react-router";
 
+/**
+ * Defines the properties for the {@link GamePreview} component.
+ */
 type GamePreviewType = {
+  /** The unique UUID of the game in the database. */
   gameId: string;
+  /** Optional loading boolean to tell the component if we are loading or not. */
   loading?: boolean;
+  /** Optional width number to tell the component how wide it should be */
   width?: number;
+  /** The standard Forsynth-Edwards Notation string representing the current board state. */
   fen: string;
+  /** The display name of the player with the black pieces. */
   blackPlayerName: string;
+  /** The formatted time string (e.g., "10:00", "05:23") for the player with the black pieces. */
   blackPlayerTime: string;
+  /** The display name of the player with the white pieces. */
   whitePlayerName: string;
+  /** The formatted time string (e.g., "10:00", "05:23") for the player with the white pieces. */
   whitePlayerTime: string;
 };
 
+/**
+ * A UI component that displays a preview of a live chess game.
+ * It displays the names of the two players along with their time left, and the current board state.
+ */
 export default function GamePreview({
   gameId,
   loading = false,
