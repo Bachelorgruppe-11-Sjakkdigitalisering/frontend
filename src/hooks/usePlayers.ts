@@ -1,11 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchPlayers from "../api/players";
 
+// TODO: dokumenter denne typen og flytt til egen /types folder
 export type PlayerResponse = {
   id: number;
   name: string;
 };
 
+/**
+ * A custom React Query hook that manages fetching and caching the the complete players list.
+ *
+ * **Caching and refetch strategy:**
+ * - **Query key:** Automatically triggers a refetch if the `playerName` changes.
+ * - **Stale time:** Data is considered fresh for 1 minute to prevent spamming the backend if the user navigates away and immidiately back.
+ * - **UX handling:** Uses `placeholderData` to retain the previously fetched list on screen while fetching new search results.
+ * This prevents the UI from aggressively flashing a loading spinner on every update.
+ *
+ * @param playerName The search query to filter the database.
+ * @returns The standard React Query result object containing `data`, `isLoading`, `isError`, etc.
+ */
 export function usePlayers(playerName: string) {
   return useQuery({
     queryKey: ["players", playerName], // this makes it so we automatically refetch whenever playerName changes
