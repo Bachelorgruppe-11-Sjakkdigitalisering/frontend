@@ -1,4 +1,12 @@
+/**
+ * Fetches a list of all players from the backend, optionally filtered by a player's name.
+ *
+ * @param playerName The name to search for. If left blank, fetches all players in the database. Special characters are safely URI-encoded.
+ * @returns A promise resolving to an array of players.
+ * @throws {Error} Throws an error if the backend returns a non-2xx status code.
+ */
 export default async function fetchPlayers(playerName: string) {
+  // TODO: specify return type
   const queryParam = playerName
     ? `?search=${encodeURIComponent(playerName)}`
     : "";
@@ -8,7 +16,7 @@ export default async function fetchPlayers(playerName: string) {
   );
 
   if (!response.ok) {
-    throw new Error("Could not players."); // TODO: bedre håndtering her
+    throw new Error(`Could not fetch players: ${response.statusText}`);
   }
 
   return response.json();
