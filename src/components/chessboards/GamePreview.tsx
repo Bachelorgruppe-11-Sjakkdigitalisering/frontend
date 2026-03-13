@@ -51,6 +51,7 @@ export default function GamePreview({
     },
     allowDragging: false,
     allowDrawingArrows: false,
+    showNotation: false,
   };
 
   const handleClick = () => {
