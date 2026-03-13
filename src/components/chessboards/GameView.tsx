@@ -6,6 +6,9 @@ import { type StockfishResponse } from "../../hooks/useStockfish";
 import { BLACK, Chess, WHITE } from "chess.js";
 import { useNavigate } from "react-router";
 
+const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
+const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
 /**
  * Defines the properties for the {@link GameView} component.
  */
@@ -93,10 +96,12 @@ export default function GameView({
   const options: ChessboardOptions = {
     position: fen,
     boardStyle: { borderRadius: "16px" },
+    showNotation: false,
   };
 
   return (
     <div className="game-view">
+      {/* Black player info */}
       <div className="player-info">
         <div
           className="flex-row"
@@ -114,13 +119,59 @@ export default function GameView({
       </div>
 
       <div className="board-eval">
+        {/* Eval bar */}
         <Evalbar
           winChance={evalbarProps.height}
           evalLabel={evalbarProps.label}
         />
-        <Chessboard options={options} />
+
+        <div
+          style={{ display: "flex", flexDirection: "column", width: "100%" }}
+        >
+          <div style={{ display: "flex", flex: 1 }}>
+            {/* Custom outside notation (Y-axis) */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                paddingRight: ".5em",
+              }}
+            >
+              {RANKS.map((rank) => (
+                <div key={rank}>{rank}</div>
+              ))}
+            </div>
+
+            {/* Chessboard */}
+            <div style={{ flex: 1 }}>
+              <Chessboard options={options} />
+            </div>
+          </div>
+
+          {/* Custom outside notation (X-axis) */}
+          <div
+            style={{
+              display: "flex",
+              paddingLeft: "1em",
+            }}
+          >
+            {FILES.map((file) => (
+              <div
+                key={file}
+                style={{
+                  flex: 1,
+                  textAlign: "center",
+                }}
+              >
+                {file}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
+      {/* White player info */}
       <div className="player-info">
         <div
           className="flex-row"
