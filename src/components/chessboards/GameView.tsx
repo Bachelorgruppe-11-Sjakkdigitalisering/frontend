@@ -38,6 +38,8 @@ type GameViewProps = {
   status: "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED";
   /** Optional evaluation from the Stockfish engine. */
   stockfishData?: StockfishResponse | null;
+  /** Optional method to allow dragging and dropping pieces on the board. */
+  onPieceDrop?: ChessboardOptions["onPieceDrop"];
 };
 
 /**
@@ -59,6 +61,7 @@ export default function GameView({
   blackPlayerId,
   status,
   stockfishData,
+  onPieceDrop,
 }: GameViewProps) {
   const navigate = useNavigate();
 
@@ -97,6 +100,7 @@ export default function GameView({
     position: fen,
     boardStyle: { borderRadius: "16px" },
     showNotation: false,
+    onPieceDrop: onPieceDrop,
   };
 
   return (
