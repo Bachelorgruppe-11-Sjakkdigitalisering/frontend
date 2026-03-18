@@ -23,12 +23,15 @@ import { useParams } from "react-router";
 import useGame from "../hooks/useGame";
 import useLiveGame from "../hooks/useLiveGame";
 import "../main.css";
+import type { PieceDropHandlerArgs } from "react-chessboard";
 
 type Move = {
   san: string;
   fen: string;
   color: "w" | "b";
 };
+
+const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 export default function GameDetailsPage({
   isLive = false,
@@ -54,32 +57,23 @@ export default function GameDetailsPage({
   const isGameLoading = isLive ? isLiveLoading : isArchiveLoading;
   const isGameError = isLive ? isLiveError : isArchiveError;
 
-  // state to track the current move index (-1 = start position)
-  const [currentMoveIndex, setCurrentMoveIndex] = useState(-1);
+  const [isExploring, setIsExploring] = useState(false); // tracks if the user is exploring a position
+  const [customHistory, setCustomHistory] = useState<Move[]>([]);
+  const [manualMoveIndex, setManualMoveIndex] = useState<number | null>(
+    isLive ? null : 0,
+  );
 
-  // load PGN and parse the history once
-  const { history, startFen, hasPgnError } = useMemo(() => {
-    // if data hasn't loaded yet, return empty defaults
-    if (!gameData || !gameData.pgn) {
-      return {
-        history: [],
-        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-        hasPgnError: false,
-      };
-    }
+  const { officialHistory, hasPgnError } = useMemo(() => {
+    if (!gameData || !gameData.pgn)
+      return { officialHistory: [], hasPgnError: false };
 
     try {
       const game = new Chess();
       game.loadPgn(gameData.pgn);
-
-      // extract fen after every move
       const historyWithFens: Array<Move> = [];
-      const tempGame = new Chess(); // start fresh
+      const tempGame = new Chess();
 
-      // get the simple move list
-      const moves = game.history();
-
-      moves.forEach((moveSan) => {
+      game.history().forEach((moveSan) => {
         tempGame.move(moveSan);
         historyWithFens.push({
           san: moveSan,
@@ -88,35 +82,83 @@ export default function GameDetailsPage({
         });
       });
 
-      return {
-        history: historyWithFens,
-        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-        hasPgnError: false,
-      };
+      return { officialHistory: historyWithFens, hasPgnError: false };
     } catch (error) {
-      console.error("Feil ved lasting av PGN eller ulovlig trekk:", error);
-      // return safe defaults and flag error
-      return {
-        history: [],
-        startFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-        hasPgnError: true,
-      };
+      console.error("Feil ved lasting av PGN:", error);
+      return { officialHistory: [], hasPgnError: true };
     }
-  }, [gameData]); // rerun if game data changes
+  }, [gameData]);
 
-  // determine the fen to display based on the index
+  const activeHistory = isExploring ? customHistory : officialHistory;
+  let currentMoveIndex: number;
+
+  if (isExploring) {
+    currentMoveIndex = manualMoveIndex ?? customHistory.length - 1;
+  } else if (manualMoveIndex !== null) {
+    currentMoveIndex = manualMoveIndex;
+  } else {
+    currentMoveIndex =
+      officialHistory.length > 0 ? officialHistory.length - 1 : -1;
+  }
+
   const currentFen =
-    currentMoveIndex === -1 ? startFen : history[currentMoveIndex].fen;
-  const currentTurn = currentFen.split(" ")[1]; // "w" or "b"
+    currentMoveIndex === -1
+      ? DEFAULT_FEN
+      : activeHistory[currentMoveIndex]?.fen || DEFAULT_FEN;
+  const currentTurn = currentFen.split(" ")[1];
+
+  const handlePieceDrop = ({
+    sourceSquare,
+    targetSquare,
+  }: PieceDropHandlerArgs) => {
+    if (!sourceSquare || !targetSquare) return false;
+
+    try {
+      const game = new Chess(currentFen);
+      const move = game.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: "q",
+      });
+
+      if (move) {
+        const newHistory = activeHistory.slice(0, currentMoveIndex + 1);
+        newHistory.push({ san: move.san, fen: game.fen(), color: move.color });
+
+        setCustomHistory(newHistory);
+        setIsExploring(true);
+        setManualMoveIndex(newHistory.length - 1);
+        return true;
+      }
+    } catch (error) {
+      console.error("Kunne ikke gjøre trekk:", error);
+      return false;
+    }
+    return false;
+  };
+
+  const handleReturnToGame = () => {
+    setIsExploring(false);
+    setManualMoveIndex(isLive ? null : officialHistory.length - 1);
+  };
 
   // handle move and button clicks
   const handleNext = () =>
-    setCurrentMoveIndex((prev) => Math.min(prev + 1, history.length - 1));
+    setManualMoveIndex(
+      Math.min(currentMoveIndex + 1, activeHistory.length - 1),
+    );
   const handlePrev = () =>
-    setCurrentMoveIndex((prev) => Math.max(prev - 1, -1));
-  const handleStart = () => setCurrentMoveIndex(-1);
-  const handleEnd = () => setCurrentMoveIndex(history.length - 1);
-  const handleMoveClick = (index: number) => setCurrentMoveIndex(index);
+    setManualMoveIndex(Math.max(currentMoveIndex - 1, -1));
+  const handleStart = () => setManualMoveIndex(-1);
+  const handleEnd = () => setManualMoveIndex(activeHistory.length - 1);
+  const handleMoveClick = (index: number) => {
+    // If they click the very last move of a live game, re-enable auto-sync
+    if (isLive && !isExploring && index === officialHistory.length - 1) {
+      setManualMoveIndex(null);
+    } else {
+      setManualMoveIndex(index);
+    }
+  };
 
   // fetch stockfish data
   const { data: stockfishData, isLoading } = useStockfish(currentFen);
@@ -182,6 +224,24 @@ export default function GameDetailsPage({
             height: "100%",
           }}
         >
+          {/* banner and button if user is exploring on their own */}
+          {isExploring && (
+            <Alert
+              severity="info"
+              action={
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={handleReturnToGame}
+                >
+                  Tilbake til partiet
+                </Button>
+              }
+            >
+              Du analyserer en egen variant.
+            </Alert>
+          )}
+
           <GameView
             fen={currentFen}
             whitePlayerName={gameData.white_player_name}
@@ -198,6 +258,7 @@ export default function GameDetailsPage({
                   : "BLACK_TO_MOVE"
             }
             stockfishData={stockfishData}
+            onPieceDrop={handlePieceDrop}
           />
         </div>
 
@@ -285,7 +346,7 @@ export default function GameDetailsPage({
             }}
           >
             <MoveList
-              history={history}
+              history={activeHistory}
               currentMoveIndex={currentMoveIndex}
               onMoveClick={handleMoveClick}
             />
