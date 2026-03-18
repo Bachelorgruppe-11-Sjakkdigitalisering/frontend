@@ -221,7 +221,9 @@ export default function GameDetailsPage({
         <div
           style={{
             flex: isDesktop ? "2" : "none",
+            alignContent: "center",
             height: "100%",
+            position: "relative",
           }}
         >
           {/* banner and button if user is exploring on their own */}
@@ -229,14 +231,19 @@ export default function GameDetailsPage({
             <Alert
               severity="info"
               action={
-                <Button
-                  color="inherit"
-                  size="small"
-                  onClick={handleReturnToGame}
-                >
+                <Button size="small" onClick={handleReturnToGame}>
                   Tilbake til partiet
                 </Button>
               }
+              sx={{
+                alignItems: "center",
+                position: isDesktop ? "absolute" : "relative",
+                top: isDesktop ? 0 : "auto",
+                left: isDesktop ? 0 : "auto",
+                right: isDesktop ? 0 : "auto",
+                zIndex: isDesktop ? 10 : "auto",
+                mb: isDesktop ? 0 : ".5em",
+              }}
             >
               Du analyserer en egen variant.
             </Alert>
