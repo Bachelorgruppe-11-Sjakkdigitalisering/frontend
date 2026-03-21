@@ -318,6 +318,19 @@ export default function GameDetailsPage({
             </Button>
           </ButtonGroup>
 
+          {/* FEN and PGN copy buttons */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              order: "5",
+            }}
+          >
+            <Button variant="contained">Kopier FEN</Button>
+            <Button variant="contained">Kopier PGN</Button>
+          </div>
+
           <div
             style={{
               padding: "0.5rem 1rem",
