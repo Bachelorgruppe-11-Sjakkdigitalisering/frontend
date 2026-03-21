@@ -160,6 +160,20 @@ export default function GameDetailsPage({
     }
   };
 
+  /**
+   * Copies the FEN string of the current position to the user's clipboard.
+   */
+  const handleCopyFen = () => {
+    console.log("Kopiert FEN");
+  };
+
+  /**
+   * Copies the PGN of the game to the user's clipboard.
+   */
+  const handleCopyPgn = () => {
+    navigator.clipboard.writeText(gameData.pgn);
+  };
+
   // fetch stockfish data
   const { data: stockfishData, isLoading } = useStockfish(currentFen);
 
@@ -327,8 +341,12 @@ export default function GameDetailsPage({
               order: "5",
             }}
           >
-            <Button variant="contained">Kopier FEN</Button>
-            <Button variant="contained">Kopier PGN</Button>
+            <Button variant="contained" onClick={handleCopyFen}>
+              Kopier FEN
+            </Button>
+            <Button variant="contained" onClick={handleCopyPgn}>
+              Kopier PGN
+            </Button>
           </div>
 
           <div
