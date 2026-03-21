@@ -164,7 +164,7 @@ export default function GameDetailsPage({
    * Copies the FEN string of the current position to the user's clipboard.
    */
   const handleCopyFen = () => {
-    console.log("Kopiert FEN");
+    navigator.clipboard.writeText(currentFen);
   };
 
   /**
