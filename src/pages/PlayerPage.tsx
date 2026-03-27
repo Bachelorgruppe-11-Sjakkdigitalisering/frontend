@@ -16,6 +16,7 @@ import { useParams } from "react-router";
 import { usePlayerGames, usePlayerProfile } from "../hooks/usePlayer";
 import type { ArchivedGamesResponse } from "../hooks/useDatabase";
 import PlayerStats from "../components/player-stats/PlayerStats";
+import { useState } from "react";
 
 export default function PlayerPage() {
   const theme = useTheme();
@@ -39,11 +40,17 @@ export default function PlayerPage() {
   const isLoading = profileLoading || gamesLoading;
   const isError = profileError || gamesError;
 
+  const [copyPlayerIdSuccess, setCopyPlayerIdSuccess] = useState(false);
+
   /**
    * Copies the player's id to the clipboard.
    */
   const handleCopyPlayerId = () => {
     navigator.clipboard.writeText(`${profileData.player.id}`);
+    setCopyPlayerIdSuccess(true);
+    setTimeout(() => {
+      setCopyPlayerIdSuccess(false);
+    }, 5000);
   };
 
   return (
@@ -70,13 +77,26 @@ export default function PlayerPage() {
           <Avatar />
           <Typography variant="h3">{profileData.player.name}</Typography>
           {/* player id with button to copy */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5em",
+              flexWrap: "wrap",
+            }}
+          >
             <Typography variant="subtitle1">
               Spiller ID: #{profileData.player.id}
             </Typography>
             <Button onClick={handleCopyPlayerId}>
               <CopyAll />
             </Button>
+            {copyPlayerIdSuccess && (
+              <Alert severity="success">
+                Spiller ID: {profileData.player.id}, ble kopiert til
+                utklippstavlen!
+              </Alert>
+            )}
           </div>
           <PlayerStats
             wins={profileData.stats.wins}
