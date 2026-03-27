@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import "../main.css";
-import { ArrowDropDown } from "@mui/icons-material";
+import { ArrowDropDown, CopyAll } from "@mui/icons-material";
 import GameCard from "../components/game-card/GameCard";
 import Topbar from "../components/topbar/Topbar";
 import { useParams } from "react-router";
@@ -39,6 +39,13 @@ export default function PlayerPage() {
   const isLoading = profileLoading || gamesLoading;
   const isError = profileError || gamesError;
 
+  /**
+   * Copies the player's id to the clipboard.
+   */
+  const handleCopyPlayerId = () => {
+    navigator.clipboard.writeText(`${profileData.player.id}`);
+  };
+
   return (
     <div
       className={isDesktop ? "desktop-margins" : "mobile-margins"}
@@ -62,6 +69,15 @@ export default function PlayerPage() {
         <div>
           <Avatar />
           <Typography variant="h3">{profileData.player.name}</Typography>
+          {/* player id with button to copy */}
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5em" }}>
+            <Typography variant="subtitle1">
+              Spiller ID: #{profileData.player.id}
+            </Typography>
+            <Button onClick={handleCopyPlayerId}>
+              <CopyAll />
+            </Button>
+          </div>
           <PlayerStats
             wins={profileData.stats.wins}
             draws={profileData.stats.draws}
