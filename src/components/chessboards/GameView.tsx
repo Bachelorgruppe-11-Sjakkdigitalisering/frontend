@@ -112,7 +112,7 @@ export default function GameView({
           onClick={() => navigate(`/player/${blackPlayerId}`)}
           style={{ cursor: "pointer" }}
         >
-          <Avatar />
+          <Avatar sx={{ width: "2rem", height: "2rem" }} />
           <Typography variant="subtitle2">{blackPlayerName}</Typography>
         </div>
         <Typography
@@ -182,7 +182,7 @@ export default function GameView({
           onClick={() => navigate(`/player/${whitePlayerId}`)}
           style={{ cursor: "pointer" }}
         >
-          <Avatar />
+          <Avatar sx={{ width: "2rem", height: "2rem" }} />
           <Typography variant="subtitle2">{whitePlayerName}</Typography>
         </div>
         <Typography

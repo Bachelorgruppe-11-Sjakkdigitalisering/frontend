@@ -243,11 +243,17 @@ export default function GameDetailsPage({
                 <Alert
                   severity="info"
                   action={
-                    <Button size="small" onClick={handleReturnToGame}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      sx={{ p: "0.5em", textWrap: "nowrap" }}
+                      onClick={handleReturnToGame}
+                    >
                       Tilbake til partiet
                     </Button>
                   }
                   sx={{
+                    py: "0.5em",
                     alignItems: "center",
                     mb: "0.5em",
                   }}
@@ -292,24 +298,24 @@ export default function GameDetailsPage({
                 aria-label="Buttons for going backwards and forwards in the game"
                 fullWidth
                 sx={{
-                  order: { xs: "1", md: "3" },
+                  order: { xs: "0", md: "3" },
                   flexShrink: 0,
                 }}
               >
                 <Button onClick={handleStart} sx={{ bgcolor: "primary.dark" }}>
-                  <FastRewind />
+                  <FastRewind fontSize="small" />
                 </Button>
 
                 <Button onClick={handlePrev} sx={{ bgcolor: "primary.dark" }}>
-                  <SkipPrevious />
+                  <SkipPrevious fontSize="small" />
                 </Button>
 
                 <Button onClick={handleNext} sx={{ bgcolor: "primary.dark" }}>
-                  <SkipNext />
+                  <SkipNext fontSize="small" />
                 </Button>
 
                 <Button onClick={handleEnd} sx={{ bgcolor: "primary.dark" }}>
-                  <FastForward />
+                  <FastForward fontSize="small" />
                 </Button>
               </ButtonGroup>
 
@@ -359,10 +365,10 @@ export default function GameDetailsPage({
 
               <Box
                 sx={{
-                  order: { xs: "3", md: "2" },
+                  order: { xs: "1", md: "2" },
                   flex: 1,
                   minHeight: 0,
-                  maxHeight: { xs: "200px", md: "100%" },
+                  maxHeight: { xs: "100px", md: "100%" },
                   display: "flex",
                   flexDirection: "column",
                 }}

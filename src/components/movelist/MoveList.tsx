@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { forwardRef, useEffect, useRef } from "react";
 
 /**
@@ -80,11 +80,11 @@ export default function MoveList({
         overflowY: "auto",
         backgroundColor: theme.palette.primary.dark,
         borderRadius: "16px",
-        padding: "1rem",
+        padding: { xs: "0.5em 1em", md: "1em" },
         display: "grid",
         gridTemplateColumns: "30px 1fr 1fr",
         alignContent: "start",
-        gap: ".5rem",
+        gap: { xs: "0", md: ".5rem" },
       }}
     >
       {movePairs.map((pair) => (
@@ -129,26 +129,24 @@ const MoveButton = forwardRef<HTMLButtonElement, MoveButtonProps>(
     const theme = useTheme();
 
     return (
-      <button
+      <Button
         ref={ref}
         onClick={onClick}
-        style={{
+        sx={{
           backgroundColor: isActive
             ? theme.palette.primary.main
             : "transparent",
           color: theme.palette.text.secondary,
           border: "none",
           cursor: "pointer",
-          padding: ".5rem 1rem",
+          padding: { xs: "0.2em 1em", md: ".5em 1em" },
           borderRadius: "16px",
-          textAlign: "left",
           fontWeight: isActive ? "bold" : "normal",
-          fontSize: "1rem",
-          transition: "background-color 0.2s",
+          fontSize: "0.9rem",
         }}
       >
         {move.san}
-      </button>
+      </Button>
     );
   },
 );
