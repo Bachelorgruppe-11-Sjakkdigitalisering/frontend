@@ -1,4 +1,4 @@
-import { Slider, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 /**
  * Defines the properties for the {@link Evalbar} component.
@@ -29,32 +29,46 @@ type EvalbarProps = {
  * ```
  */
 export default function Evalbar({ winChance, evalLabel }: EvalbarProps) {
-  const theme = useTheme();
-
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         height: "inherit",
-        width: "2rem",
+        width: { xs: "1.5em", md: "2em" },
         position: "relative",
         overflow: "hidden",
         borderRadius: "16px",
+        bgcolor: "primary.dark",
       }}
     >
-      <div
-        style={{
+      {/* White's side (bottom fill) */}
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: `${winChance}%`,
+          bgcolor: "primary.light",
+          transition: "height 0.3s ease-in-out",
+        }}
+      />
+
+      {/* Evaluation Label */}
+      <Box
+        sx={{
           position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
           zIndex: 2,
           textAlign: "center",
-          paddingTop: "2px",
+          paddingTop: "4px",
         }}
       >
         <Typography
           variant="caption"
           sx={{
+            fontSize: { xs: "0.5rem", md: "0.7rem" },
             fontWeight: "bold",
             color: "white",
             mixBlendMode: "difference",
@@ -62,38 +76,7 @@ export default function Evalbar({ winChance, evalLabel }: EvalbarProps) {
         >
           {evalLabel}
         </Typography>
-      </div>
-      <Slider
-        orientation="vertical"
-        value={winChance}
-        min={0}
-        max={100}
-        disabled
-        sx={{
-          height: "100%",
-          width: "100%",
-          padding: 0,
-
-          // the rail (top part of background, black's side)
-          "& .MuiSlider-rail": {
-            opacity: 1,
-            backgroundColor: theme.palette.primary.dark,
-          },
-
-          // the track (bottom part, white's side)
-          "& .MuiSlider-track": {
-            opacity: 1,
-            backgroundColor: theme.palette.primary.light,
-            border: "none",
-            borderRadius: "0 0 16px 16px",
-          },
-
-          // the thumb
-          " & .MuiSlider-thumb": {
-            display: "none",
-          },
-        }}
-      />
-    </div>
+      </Box>
+    </Box>
   );
 }
