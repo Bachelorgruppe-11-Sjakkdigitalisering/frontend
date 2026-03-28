@@ -69,6 +69,8 @@ export default function GameDetailsPage({
   const [manualMoveIndex, setManualMoveIndex] = useState<number | null>(
     isLive ? null : 0,
   );
+  const [copyFenSuccess, setCopyFenSuccess] = useState(false);
+  const [copyPgnSuccess, setCopyPgnSuccess] = useState(false);
 
   const { officialHistory, hasPgnError } = useMemo(() => {
     if (!gameData || !gameData.pgn)
@@ -172,6 +174,10 @@ export default function GameDetailsPage({
    */
   const handleCopyFen = () => {
     navigator.clipboard.writeText(currentFen);
+    setCopyFenSuccess(true);
+    setTimeout(() => {
+      setCopyFenSuccess(false);
+    }, 5000);
   };
 
   /**
@@ -179,6 +185,10 @@ export default function GameDetailsPage({
    */
   const handleCopyPgn = () => {
     navigator.clipboard.writeText(gameData.pgn);
+    setCopyPgnSuccess(true);
+    setTimeout(() => {
+      setCopyPgnSuccess(false);
+    }, 5000);
   };
 
   // fetch stockfish data
@@ -226,6 +236,7 @@ export default function GameDetailsPage({
               gap: "0.5rem",
               margin: { xs: "0 auto", md: "0" },
               height: { xs: "auto", md: "100%" },
+              width: "100%",
               overflow: "hidden",
             }}
           >
@@ -290,6 +301,8 @@ export default function GameDetailsPage({
                 flexDirection: "column",
                 gap: "0.5rem",
                 height: "100%",
+                minWidth: 0,
+                width: "100%",
               }}
             >
               <ButtonGroup
@@ -320,21 +333,65 @@ export default function GameDetailsPage({
               </ButtonGroup>
 
               {/* FEN and PGN copy buttons */}
-              <div
-                style={{
+              <Box
+                sx={{
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
+                  flexDirection: "column",
+                  gap: "0.5em",
                   order: "5",
+                  minWidth: 0,
+                  maxWidth: "100%",
                 }}
               >
-                <Button variant="contained" onClick={handleCopyFen}>
-                  Kopier FEN
-                </Button>
-                <Button variant="contained" onClick={handleCopyPgn}>
-                  Kopier PGN
-                </Button>
-              </div>
+                {copyPgnSuccess && (
+                  <Alert
+                    severity="success"
+                    sx={{
+                      width: "100%",
+                      boxSizing: "border-box",
+                      "& .MuiAlert-message": {
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      },
+                    }}
+                  >
+                    Kopierte PGN: {gameData.pgn}
+                  </Alert>
+                )}
+                {copyFenSuccess && (
+                  <Alert
+                    severity="success"
+                    sx={{
+                      width: "100%",
+                      boxSizing: "border-box",
+                      "& .MuiAlert-message": {
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      },
+                    }}
+                  >
+                    Kopierte FEN: {currentFen}
+                  </Alert>
+                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Button variant="contained" onClick={handleCopyFen}>
+                    Kopier FEN
+                  </Button>
+                  <Button variant="contained" onClick={handleCopyPgn}>
+                    Kopier PGN
+                  </Button>
+                </Box>
+              </Box>
 
               <Box
                 sx={{
