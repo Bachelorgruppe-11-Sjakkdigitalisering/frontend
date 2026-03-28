@@ -41,7 +41,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const theme = useTheme();
   // Determines if the viewport is medium or larger
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
+  const isDesktop = useMediaQuery(theme.breakpoints.up("lg"));
   const location = useLocation();
   const navigate = useNavigate();
 

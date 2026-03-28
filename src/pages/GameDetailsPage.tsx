@@ -1,11 +1,10 @@
 import {
   Alert,
+  Box,
   Button,
   ButtonGroup,
   CircularProgress,
   Skeleton,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 import Topbar from "../components/topbar/Topbar";
 import GameView from "../components/chessboards/GameView";
@@ -22,7 +21,6 @@ import { useStockfish } from "../hooks/useStockfish";
 import { useParams } from "react-router";
 import useGame from "../hooks/useGame";
 import useLiveGame from "../hooks/useLiveGame";
-import "../main.css";
 import type { PieceDropHandlerArgs } from "react-chessboard";
 
 type Move = {
@@ -33,13 +31,22 @@ type Move = {
 
 const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
+const pageLayoutStyles = {
+  ml: { xs: 0, lg: "13rem" },
+  mb: { xs: "64px", lg: 0 },
+  p: "1rem",
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+  height: { xs: "auto", md: "90dvh", lg: "100dvh" },
+  boxSizing: "border-box",
+};
+
 export default function GameDetailsPage({
   isLive = false,
 }: {
   isLive?: boolean;
 }) {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
   const { gameId } = useParams<{ gameId: string }>();
   const {
     data: liveData,
@@ -177,220 +184,199 @@ export default function GameDetailsPage({
   // fetch stockfish data
   const { data: stockfishData, isLoading } = useStockfish(currentFen);
 
-  // loading state
-  // TODO: endre dette til skeleton i fremtiden?
-  if (isGameLoading) {
-    return (
-      <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
-        <CircularProgress />
-      </div>
-    );
-  }
-
-  // error handling
-  if (isGameError || !gameData) {
-    return (
-      <div className={isDesktop ? "desktop-margins" : "mobile-margins"}>
-        <Alert severity="error">Kunne ikke laste partiet.</Alert>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={isDesktop ? "desktop-margins" : "mobile-margins"}
-      style={{
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        height: isDesktop ? "100dvh" : "auto",
-        boxSizing: "border-box",
-      }}
-    >
-      <Topbar
-        title={`${gameData.white_player_name} vs ${gameData.black_player_name}`}
-        route="/database"
-      />
-
-      {/* if pgn error, show error message */}
-      {hasPgnError && (
-        <Alert severity="warning">
-          Vi oppdaget et ulovlig trekk eller en feil i PGN-filen for dette
-          partiet. <br />
-          Partiet kan ikke spilles av.
-        </Alert>
+    <Box sx={pageLayoutStyles}>
+      {/* Loading state */}
+      {isGameLoading && (
+        <>
+          <Topbar title="..." route="/" />
+          <CircularProgress />
+        </>
       )}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: isDesktop ? "row" : "column",
-          gap: "0.5rem",
-          height: isDesktop ? "100%" : "auto",
-          overflow: "hidden",
-        }}
-      >
-        {/* left column */}
-        <div
-          style={{
-            flex: isDesktop ? "2" : "none",
-            alignContent: "center",
-            height: "100%",
-            position: "relative",
-          }}
-        >
-          {/* banner and button if user is exploring on their own */}
-          {isExploring && (
-            <Alert
-              severity="info"
-              action={
-                <Button size="small" onClick={handleReturnToGame}>
-                  Tilbake til partiet
-                </Button>
-              }
-              sx={{
-                alignItems: "center",
-                position: isDesktop ? "absolute" : "relative",
-                top: isDesktop ? 0 : "auto",
-                left: isDesktop ? 0 : "auto",
-                right: isDesktop ? 0 : "auto",
-                zIndex: isDesktop ? 10 : "auto",
-                mb: isDesktop ? 0 : ".5em",
-              }}
-            >
-              Du analyserer en egen variant.
+      {/* Error states */}
+      {!isGameLoading && (isGameError || !gameData) && (
+        <>
+          <Topbar title="..." route="/" />
+          <Alert severity="error">Kunne ikke laste partiet.</Alert>
+        </>
+      )}
+
+      {/* Success state */}
+      {!isGameLoading && !isGameError && gameData && (
+        <>
+          <Topbar
+            title={`${gameData.white_player_name} vs ${gameData.black_player_name}`}
+            route="/database"
+          />
+
+          {/* PGN error state */}
+          {hasPgnError && (
+            <Alert severity="warning">
+              Vi oppdaget et ulovlig trekk eller en feil i PGN-filen for dette
+              partiet. <br />
+              Partiet kan ikke spilles av.
             </Alert>
           )}
 
-          <GameView
-            fen={currentFen}
-            whitePlayerName={gameData.white_player_name}
-            whitePlayerTime={gameData.white_time}
-            whitePlayerId={gameData.white_player_id}
-            blackPlayerName={gameData.black_player_name}
-            blackPlayerTime={gameData.black_time}
-            blackPlayerId={gameData.black_player_id}
-            status={
-              currentMoveIndex === -1
-                ? "PENDING"
-                : currentTurn === "w"
-                  ? "WHITE_TO_MOVE"
-                  : "BLACK_TO_MOVE"
-            }
-            stockfishData={stockfishData}
-            onPieceDrop={handlePieceDrop}
-          />
-        </div>
-
-        {/* right column */}
-        <div
-          style={{
-            flex: isDesktop ? "1" : "none",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5rem",
-            height: "100%",
-          }}
-        >
-          <ButtonGroup
-            variant="contained"
-            disableElevation
-            aria-label="Buttons for going backwards and forwards in the game"
-            fullWidth
+          <Box
             sx={{
-              order: isDesktop ? "3" : "1",
-              flexShrink: 0,
-            }}
-          >
-            <Button
-              onClick={handleStart}
-              style={{ backgroundColor: theme.palette.primary.dark }}
-            >
-              <FastRewind />
-            </Button>
-
-            <Button
-              onClick={handlePrev}
-              style={{ backgroundColor: theme.palette.primary.dark }}
-            >
-              <SkipPrevious />
-            </Button>
-
-            <Button
-              onClick={handleNext}
-              style={{ backgroundColor: theme.palette.primary.dark }}
-            >
-              <SkipNext />
-            </Button>
-
-            <Button
-              onClick={handleEnd}
-              style={{ backgroundColor: theme.palette.primary.dark }}
-            >
-              <FastForward />
-            </Button>
-          </ButtonGroup>
-
-          {/* FEN and PGN copy buttons */}
-          <div
-            style={{
               display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              order: "5",
+              flexDirection: { xs: "column", md: "row" },
+              gap: "0.5rem",
+              margin: { xs: "0 auto", md: "0" },
+              height: { xs: "auto", md: "100%" },
+              overflow: "hidden",
             }}
           >
-            <Button variant="contained" onClick={handleCopyFen}>
-              Kopier FEN
-            </Button>
-            <Button variant="contained" onClick={handleCopyPgn}>
-              Kopier PGN
-            </Button>
-          </div>
+            {/* left column */}
+            <Box
+              sx={{
+                flex: { xs: "none", md: "2" },
+                alignContent: "center",
+                height: "100%",
+                position: "relative",
+              }}
+            >
+              {/* banner and button if user is exploring on their own */}
+              {isExploring && (
+                <Alert
+                  severity="info"
+                  action={
+                    <Button size="small" onClick={handleReturnToGame}>
+                      Tilbake til partiet
+                    </Button>
+                  }
+                  sx={{
+                    alignItems: "center",
+                    mb: "0.5em",
+                  }}
+                >
+                  Du analyserer en egen variant.
+                </Alert>
+              )}
 
-          <div
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: theme.palette.primary.dark,
-              borderRadius: "16px",
-              color: theme.palette.text.secondary,
-              order: isDesktop ? "1" : "2",
-              flexShrink: 0,
-            }}
-          >
-            <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
-            {isLoading ? (
-              <Skeleton />
-            ) : (
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                {/* Move and Evaluation */}
-                <span>{stockfishData.san}</span>
-                <span>
-                  {stockfishData.eval > 0 ? "+" : ""}
-                  {stockfishData.eval}
-                </span>
+              <GameView
+                fen={currentFen}
+                whitePlayerName={gameData.white_player_name}
+                whitePlayerTime={gameData.white_time}
+                whitePlayerId={gameData.white_player_id}
+                blackPlayerName={gameData.black_player_name}
+                blackPlayerTime={gameData.black_time}
+                blackPlayerId={gameData.black_player_id}
+                status={
+                  currentMoveIndex === -1
+                    ? "PENDING"
+                    : currentTurn === "w"
+                      ? "WHITE_TO_MOVE"
+                      : "BLACK_TO_MOVE"
+                }
+                stockfishData={stockfishData}
+                onPieceDrop={handlePieceDrop}
+              />
+            </Box>
+
+            {/* Right column */}
+            <Box
+              sx={{
+                flex: { xs: 0, md: "1" },
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+                height: "100%",
+              }}
+            >
+              <ButtonGroup
+                variant="contained"
+                disableElevation
+                aria-label="Buttons for going backwards and forwards in the game"
+                fullWidth
+                sx={{
+                  order: { xs: "1", md: "3" },
+                  flexShrink: 0,
+                }}
+              >
+                <Button onClick={handleStart} sx={{ bgcolor: "primary.dark" }}>
+                  <FastRewind />
+                </Button>
+
+                <Button onClick={handlePrev} sx={{ bgcolor: "primary.dark" }}>
+                  <SkipPrevious />
+                </Button>
+
+                <Button onClick={handleNext} sx={{ bgcolor: "primary.dark" }}>
+                  <SkipNext />
+                </Button>
+
+                <Button onClick={handleEnd} sx={{ bgcolor: "primary.dark" }}>
+                  <FastForward />
+                </Button>
+              </ButtonGroup>
+
+              {/* FEN and PGN copy buttons */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  order: "5",
+                }}
+              >
+                <Button variant="contained" onClick={handleCopyFen}>
+                  Kopier FEN
+                </Button>
+                <Button variant="contained" onClick={handleCopyPgn}>
+                  Kopier PGN
+                </Button>
               </div>
-            )}
-          </div>
 
-          <div
-            style={{
-              order: isDesktop ? "2" : "3",
-              flex: 1,
-              minHeight: 0,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <MoveList
-              history={activeHistory}
-              currentMoveIndex={currentMoveIndex}
-              onMoveClick={handleMoveClick}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+              <Box
+                sx={{
+                  padding: "0.5rem 1rem",
+                  bgcolor: "primary.dark",
+                  borderRadius: "16px",
+                  color: "text.secondary",
+                  order: { xs: "2", md: "1" },
+                  flexShrink: 0,
+                }}
+              >
+                <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
+                {isLoading ? (
+                  <Skeleton />
+                ) : (
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    {/* Move and Evaluation */}
+                    <span>{stockfishData.san}</span>
+                    <span>
+                      {stockfishData.eval > 0 ? "+" : ""}
+                      {stockfishData.eval}
+                    </span>
+                  </div>
+                )}
+              </Box>
+
+              <Box
+                sx={{
+                  order: { xs: "3", md: "2" },
+                  flex: 1,
+                  minHeight: 0,
+                  maxHeight: { xs: "200px", md: "100%" },
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <MoveList
+                  history={activeHistory}
+                  currentMoveIndex={currentMoveIndex}
+                  onMoveClick={handleMoveClick}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </>
+      )}
+    </Box>
   );
 }

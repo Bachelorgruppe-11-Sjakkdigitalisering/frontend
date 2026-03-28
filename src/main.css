@@ -3,6 +3,11 @@
   padding: 1em;
 }
 
+.tablet-margins {
+  margin-left: 0;
+  padding: 1em;
+}
+
 .mobile-margins {
   margin-bottom: 64px;
   padding: 1em;
