@@ -6,7 +6,7 @@ import Navbar from "./components/navbar/Navbar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePage";
-import GameDetailsPage from "./pages/GameDetailsPage";
+import GameDetailsPage from "./pages/game-details/GameDetailsPage";
 import DatabasePage from "./pages/DatabasePage";
 import PlayerPage from "./pages/PlayerPage";
 

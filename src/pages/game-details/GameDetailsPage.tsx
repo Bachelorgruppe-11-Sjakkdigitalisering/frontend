@@ -6,8 +6,8 @@ import {
   CircularProgress,
   Skeleton,
 } from "@mui/material";
-import Topbar from "../components/topbar/Topbar";
-import GameView from "../components/chessboards/GameView";
+import Topbar from "../../components/topbar/Topbar";
+import GameView from "../../components/chessboards/GameView";
 import {
   FastForward,
   FastRewind,
@@ -16,11 +16,11 @@ import {
 } from "@mui/icons-material";
 import { useMemo, useState } from "react";
 import { Chess } from "chess.js";
-import MoveList from "../components/movelist/MoveList";
-import { useStockfish } from "../hooks/useStockfish";
+import MoveList from "../../components/movelist/MoveList";
+import { useStockfish } from "../../hooks/useStockfish";
 import { useParams } from "react-router";
-import useGame from "../hooks/useGame";
-import useLiveGame from "../hooks/useLiveGame";
+import useGame from "../../hooks/useGame";
+import useLiveGame from "../../hooks/useLiveGame";
 import type { PieceDropHandlerArgs } from "react-chessboard";
 
 type Move = {
