@@ -4,7 +4,7 @@ import MoveList, { type Move } from "./MoveList";
 
 const meta = {
   component: MoveList,
-  title: "Move List",
+  title: "Components/Move List",
   tags: ["autodocs"],
   args: {
     onMoveClick: fn(),

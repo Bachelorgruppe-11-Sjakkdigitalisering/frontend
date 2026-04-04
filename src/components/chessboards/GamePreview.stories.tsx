@@ -4,7 +4,7 @@ import GamePreview from "./GamePreview";
 
 const meta = {
   component: GamePreview,
-  title: "Game Preview",
+  title: "Components/Game Preview",
   tags: ["autodocs"],
 } satisfies Meta<typeof GamePreview>;
 

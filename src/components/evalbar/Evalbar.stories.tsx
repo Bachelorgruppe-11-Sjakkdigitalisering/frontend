@@ -3,7 +3,7 @@ import Evalbar from "./Evalbar";
 
 const meta = {
   component: Evalbar,
-  title: "Evalbar",
+  title: "Components/Evalbar",
   decorators: [
     (story) => <div style={{ height: 300, width: 100 }}>{story()}</div>,
   ],

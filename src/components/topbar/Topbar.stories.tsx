@@ -3,7 +3,7 @@ import Topbar from "./Topbar";
 
 const meta = {
   component: Topbar,
-  title: "Topbar",
+  title: "Components/Topbar",
   tags: ["autodocs"],
 } satisfies Meta<typeof Topbar>;
 

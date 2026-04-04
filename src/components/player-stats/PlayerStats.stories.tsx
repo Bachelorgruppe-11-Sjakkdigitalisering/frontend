@@ -3,7 +3,7 @@ import PlayerStats from "./PlayerStats";
 
 const meta = {
   component: PlayerStats,
-  title: "Player Stats",
+  title: "Components/Player Stats",
   tags: ["autodocs"],
 } satisfies Meta<typeof PlayerStats>;
 

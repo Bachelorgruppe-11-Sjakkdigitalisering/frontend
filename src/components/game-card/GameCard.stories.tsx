@@ -3,7 +3,7 @@ import GameCard from "./GameCard";
 
 const meta = {
   component: GameCard,
-  title: "Game Card",
+  title: "Components/Game Card",
   tags: ["autodocs"],
 } satisfies Meta<typeof GameCard>;
 
