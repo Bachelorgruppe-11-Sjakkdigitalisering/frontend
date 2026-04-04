@@ -14,22 +14,13 @@ import {
   SkipNext,
   SkipPrevious,
 } from "@mui/icons-material";
-import { useMemo, useState } from "react";
-import { Chess } from "chess.js";
 import MoveList from "../../components/movelist/MoveList";
 import { useStockfish } from "../../hooks/useStockfish";
 import { useParams } from "react-router";
 import useGame from "../../hooks/useGame";
 import useLiveGame from "../../hooks/useLiveGame";
-import type { PieceDropHandlerArgs } from "react-chessboard";
-
-type Move = {
-  san: string;
-  fen: string;
-  color: "w" | "b";
-};
-
-const DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+import { useGameAnalysis } from "../../hooks/useGameAnalysis";
+import { useState } from "react";
 
 const pageLayoutStyles = {
   ml: { xs: 0, lg: "13rem" },
@@ -42,6 +33,11 @@ const pageLayoutStyles = {
   boxSizing: "border-box",
 };
 
+/**
+ * GameDetailsPage acts as the main page for viewing a chess game.
+ * It combines data fetching (live or archived), chess engine evaluation (Stockfish),
+ * and interactive board exploration into a single view.
+ */
 export default function GameDetailsPage({
   isLive = false,
 }: {
@@ -64,110 +60,20 @@ export default function GameDetailsPage({
   const isGameLoading = isLive ? isLiveLoading : isArchiveLoading;
   const isGameError = isLive ? isLiveError : isArchiveError;
 
-  const [isExploring, setIsExploring] = useState(false); // tracks if the user is exploring a position
-  const [customHistory, setCustomHistory] = useState<Move[]>([]);
-  const [manualMoveIndex, setManualMoveIndex] = useState<number | null>(
-    isLive ? null : 0,
-  );
   const [copyFenSuccess, setCopyFenSuccess] = useState(false);
   const [copyPgnSuccess, setCopyPgnSuccess] = useState(false);
 
-  const { officialHistory, hasPgnError } = useMemo(() => {
-    if (!gameData || !gameData.pgn)
-      return { officialHistory: [], hasPgnError: false };
-
-    try {
-      const game = new Chess();
-      game.loadPgn(gameData.pgn);
-      const historyWithFens: Array<Move> = [];
-      const tempGame = new Chess();
-
-      game.history().forEach((moveSan) => {
-        tempGame.move(moveSan);
-        historyWithFens.push({
-          san: moveSan,
-          fen: tempGame.fen(),
-          color: tempGame.turn() === "w" ? "b" : "w",
-        });
-      });
-
-      return { officialHistory: historyWithFens, hasPgnError: false };
-    } catch (error) {
-      console.error("Feil ved lasting av PGN:", error);
-      return { officialHistory: [], hasPgnError: true };
-    }
-  }, [gameData]);
-
-  const activeHistory = isExploring ? customHistory : officialHistory;
-  let currentMoveIndex: number;
-
-  if (isExploring) {
-    currentMoveIndex = manualMoveIndex ?? customHistory.length - 1;
-  } else if (manualMoveIndex !== null) {
-    currentMoveIndex = manualMoveIndex;
-  } else {
-    currentMoveIndex =
-      officialHistory.length > 0 ? officialHistory.length - 1 : -1;
-  }
-
-  const currentFen =
-    currentMoveIndex === -1
-      ? DEFAULT_FEN
-      : activeHistory[currentMoveIndex]?.fen || DEFAULT_FEN;
-  const currentTurn = currentFen.split(" ")[1];
-
-  const handlePieceDrop = ({
-    sourceSquare,
-    targetSquare,
-  }: PieceDropHandlerArgs) => {
-    if (!sourceSquare || !targetSquare) return false;
-
-    try {
-      const game = new Chess(currentFen);
-      const move = game.move({
-        from: sourceSquare,
-        to: targetSquare,
-        promotion: "q",
-      });
-
-      if (move) {
-        const newHistory = activeHistory.slice(0, currentMoveIndex + 1);
-        newHistory.push({ san: move.san, fen: game.fen(), color: move.color });
-
-        setCustomHistory(newHistory);
-        setIsExploring(true);
-        setManualMoveIndex(newHistory.length - 1);
-        return true;
-      }
-    } catch (error) {
-      console.error("Kunne ikke gjøre trekk:", error);
-      return false;
-    }
-    return false;
-  };
-
-  const handleReturnToGame = () => {
-    setIsExploring(false);
-    setManualMoveIndex(isLive ? null : officialHistory.length - 1);
-  };
-
-  // handle move and button clicks
-  const handleNext = () =>
-    setManualMoveIndex(
-      Math.min(currentMoveIndex + 1, activeHistory.length - 1),
-    );
-  const handlePrev = () =>
-    setManualMoveIndex(Math.max(currentMoveIndex - 1, -1));
-  const handleStart = () => setManualMoveIndex(-1);
-  const handleEnd = () => setManualMoveIndex(activeHistory.length - 1);
-  const handleMoveClick = (index: number) => {
-    // If they click the very last move of a live game, re-enable auto-sync
-    if (isLive && !isExploring && index === officialHistory.length - 1) {
-      setManualMoveIndex(null);
-    } else {
-      setManualMoveIndex(index);
-    }
-  };
+  const {
+    isExploring,
+    hasPgnError,
+    activeHistory,
+    currentMoveIndex,
+    currentFen,
+    currentTurn,
+    handlePieceDrop,
+    handleReturnToGame,
+    navigateMoves,
+  } = useGameAnalysis(gameData?.pgn, isLive);
 
   /**
    * Copies the FEN string of the current position to the user's clipboard.
@@ -315,19 +221,31 @@ export default function GameDetailsPage({
                   flexShrink: 0,
                 }}
               >
-                <Button onClick={handleStart} sx={{ bgcolor: "primary.dark" }}>
+                <Button
+                  onClick={navigateMoves.start}
+                  sx={{ bgcolor: "primary.dark" }}
+                >
                   <FastRewind fontSize="small" />
                 </Button>
 
-                <Button onClick={handlePrev} sx={{ bgcolor: "primary.dark" }}>
+                <Button
+                  onClick={navigateMoves.prev}
+                  sx={{ bgcolor: "primary.dark" }}
+                >
                   <SkipPrevious fontSize="small" />
                 </Button>
 
-                <Button onClick={handleNext} sx={{ bgcolor: "primary.dark" }}>
+                <Button
+                  onClick={navigateMoves.next}
+                  sx={{ bgcolor: "primary.dark" }}
+                >
                   <SkipNext fontSize="small" />
                 </Button>
 
-                <Button onClick={handleEnd} sx={{ bgcolor: "primary.dark" }}>
+                <Button
+                  onClick={navigateMoves.end}
+                  sx={{ bgcolor: "primary.dark" }}
+                >
                   <FastForward fontSize="small" />
                 </Button>
               </ButtonGroup>
@@ -433,7 +351,7 @@ export default function GameDetailsPage({
                 <MoveList
                   history={activeHistory}
                   currentMoveIndex={currentMoveIndex}
-                  onMoveClick={handleMoveClick}
+                  onMoveClick={navigateMoves.goTo}
                 />
               </Box>
             </Box>
