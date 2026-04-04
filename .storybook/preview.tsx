@@ -2,7 +2,9 @@ import type { Preview } from "@storybook/react-vite";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { appTheme } from "../src/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter } from "react-router";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize({ onUnhandledRequest: "bypass" });
 
 const queryClient = new QueryClient();
 
@@ -23,14 +25,14 @@ const preview: Preview = {
     },
   },
 
+  loaders: [mswLoader],
+
   decorators: [
     (Story) => (
       <ThemeProvider theme={appTheme}>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <BrowserRouter>
-            <Story />
-          </BrowserRouter>
+          <Story />
         </QueryClientProvider>
       </ThemeProvider>
     ),
