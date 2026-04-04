@@ -1,11 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import GamePreview from "./GamePreview";
+import { MemoryRouter } from "react-router";
 
 const meta = {
   component: GamePreview,
   title: "Components/Game Preview",
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 } satisfies Meta<typeof GamePreview>;
 
 export default meta;

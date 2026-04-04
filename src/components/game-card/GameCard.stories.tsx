@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import GameCard from "./GameCard";
+import { MemoryRouter } from "react-router";
 
 const meta = {
   component: GameCard,
   title: "Components/Game Card",
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 } satisfies Meta<typeof GameCard>;
 
 export default meta;

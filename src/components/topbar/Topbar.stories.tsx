@@ -1,10 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import Topbar from "./Topbar";
+import { MemoryRouter } from "react-router";
 
 const meta = {
   component: Topbar,
   title: "Components/Topbar",
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 } satisfies Meta<typeof Topbar>;
 
 export default meta;
