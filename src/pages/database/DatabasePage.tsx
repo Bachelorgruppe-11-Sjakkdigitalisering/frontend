@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import "../main.css";
+import "../../main.css";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import PlayerCard from "../../components/player-card/PlayerCard";
