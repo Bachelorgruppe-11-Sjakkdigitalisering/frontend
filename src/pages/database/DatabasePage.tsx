@@ -14,10 +14,13 @@ import {
 import "../main.css";
 import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import PlayerCard from "../components/player-card/PlayerCard";
-import GameCard from "../components/game-card/GameCard";
-import { useDatabase, type ArchivedGamesResponse } from "../hooks/useDatabase";
-import { usePlayers, type PlayerResponse } from "../hooks/usePlayers";
+import PlayerCard from "../../components/player-card/PlayerCard";
+import GameCard from "../../components/game-card/GameCard";
+import {
+  useDatabase,
+  type ArchivedGamesResponse,
+} from "../../hooks/useDatabase";
+import { usePlayers, type PlayerResponse } from "../../hooks/usePlayers";
 
 export default function DatabasePage() {
   const theme = useTheme();
