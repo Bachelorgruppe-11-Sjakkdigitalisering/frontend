@@ -4,6 +4,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { delay, http, HttpResponse } from "msw";
 
+const liveGameProgression = [
+  "1. e4",
+  "1. e4 e5",
+  "1. e4 e5 2. Bc4",
+  "1. e4 e5 2. Bc4 Nc6",
+  "1. e4 e5 2. Bc4 Nc6 3. Qh5",
+  "1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6",
+  "1. e4 e5 2. Bc4 Nc6 3. Qh5 Nf6 4. Qxf7#",
+];
+
 const mockGameData = {
   white_player_name: "Magnus Carlsen",
   black_player_name: "Hikaru Nakamura",
@@ -13,6 +23,8 @@ const mockGameData = {
 };
 
 const URL = "http://127.0.0.1:8000/";
+
+let currentMoveIndex = 0;
 
 const meta: Meta<typeof GameDetailsPage> = {
   title: "Pages/GameDetailsPage",
@@ -52,7 +64,18 @@ we pass a unique \`mockId\` via the Story Router to dynamically resolve the corr
 
         // Handler for Live Game
         http.get(`${URL}api/game/:gameId`, () => {
-          return HttpResponse.json(mockGameData);
+          // Construct the payload with the current PGN slice
+          const responseData = {
+            ...mockGameData,
+            pgn: liveGameProgression[currentMoveIndex],
+          };
+
+          // Increment the index for the next polling cycle, capping it at checkmate
+          if (currentMoveIndex < liveGameProgression.length - 1) {
+            currentMoveIndex++;
+          }
+
+          return HttpResponse.json(responseData);
         }),
       ],
     },
@@ -60,6 +83,10 @@ we pass a unique \`mockId\` via the Story Router to dynamically resolve the corr
   decorators: [
     (Story, context) => {
       const mockId = context.parameters.mockId || "123";
+
+      if (mockId === "live-success") {
+        currentMoveIndex = 0;
+      }
 
       const queryClient = new QueryClient({
         defaultOptions: {
