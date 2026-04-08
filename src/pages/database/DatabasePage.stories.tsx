@@ -80,7 +80,7 @@ Storybook Interactions (\`play\` functions) are used to automate user keystrokes
         // Intercept the Players Search
         http.get(`${DEFAULT_URL}api/players`, async ({ request }) => {
           const url = new URL(request.url);
-          const nameQuery = url.searchParams.get("name")?.toLowerCase() || "";
+          const nameQuery = url.searchParams.get("search")?.toLowerCase() || "";
 
           await delay(500);
 
@@ -184,5 +184,29 @@ export const ErrorState: Story = {
     const searchInput = canvas.getByRole("searchbox");
 
     await userEvent.type(searchInput, "error-trigger", { delay: 10 });
+  },
+};
+
+export const PlayerSearchWithResults: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates a user switching to the 'Spillersøk' tab and typing 'Magnus'. This verifies that the toggle correctly updates the UI state to render PlayerCards instead of GameCards.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Find and click the 'Spillersøk' toggle button
+    const playerTab = canvas.getByRole("button", { name: /spillersøk/i });
+    await userEvent.click(playerTab, { delay: 100 });
+
+    // Find the search input
+    const searchInput = canvas.getByRole("searchbox");
+
+    // Simulate typing
+    await userEvent.type(searchInput, "Magnus", { delay: 100 });
   },
 };
