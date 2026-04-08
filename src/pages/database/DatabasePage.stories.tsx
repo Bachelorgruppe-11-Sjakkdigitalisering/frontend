@@ -153,3 +153,19 @@ export const SearchWithResults: Story = {
     await userEvent.type(searchInput, "Fabiano", { delay: 100 });
   },
 };
+
+export const SearchNoResults: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates a search query that yields zero matches, demonstrating the empty state messaging.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const searchInput = canvas.getByRole("searchbox");
+    await userEvent.type(searchInput, "Kasparov", { delay: 100 });
+  },
+};
