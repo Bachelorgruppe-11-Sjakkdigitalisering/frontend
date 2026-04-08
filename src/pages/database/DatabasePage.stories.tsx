@@ -42,12 +42,12 @@ const meta: Meta<typeof DatabasePage> = {
     docs: {
       description: {
         component: `
-**DatabasePage** allows users to toggle between searching for historical chess games and individual players. 
+DatabasePage allows users to toggle between searching for historical chess games and individual players. 
 
 ### Testing Strategy
 This component utilizes an internal 300ms debounce to prevent API spam. 
-The Storybook setup uses **MSW (Mock Service Worker)** to intercept GET requests and dynamically filter mock data based on URL query parameters. 
-**Storybook Interactions (\`play\` functions)** are used to automate user keystrokes, deterministically rendering the "Results Found" and "Empty State" UI variants.
+The Storybook setup uses MSW (Mock Service Worker) to intercept GET requests and dynamically filter mock data based on URL query parameters. 
+Storybook Interactions (\`play\` functions) are used to automate user keystrokes, deterministically rendering the "Results Found" and "Empty State" UI variants.
         `,
       },
     },
@@ -167,5 +167,22 @@ export const SearchNoResults: Story = {
     const canvas = within(canvasElement);
     const searchInput = canvas.getByRole("searchbox");
     await userEvent.type(searchInput, "Kasparov", { delay: 100 });
+  },
+};
+
+export const ErrorState: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Demonstrates the error boundary by triggering a simulated 500 Internal Server Error via MSW.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const searchInput = canvas.getByRole("searchbox");
+
+    await userEvent.type(searchInput, "error-trigger", { delay: 10 });
   },
 };
