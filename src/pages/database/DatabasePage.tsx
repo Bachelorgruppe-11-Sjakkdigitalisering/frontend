@@ -26,7 +26,7 @@ export default function DatabasePage() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const [searchType, setSearchType] = useState("games");
+  const [searchType, setSearchType] = useState<"games" | "players">("games");
   const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
 
@@ -55,9 +55,14 @@ export default function DatabasePage() {
 
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newSearchType: string,
+    newSearchType: "games" | "players",
   ) => {
-    setSearchType(newSearchType);
+    if (
+      newSearchType !== null &&
+      (newSearchType === "games" || newSearchType === "players")
+    ) {
+      setSearchType(newSearchType);
+    }
   };
 
   // determine which loading/error state to show based on the active tab
