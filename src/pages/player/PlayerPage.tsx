@@ -98,12 +98,14 @@ export default function PlayerPage() {
               </Alert>
             )}
           </div>
-          <PlayerStats
-            wins={profileData.stats.wins}
-            draws={profileData.stats.draws}
-            losses={profileData.stats.losses}
-            totalGames={profileData.stats.total_games}
-          />
+          {gamesData?.length > 0 && (
+            <PlayerStats
+              wins={profileData.stats.wins}
+              draws={profileData.stats.draws}
+              losses={profileData.stats.losses}
+              totalGames={profileData.stats.total_games}
+            />
+          )}
         </div>
       )}
 

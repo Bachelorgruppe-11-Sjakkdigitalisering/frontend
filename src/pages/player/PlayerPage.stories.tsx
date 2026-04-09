@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import PlayerPage from "./PlayerPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { userEvent, within } from "storybook/test";
 
 const mockProfileData = {
@@ -59,15 +59,43 @@ MSW (Mock Service Worker) is used to intercept these requests globally. Interact
     },
     msw: {
       handlers: [
-        // Mock the Player Profile endpoint
-        http.get(`${DEFAULT_URL}api/players/:playerId`, () => {
+        // Dynamic Mock for the Player Profile
+        http.get(`${DEFAULT_URL}api/players/:playerId`, async ({ params }) => {
+          const { playerId } = params;
+
+          if (playerId === "player-error") {
+            return new HttpResponse(null, { status: 500 });
+          }
+          if (playerId === "player-loading") {
+            await delay("infinite");
+            return HttpResponse.json({});
+          }
+
+          // Default success response
           return HttpResponse.json(mockProfileData);
         }),
 
-        // Mock the Player Games endpoint
-        http.get(`${DEFAULT_URL}api/players/:playerId/games`, () => {
-          return HttpResponse.json(mockGamesData);
-        }),
+        // Dynamic Mock for the Player's Games
+        http.get(
+          `${DEFAULT_URL}api/players/:playerId/games`,
+          async ({ params }) => {
+            const { playerId } = params;
+
+            if (playerId === "player-error") {
+              return new HttpResponse(null, { status: 500 });
+            }
+            if (playerId === "player-loading") {
+              await delay("infinite");
+              return HttpResponse.json({});
+            }
+            if (playerId === "player-no-games") {
+              return HttpResponse.json([]);
+            }
+
+            // Default success response
+            return HttpResponse.json(mockGamesData);
+          },
+        ),
       ],
     },
   },
@@ -103,6 +131,7 @@ type Story = StoryObj<typeof PlayerPage>;
 
 export const Default: Story = {
   parameters: {
+    mockId: "player-success",
     docs: {
       description: {
         story:
@@ -114,6 +143,7 @@ export const Default: Story = {
 
 export const CopyPlayerIdInteraction: Story = {
   parameters: {
+    mockId: "player-success",
     docs: {
       description: {
         story:
@@ -127,5 +157,17 @@ export const CopyPlayerIdInteraction: Story = {
     const copyButton = await canvas.findByRole("copy-button");
 
     await userEvent.click(copyButton, { delay: 300 });
+  },
+};
+
+export const NoGamesState: Story = {
+  parameters: {
+    mockId: "player-no-games",
+    docs: {
+      description: {
+        story:
+          "Demonstrates the UI state when a player exists in the database, but they have no recorded games.",
+      },
+    },
   },
 };
