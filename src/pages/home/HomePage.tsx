@@ -6,13 +6,16 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import GamePreview from "../components/chessboards/GamePreview";
+import GamePreview from "../../components/chessboards/GamePreview";
 import { useState } from "react";
 import useAllLiveGames, {
   type AllLiveGamesResponse,
-} from "../hooks/useAllLiveGames";
-import { useDatabase, type ArchivedGamesResponse } from "../hooks/useDatabase";
-import GameCard from "../components/game-card/GameCard";
+} from "../../hooks/useAllLiveGames";
+import {
+  useDatabase,
+  type ArchivedGamesResponse,
+} from "../../hooks/useDatabase";
+import GameCard from "../../components/game-card/GameCard";
 
 export default function HomePage() {
   const theme = useTheme();
