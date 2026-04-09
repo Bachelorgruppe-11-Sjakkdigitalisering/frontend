@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import HomePage from "./HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { userEvent, within } from "storybook/test";
 
 const mockLiveGames = [
@@ -156,6 +156,25 @@ export const ErrorState: Story = {
           `${DEFAULT_URL}api/games`,
           () => new HttpResponse(null, { status: 500 }),
         ),
+      ],
+    },
+  },
+};
+
+export const LoadingState: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Tests the display of the CircularProgress indicator by infinitely delaying the mocked network response.",
+      },
+    },
+    msw: {
+      handlers: [
+        http.get(`${DEFAULT_URL}api/games`, async () => {
+          await delay("infinite");
+          return HttpResponse.json({});
+        }),
       ],
     },
   },
