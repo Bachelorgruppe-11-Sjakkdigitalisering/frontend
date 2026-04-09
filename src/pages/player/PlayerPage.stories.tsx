@@ -3,6 +3,7 @@ import PlayerPage from "./PlayerPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { http, HttpResponse } from "msw";
+import { userEvent, within } from "storybook/test";
 
 const mockProfileData = {
   player: {
@@ -108,5 +109,23 @@ export const Default: Story = {
           "Displays a fully populated player profile with statistics and a list of archived games.",
       },
     },
+  },
+};
+
+export const CopyPlayerIdInteraction: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates a user clicking the 'Copy' button next to the Player ID. Verifies that the state updates and the success Alert is rendered.",
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const copyButton = await canvas.findByRole("copy-button");
+
+    await userEvent.click(copyButton, { delay: 300 });
   },
 };

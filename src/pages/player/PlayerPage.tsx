@@ -88,7 +88,7 @@ export default function PlayerPage() {
             <Typography variant="subtitle1">
               Spiller ID: #{profileData.player.id}
             </Typography>
-            <Button onClick={handleCopyPlayerId}>
+            <Button role="copy-button" onClick={handleCopyPlayerId}>
               <CopyAll />
             </Button>
             {copyPlayerIdSuccess && (
