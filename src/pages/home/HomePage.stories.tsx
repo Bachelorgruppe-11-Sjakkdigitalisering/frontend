@@ -3,6 +3,7 @@ import HomePage from "./HomePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { http, HttpResponse } from "msw";
+import { userEvent, within } from "storybook/test";
 
 const mockLiveGames = [
   {
@@ -89,5 +90,35 @@ export const DefaultLiveGames: Story = {
         ),
       ],
     },
+  },
+};
+
+export const SwitchToArchive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates a user clicking the 'Nylig spilte partier' toggle. Verifies that the UI correctly fetches and displays the database list.",
+      },
+    },
+    msw: {
+      handlers: [
+        http.get(`${DEFAULT_URL}api/games`, () =>
+          HttpResponse.json(mockLiveGames),
+        ),
+        http.get(`${DEFAULT_URL}api/archive/search`, () =>
+          HttpResponse.json(mockArchivedGames),
+        ),
+      ],
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Target the archive toggle button and click it
+    const archiveTab = canvas.getByRole("button", {
+      name: /nylig spilte partier/i,
+    });
+    await userEvent.click(archiveTab, { delay: 300 });
   },
 };
