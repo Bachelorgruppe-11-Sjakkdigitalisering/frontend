@@ -5,7 +5,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import Navbar from "./components/navbar/Navbar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/home/HomePage";
 import GameDetailsPage from "./pages/game-details/GameDetailsPage";
 import DatabasePage from "./pages/database/DatabasePage";
 import PlayerPage from "./pages/PlayerPage";
