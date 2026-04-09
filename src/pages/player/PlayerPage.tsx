@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import "../main.css";
 import { ArrowDropDown, CopyAll } from "@mui/icons-material";
-import GameCard from "../components/game-card/GameCard";
-import Topbar from "../components/topbar/Topbar";
+import GameCard from "../../components/game-card/GameCard";
+import Topbar from "../../components/topbar/Topbar";
 import { useParams } from "react-router";
-import { usePlayerGames, usePlayerProfile } from "../hooks/usePlayer";
-import type { ArchivedGamesResponse } from "../hooks/useDatabase";
-import PlayerStats from "../components/player-stats/PlayerStats";
+import { usePlayerGames, usePlayerProfile } from "../../hooks/usePlayer";
+import type { ArchivedGamesResponse } from "../../hooks/useDatabase";
+import PlayerStats from "../../components/player-stats/PlayerStats";
 import { useState } from "react";
 
 export default function PlayerPage() {

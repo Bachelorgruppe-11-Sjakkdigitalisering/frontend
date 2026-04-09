@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import HomePage from "./pages/home/HomePage";
 import GameDetailsPage from "./pages/game-details/GameDetailsPage";
 import DatabasePage from "./pages/database/DatabasePage";
-import PlayerPage from "./pages/PlayerPage";
+import PlayerPage from "./pages/player/PlayerPage";
 
 const queryClient = new QueryClient();
 
