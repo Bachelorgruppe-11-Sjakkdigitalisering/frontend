@@ -2,14 +2,13 @@ import {
   Alert,
   Avatar,
   Button,
-  ButtonGroup,
   CircularProgress,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import "../../main.css";
-import { ArrowDropDown, CopyAll } from "@mui/icons-material";
+import { CopyAll } from "@mui/icons-material";
 import GameCard from "../../components/game-card/GameCard";
 import Topbar from "../../components/topbar/Topbar";
 import { useParams } from "react-router";
@@ -108,14 +107,6 @@ export default function PlayerPage() {
           )}
         </div>
       )}
-
-      {/* filter dropdown button */}
-      <ButtonGroup variant="contained" disableElevation>
-        <Button>Filter</Button>
-        <Button>
-          <ArrowDropDown />
-        </Button>
-      </ButtonGroup>
 
       {/* game cards */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.5em" }}>

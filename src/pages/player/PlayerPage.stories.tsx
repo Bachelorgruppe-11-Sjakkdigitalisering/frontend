@@ -171,3 +171,15 @@ export const NoGamesState: Story = {
     },
   },
 };
+
+export const ErrorState: Story = {
+  parameters: {
+    mockId: "player-error",
+    docs: {
+      description: {
+        story:
+          "Demonstrates fault tolerance. If the backend returns a 5xx error or the network fails, the application catches the error.",
+      },
+    },
+  },
+};
