@@ -53,14 +53,17 @@ export default function HomePage() {
 
   return (
     <div
-      style={
-        isDesktop
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1em",
+        ...(isDesktop
           ? {
               maxWidth: "800px",
               margin: "0 auto",
             }
-          : {}
-      }
+          : {}),
+      }}
       className={
         isDesktop ? "desktop-margins centered" : "mobile-margins centered"
       }

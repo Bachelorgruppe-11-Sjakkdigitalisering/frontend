@@ -122,3 +122,19 @@ export const SwitchToArchive: Story = {
     await userEvent.click(archiveTab, { delay: 300 });
   },
 };
+
+export const EmptyState: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Demonstrates the UI feedback when the backend returns a successful 200 response, but the data array is empty (no live games are currently being played).",
+      },
+    },
+    msw: {
+      handlers: [
+        http.get(`${DEFAULT_URL}api/games`, () => HttpResponse.json([])), // Returns empty array
+      ],
+    },
+  },
+};
