@@ -21,13 +21,18 @@ export default function HomePage() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const [gameType, setGameType] = useState("live");
+  const [gameType, setGameType] = useState<"live" | "archive">("live");
 
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newGameType: string,
+    newGameType: "live" | "archive",
   ) => {
-    setGameType(newGameType);
+    if (
+      newGameType !== null &&
+      (newGameType === "live" || newGameType === "archive")
+    ) {
+      setGameType(newGameType);
+    }
   };
 
   const {
@@ -84,7 +89,7 @@ export default function HomePage() {
           Pågående partier
         </ToggleButton>
         <ToggleButton
-          value="players"
+          value="archive"
           sx={{
             borderRadius: 100,
             fontSize: "0.8rem",
