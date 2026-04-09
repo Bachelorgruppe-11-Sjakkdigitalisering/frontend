@@ -183,3 +183,15 @@ export const ErrorState: Story = {
     },
   },
 };
+
+export const LoadingState: Story = {
+  parameters: {
+    mockId: "player-loading",
+    docs: {
+      description: {
+        story:
+          "Displays the UI feedback (spinners) presented to the user while the network requests are pending.",
+      },
+    },
+  },
+};
