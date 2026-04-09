@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import "../main.css";
+import "../../main.css";
 import { ArrowDropDown, CopyAll } from "@mui/icons-material";
 import GameCard from "../../components/game-card/GameCard";
 import Topbar from "../../components/topbar/Topbar";
