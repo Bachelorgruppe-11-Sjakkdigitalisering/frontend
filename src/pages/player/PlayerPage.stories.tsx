@@ -2,6 +2,43 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import PlayerPage from "./PlayerPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Route, Routes } from "react-router";
+import { http, HttpResponse } from "msw";
+
+const mockProfileData = {
+  player: {
+    id: 123,
+    name: "Magnus Carlsen",
+  },
+  stats: {
+    wins: 45,
+    draws: 20,
+    losses: 5,
+    total_games: 70,
+  },
+};
+
+const mockGamesData = [
+  {
+    id: 101,
+    white_player_name: "Magnus Carlsen",
+    black_player_name: "Hikaru Nakamura",
+    result: "1-0",
+  },
+  {
+    id: 103,
+    white_player_name: "Magnus Carlsen",
+    black_player_name: "Hikaru Nakamura",
+    result: "0-1",
+  },
+  {
+    id: 102,
+    white_player_name: "Fabiano Caruana",
+    black_player_name: "Magnus Carlsen",
+    result: "1/2-1/2",
+  },
+];
+
+const DEFAULT_URL = "http://127.0.0.1:8000/";
 
 const meta: Meta<typeof PlayerPage> = {
   title: "Pages/PlayerPage",
@@ -11,13 +48,32 @@ const meta: Meta<typeof PlayerPage> = {
     docs: {
       description: {
         component: `
-Test
+PlayerPage displays a specific player's profile, including their overall win/loss statistics and a historical list of their archived games.
+
+### Testing Strategy
+This component extracts the \`playerId\` from the React Router URL parameters and uses it to fire two simultaneous React Query hooks. 
+MSW (Mock Service Worker) is used to intercept these requests globally. Interaction tests verify that utility functions, such as copying the Player ID to the clipboard, correctly trigger visual feedback (Alerts).
         `,
       },
     },
+    msw: {
+      handlers: [
+        // Mock the Player Profile endpoint
+        http.get(`${DEFAULT_URL}api/players/:playerId`, () => {
+          return HttpResponse.json(mockProfileData);
+        }),
+
+        // Mock the Player Games endpoint
+        http.get(`${DEFAULT_URL}api/players/:playerId/games`, () => {
+          return HttpResponse.json(mockGamesData);
+        }),
+      ],
+    },
   },
   decorators: [
-    (Story) => {
+    (Story, context) => {
+      const mockId = context.parameters.mockId || "123";
+
       const queryClient = new QueryClient({
         defaultOptions: {
           queries: {
@@ -30,7 +86,7 @@ Test
 
       return (
         <QueryClientProvider client={queryClient}>
-          <MemoryRouter initialEntries={[`/player/123`]}>
+          <MemoryRouter initialEntries={[`/player/${mockId}`]}>
             <Routes>
               <Route path="/player/:playerId" element={<Story />} />
             </Routes>
@@ -44,4 +100,13 @@ Test
 export default meta;
 type Story = StoryObj<typeof PlayerPage>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Displays a fully populated player profile with statistics and a list of archived games.",
+      },
+    },
+  },
+};
