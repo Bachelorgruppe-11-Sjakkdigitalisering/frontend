@@ -134,6 +134,28 @@ export const EmptyState: Story = {
     msw: {
       handlers: [
         http.get(`${DEFAULT_URL}api/games`, () => HttpResponse.json([])), // Returns empty array
+        http.get(`${DEFAULT_URL}api/archive/search`, () =>
+          HttpResponse.json([]),
+        ),
+      ],
+    },
+  },
+};
+
+export const ErrorState: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates a network or server failure (HTTP 500) to verify that the Alert component informs the user without crashing.",
+      },
+    },
+    msw: {
+      handlers: [
+        http.get(
+          `${DEFAULT_URL}api/games`,
+          () => new HttpResponse(null, { status: 500 }),
+        ),
       ],
     },
   },

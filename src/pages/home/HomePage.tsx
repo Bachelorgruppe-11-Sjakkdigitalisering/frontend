@@ -127,7 +127,7 @@ export default function HomePage() {
         {gameType === "live" ? (
           <>
             {liveGames?.length === 0 ? (
-              <Alert severity="info">
+              <Alert severity="info" sx={{ margin: "0 auto" }}>
                 Det finnes for øyeblikket ingen pågående partier.
               </Alert>
             ) : (
@@ -154,7 +154,7 @@ export default function HomePage() {
             }}
           >
             {archivedGames?.length === 0 ? (
-              <Alert severity="info">
+              <Alert severity="info" sx={{ margin: "0 auto" }}>
                 Det finnes for øyeblikket ingen tidligere spilte partier.
               </Alert>
             ) : (
