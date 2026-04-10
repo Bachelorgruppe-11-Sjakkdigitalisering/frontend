@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   CircularProgress,
   Skeleton,
+  Typography,
 } from "@mui/material";
 import Topbar from "../../components/topbar/Topbar";
 import GameView from "../../components/chessboards/GameView";
@@ -322,19 +323,41 @@ export default function GameDetailsPage({
                 }}
               >
                 <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
-                {isLoading ? (
-                  <Skeleton />
-                ) : (
-                  <div
+                {stockfishData ? (
+                  <Box
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     {/* Move and Evaluation */}
-                    <span>{stockfishData.san}</span>
-                    <span>
-                      {stockfishData.eval > 0 ? "+" : ""}
-                      {stockfishData.eval}
-                    </span>
-                  </div>
+                    <Typography variant="caption">
+                      {isLoading ? (
+                        <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                      ) : (
+                        stockfishData.san
+                      )}
+                    </Typography>
+                    <Typography variant="caption">
+                      {isLoading ? (
+                        <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                      ) : stockfishData.eval > 0 ? (
+                        "+"
+                      ) : (
+                        ""
+                      )}
+                      {isLoading ? (
+                        <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                      ) : (
+                        stockfishData.eval
+                      )}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Typography variant="caption">
+                    {isLoading ? (
+                      <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                    ) : (
+                      "Evaluering ikke tilgjengelig"
+                    )}
+                  </Typography>
                 )}
               </Box>
 

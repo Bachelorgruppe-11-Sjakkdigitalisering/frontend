@@ -6,10 +6,10 @@
  * @throws {Error} Throws an error if the stockfish api returns a non-2xx status code.
  */
 export default async function fetchEvaluation(fen: string) {
-  const response = await fetch("https://chess-api.com/v1", {
+  const response = await fetch("/api/chess", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ fen }),
+    body: JSON.stringify({ fen, depth: 12 }),
   });
 
   if (!response.ok) {

@@ -46,6 +46,19 @@ we pass a unique \`mockId\` via the Story Router to dynamically resolve the corr
     },
     msw: {
       handlers: [
+        http.post("/api/chess", async () => {
+          await delay(300); // Artificial delay to display Skeleton loaders
+          return HttpResponse.json({
+            eval: 1.2,
+            winChance: 60,
+            san: "Nf3",
+            move: "g1f3",
+            continuationArr: ["d5", "d4", "e6"],
+            mate: null,
+            error: "",
+          });
+        }),
+
         http.get(`${URL}api/archive/:gameId`, async ({ params }) => {
           const { gameId } = params;
 
