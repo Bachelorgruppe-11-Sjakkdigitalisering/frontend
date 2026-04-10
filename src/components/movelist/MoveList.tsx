@@ -143,6 +143,7 @@ const MoveButton = forwardRef<HTMLButtonElement, MoveButtonProps>(
           borderRadius: "16px",
           fontWeight: isActive ? "bold" : "normal",
           fontSize: "0.9rem",
+          textTransform: "none",
         }}
       >
         {move.san}
