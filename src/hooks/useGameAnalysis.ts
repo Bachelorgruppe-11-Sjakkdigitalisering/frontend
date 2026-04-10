@@ -1,5 +1,5 @@
 import { Chess } from "chess.js";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { PieceDropHandlerArgs } from "react-chessboard";
 
 type Move = {
@@ -124,6 +124,32 @@ export function useGameAnalysis(pgn?: string, isLive?: boolean) {
       }
     },
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "ArrowLeft":
+          navigateMoves.prev();
+          break;
+        case "ArrowRight":
+          navigateMoves.next();
+          break;
+        case "ArrowUp":
+          event.preventDefault();
+          navigateMoves.start();
+          break;
+        case "ArrowDown":
+          event.preventDefault();
+          navigateMoves.end();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup listener on unmount
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  });
 
   return {
     isExploring,
