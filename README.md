@@ -1,5 +1,18 @@
 # Frontend for Digitalisering av Sjakkparti
 
+- [Frontend for Digitalisering av Sjakkparti](#frontend-for-digitalisering-av-sjakkparti)
+  - [Oversikt](#oversikt)
+  - [Nøkkelfunksjoner](#nøkkelfunksjoner)
+  - [Teknologistakk](#teknologistakk)
+  - [Kom i gang](#kom-i-gang)
+    - [Forutsetninger](#forutsetninger)
+    - [Installasjon](#installasjon)
+    - [Kjøring av applikasjonen](#kjøring-av-applikasjonen)
+  - [Testing og Storybook](#testing-og-storybook)
+  - [Prosjektstruktur](#prosjektstruktur)
+  - [Backend-integrasjon](#backend-integrasjon)
+  - [Akademisk kontekst](#akademisk-kontekst)
+
 ## Oversikt
 
 Dette repositoryet inneholder frontend-koden for en plattform for visning og analyse av sjakk, utviklet som en del av et bachelorprosjekt. Applikasjonen tilbyr et interaktivt og responsivt brukergrensesnitt for å se direkteoverførte sjakkpartier, søke i historiske databaser, se detaljert spillerstatistikk og analysere brettstillinger ved hjelp av Stockfish.
