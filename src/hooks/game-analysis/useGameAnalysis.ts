@@ -47,8 +47,7 @@ export function useGameAnalysis(pgn?: string, isLive?: boolean) {
 
       return { officialHistory: historyWithFens, hasPgnError: false };
     } catch (error) {
-      console.error("Feil ved lasting av PGN:", error);
-      return { officialHistory: [], hasPgnError: true };
+      return { officialHistory: [], hasPgnError: true, errorMessage: error };
     }
   }, [pgn]);
 
