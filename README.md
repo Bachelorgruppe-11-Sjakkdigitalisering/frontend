@@ -3,7 +3,7 @@
 - [Frontend for Digitalisering av Sjakkparti](#frontend-for-digitalisering-av-sjakkparti)
   - [Oversikt](#oversikt)
   - [Nøkkelfunksjoner](#nøkkelfunksjoner)
-  - [Teknologistakk](#teknologistakk)
+  - [Teknologistack](#teknologistack)
   - [Kom i gang](#kom-i-gang)
     - [Forutsetninger](#forutsetninger)
     - [Installasjon](#installasjon)
@@ -26,7 +26,7 @@ Dette repositoryet inneholder frontend-koden for en plattform for visning og ana
 - **Komponentdrevet UI:** Et responsivt og tilgjengelig grensesnitt bygget med Material-UI (MUI), grundig dokumentert og testet via Storybook.
 - **Robust tilstandshåndtering (State Management):** Sentralisert caching, polling og bakgrunnsoppdateringer håndtert av TanStack Query.
 
-## Teknologistakk
+## Teknologistack
 
 - **Kjerne:** React 18, TypeScript, Vite
 - **Tilstandshåndtering og datahenting:** TanStack Query (React Query)

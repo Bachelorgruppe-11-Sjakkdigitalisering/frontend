@@ -20,7 +20,7 @@ import { useStockfish } from "../../hooks/useStockfish";
 import { useParams } from "react-router";
 import useGame from "../../hooks/useGame";
 import useLiveGame from "../../hooks/useLiveGame";
-import { useGameAnalysis } from "../../hooks/useGameAnalysis";
+import { useGameAnalysis } from "../../hooks/game-analysis/useGameAnalysis";
 import { useState } from "react";
 
 const pageLayoutStyles = {
