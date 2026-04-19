@@ -33,7 +33,7 @@ Dette repositoryet inneholder frontend-koden for en plattform for visning og ana
 - **Ruting:** React Router v6
 - **UI-rammeverk:** Material-UI (MUI)
 - **Sjakklogikk og UI:** `chess.js`, `react-chessboard`
-- **Testing og dokumentasjon:** Storybook, MSW (Mock Service Worker)
+- **Testing og dokumentasjon:** Vitest, React Testing Library, Storybook, MSW (Mock Service Worker)
 
 ## Kom i gang
 
@@ -72,9 +72,18 @@ npm run dev
 
 Applikasjonen vil nå være tilgjengelig på `http://localhost:5173`.
 
-## Testing og Storybook
+## Testing og Kvalitetssikring
 
-Dette prosjektet benytter **Storybook** for isolering og dokumentasjon av UI-komponenter, kombinert med **MSW (Mock Service Worker)** for å simulere API-responser fra backend. Dette sikrer deterministiske testtilstander for lasting, feilhåndtering og 'edge-cases' (som sjakkmatt eller patt).
+Dette prosjektet benytter en moderne, todelt teststrategi for å sikre både visuell kvalitet og robust forretningslogikk:
+
+- **Enhetstesting:** **Vitest** og **React Testing Library** brukes for å teste kompleks applikasjonslogikk og state-håndtering uavhengig av brukergrensesnittet. Dette inkluderer testing av egendefinerte hooks (som `useGameAnalysis`) for å verifisere at feilhåndtering av PGN-filer, "What-if"-scenarier og trekkvalidering fungerer som forventet.
+- **UI-isolering og API-Mocking:** **Storybook** benyttes for dokumentasjon og visuell testing av komponenter. Kombinert med **MSW (Mock Service Worker)** simuleres nettverkskall fra backend, noe som sikrer deterministiske testtilstander for lasting, feilhåndtering og 'edge-cases' (som sjakkmatt eller patt) uten å være avhengig av en kjørende server.
+
+For å kjøre enhetstestene:
+
+```bash
+npm run test -- --project=unit
+```
 
 For å starte Storybook-miljøet:
 
