@@ -8,14 +8,10 @@ import {
 } from "@mui/material";
 import GamePreview from "../../components/chessboards/GamePreview";
 import { useState } from "react";
-import useAllLiveGames, {
-  type AllLiveGamesResponse,
-} from "../../hooks/useAllLiveGames";
-import {
-  useDatabase,
-  type ArchivedGamesResponse,
-} from "../../hooks/useDatabase";
+import useAllLiveGames from "../../hooks/useAllLiveGames";
+import { useDatabase } from "../../hooks/useDatabase";
 import GameCard from "../../components/game-card/GameCard";
+import type { ArchivedGame, LiveGameState } from "../../types";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -131,7 +127,7 @@ export default function HomePage() {
                 Det finnes for øyeblikket ingen pågående partier.
               </Alert>
             ) : (
-              liveGames?.map((game: AllLiveGamesResponse) => (
+              liveGames?.map((game: LiveGameState) => (
                 <GamePreview
                   key={game.board_id}
                   gameId={game.board_id.toString()}
@@ -158,7 +154,7 @@ export default function HomePage() {
                 Det finnes for øyeblikket ingen tidligere spilte partier.
               </Alert>
             ) : (
-              archivedGames?.map((game: ArchivedGamesResponse) => (
+              archivedGames?.map((game: ArchivedGame) => (
                 <GameCard
                   key={game.id}
                   gameId={game.id.toString()}

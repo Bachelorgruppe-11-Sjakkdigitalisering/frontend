@@ -1,19 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchArchivedGames from "../api/database";
 
-// TODO: dokumenter denne typen og flytt til egen /types folder
-export type ArchivedGamesResponse = {
-  id: number;
-  white_player_name: string;
-  white_player_id: number;
-  black_player_name: string;
-  black_player_id: number;
-  result: "1-0" | "0-1" | "1/2-1/2";
-  tournament_name: string;
-  date_played: string;
-  pgn: string;
-};
-
 /**
  * A custom React Query hook that manages fetching and caching the archived games list.
  *

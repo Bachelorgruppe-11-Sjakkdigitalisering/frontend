@@ -2,9 +2,9 @@ import { Avatar, Typography } from "@mui/material";
 import { Chessboard, type ChessboardOptions } from "react-chessboard";
 import "./GameView.css";
 import Evalbar from "../evalbar/Evalbar";
-import { type StockfishResponse } from "../../hooks/useStockfish";
 import { BLACK, Chess, WHITE } from "chess.js";
 import { useNavigate } from "react-router";
+import type { StockfishResponse } from "../../types";
 
 const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -20,13 +20,13 @@ type GameViewProps = {
   /** The formatted time string (e.g., "10:00", "05:23") for the player with the white pieces. */
   whitePlayerTime: string;
   /** The unique UUID of the player with the white pieces from the database. */
-  whitePlayerId: string;
+  whitePlayerId: number;
   /** The display name of the player with the black pieces. */
   blackPlayerName: string;
   /** The formatted time string (e.g., "10:00", "05:23") for the player with the black pieces. */
   blackPlayerTime: string;
   /** The unique UUID of the player with the black pieces from the database. */
-  blackPlayerId: string;
+  blackPlayerId: number;
   /**
    * The current phase or turn state of the game. Used to highlight active timers.
    * Must be one of the following:

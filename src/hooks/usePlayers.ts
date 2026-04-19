@@ -1,12 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchPlayers from "../api/players";
 
-// TODO: dokumenter denne typen og flytt til egen /types folder
-export type PlayerResponse = {
-  id: number;
-  name: string;
-};
-
 /**
  * A custom React Query hook that manages fetching and caching the the complete players list.
  *

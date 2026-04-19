@@ -1,4 +1,4 @@
-import type { ArchivedGamesResponse } from "../hooks/useDatabase";
+import type { ArchivedGame } from "../types";
 
 /**
  * Fetches a list of archived chess games from the backend, optionally filtered by a player's name.
@@ -9,7 +9,7 @@ import type { ArchivedGamesResponse } from "../hooks/useDatabase";
  */
 export default async function fetchArchivedGames(
   playerName: string,
-): Promise<ArchivedGamesResponse[]> {
+): Promise<ArchivedGame[]> {
   const queryParam = playerName
     ? `?player=${encodeURIComponent(playerName)}`
     : "";
@@ -32,8 +32,9 @@ export default async function fetchArchivedGames(
  * @returns A promise resolving to a single game record.
  * @throws {Error} Throws if the `gameId` is invalid, missing, or the netowrk request fails.
  */
-export async function fetchArchivedGameDetails(gameId: string | undefined) {
-  // TODO: specify return type
+export async function fetchArchivedGameDetails(
+  gameId: string | undefined,
+): Promise<ArchivedGame> {
   const response = await fetch(`http://127.0.0.1:8000/api/archive/${gameId}`);
 
   if (!response.ok) {

@@ -1,17 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import fetchEvaluation from "../api/stockfish";
 
-// TODO: dokumenter denne typen og flytt til egen /types folder
-export type StockfishResponse = {
-  eval: number;
-  winChance: number;
-  san: string;
-  move: string;
-  continuationArr: string[];
-  mate: number | null;
-  error: string;
-};
-
 /**
  * A custom React Query hook that manages fetching and caching the stockfish evaluation of a specific chess position.
  *

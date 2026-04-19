@@ -16,11 +16,9 @@ import { ArrowDropDown, Search } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import PlayerCard from "../../components/player-card/PlayerCard";
 import GameCard from "../../components/game-card/GameCard";
-import {
-  useDatabase,
-  type ArchivedGamesResponse,
-} from "../../hooks/useDatabase";
-import { usePlayers, type PlayerResponse } from "../../hooks/usePlayers";
+import { useDatabase } from "../../hooks/useDatabase";
+import { usePlayers } from "../../hooks/usePlayers";
+import type { ArchivedGame, Player } from "../../types";
 
 export default function DatabasePage() {
   const theme = useTheme();
@@ -169,7 +167,7 @@ export default function DatabasePage() {
           {players?.length === 0 && (
             <Typography variant="body2">Ingen spillere funnet.</Typography>
           )}
-          {players?.map((player: PlayerResponse) => (
+          {players?.map((player: Player) => (
             <PlayerCard
               key={player.id}
               name={player.name}
@@ -183,7 +181,7 @@ export default function DatabasePage() {
             <Typography variant="body2">Ingen partier funnet.</Typography>
           )}
 
-          {archivedGames?.map((game: ArchivedGamesResponse) => (
+          {archivedGames?.map((game: ArchivedGame) => (
             <GameCard
               key={game.id}
               whiteName={game.white_player_name}

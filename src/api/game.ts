@@ -1,3 +1,5 @@
+import type { LiveGameState } from "../types";
+
 /**
  * Fetches the data from a specific live game from the backend.
  *
@@ -5,8 +7,9 @@
  * @returns A promise returning the data of a live game.
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
-export default async function fetchLiveGameData(boardId: string | undefined) {
-  // TODO: specify return type
+export default async function fetchLiveGameData(
+  boardId: string | undefined,
+): Promise<LiveGameState> {
   const response = await fetch(`http://127.0.0.1:8000/api/game/${boardId}`);
 
   if (!response.ok) {
@@ -22,8 +25,7 @@ export default async function fetchLiveGameData(boardId: string | undefined) {
  * @returns A promise resolving to an array of live games.
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
-export async function fetchAllLiveGames() {
-  // TODO: specify return type
+export async function fetchAllLiveGames(): Promise<LiveGameState[]> {
   const response = await fetch(`http://127.0.0.1:8000/api/games`);
 
   if (!response.ok) {

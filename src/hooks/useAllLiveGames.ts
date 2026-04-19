@@ -1,18 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllLiveGames } from "../api/game";
 
-// TODO: dokumenter denne typen og flytt til egen /types folder
-export type AllLiveGamesResponse = {
-  board_id: number;
-  white_player_name: string;
-  black_player_name: string;
-  pgn: string;
-  fen: string;
-  white_time: string;
-  black_time: string;
-  is_active: boolean;
-};
-
 /**
  * A custom React Query hook that manages fetching and caching all currently live games.
  *

@@ -1,3 +1,5 @@
+import type { ArchivedGame, PlayerProfileResponse } from "../types";
+
 /**
  * Fetches all player data of a specific player by the `playerId` from the backend.
  *
@@ -5,8 +7,9 @@
  * @returns A promise returning all available player data.
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
-export async function fetchPlayerProfile(playerId: string) {
-  // TODO: specify return type
+export async function fetchPlayerProfile(
+  playerId: string,
+): Promise<PlayerProfileResponse> {
   const response = await fetch(`http://127.0.0.1:8000/api/players/${playerId}`);
 
   if (!response.ok) {
@@ -23,7 +26,9 @@ export async function fetchPlayerProfile(playerId: string) {
  * @returns A promise resolving to an array of archived games played by a specific player.
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
-export async function fetchPlayerGames(playerId: string) {
+export async function fetchPlayerGames(
+  playerId: string,
+): Promise<ArchivedGame[]> {
   // TODO: specify return type
   const response = await fetch(
     `http://127.0.0.1:8000/api/players/${playerId}/games`,

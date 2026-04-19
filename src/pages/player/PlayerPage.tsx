@@ -13,9 +13,9 @@ import GameCard from "../../components/game-card/GameCard";
 import Topbar from "../../components/topbar/Topbar";
 import { useParams } from "react-router";
 import { usePlayerGames, usePlayerProfile } from "../../hooks/usePlayer";
-import type { ArchivedGamesResponse } from "../../hooks/useDatabase";
 import PlayerStats from "../../components/player-stats/PlayerStats";
 import { useState } from "react";
+import type { ArchivedGame } from "../../types";
 
 export default function PlayerPage() {
   const theme = useTheme();
@@ -45,11 +45,13 @@ export default function PlayerPage() {
    * Copies the player's id to the clipboard.
    */
   const handleCopyPlayerId = () => {
-    navigator.clipboard.writeText(`${profileData.player.id}`);
-    setCopyPlayerIdSuccess(true);
-    setTimeout(() => {
-      setCopyPlayerIdSuccess(false);
-    }, 5000);
+    if (profileData) {
+      navigator.clipboard.writeText(`${profileData.player.id}`);
+      setCopyPlayerIdSuccess(true);
+      setTimeout(() => {
+        setCopyPlayerIdSuccess(false);
+      }, 5000);
+    }
   };
 
   return (
@@ -71,7 +73,7 @@ export default function PlayerPage() {
       {isError && <Alert severity="error">Kunne ikke hente spillerdata.</Alert>}
 
       {/* player name and stats */}
-      {!isLoading && !isError && profileData && (
+      {!isLoading && !isError && profileData && gamesData && (
         <div>
           <Avatar />
           <Typography variant="h3">{profileData.player.name}</Typography>
@@ -115,7 +117,7 @@ export default function PlayerPage() {
             Ingen partier funnet for denne spilleren.
           </Typography>
         ) : (
-          gamesData?.map((game: ArchivedGamesResponse) => (
+          gamesData?.map((game: ArchivedGame) => (
             <GameCard
               key={game.id}
               whiteName={game.white_player_name}

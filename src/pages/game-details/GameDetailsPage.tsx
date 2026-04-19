@@ -91,11 +91,13 @@ export default function GameDetailsPage({
    * Copies the PGN of the game to the user's clipboard.
    */
   const handleCopyPgn = () => {
-    navigator.clipboard.writeText(gameData.pgn);
-    setCopyPgnSuccess(true);
-    setTimeout(() => {
-      setCopyPgnSuccess(false);
-    }, 5000);
+    if (gameData) {
+      navigator.clipboard.writeText(gameData.pgn);
+      setCopyPgnSuccess(true);
+      setTimeout(() => {
+        setCopyPgnSuccess(false);
+      }, 5000);
+    }
   };
 
   // fetch stockfish data

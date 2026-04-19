@@ -1,3 +1,5 @@
+import type { StockfishResponse } from "../types";
+
 /**
  * Posts a new request to chess/stockfish api to retrieve the evaluation of a chess position given by the `fen`.
  *
@@ -5,7 +7,9 @@
  * @returns A promise returning the stockfish data of the current position.
  * @throws {Error} Throws an error if the stockfish api returns a non-2xx status code.
  */
-export default async function fetchEvaluation(fen: string) {
+export default async function fetchEvaluation(
+  fen: string,
+): Promise<StockfishResponse> {
   const response = await fetch("/api/chess", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

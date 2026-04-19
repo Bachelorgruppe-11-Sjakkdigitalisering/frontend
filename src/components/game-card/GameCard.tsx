@@ -2,6 +2,7 @@ import { EmojiEvents, StarHalf } from "@mui/icons-material";
 import { Typography, useTheme } from "@mui/material";
 import "./GameCard.css";
 import { useNavigate } from "react-router";
+import type { GameResult } from "../../types";
 
 /**
  * Defines the properties for the {@link GameCard} component.
@@ -17,7 +18,7 @@ type GameCardProps = {
    * - "0-1" (Black wins)
    * - "1/2-1/2" (Draw)
    */
-  result: "1-0" | "1/2-1/2" | "0-1";
+  result: GameResult;
   /** The unique UUID or string identifier for the game database record. */
   gameId: string;
 };

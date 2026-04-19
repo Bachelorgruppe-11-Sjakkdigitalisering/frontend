@@ -1,3 +1,5 @@
+import type { Player } from "../types";
+
 /**
  * Fetches a list of all players from the backend, optionally filtered by a player's name.
  *
@@ -5,8 +7,9 @@
  * @returns A promise resolving to an array of players.
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
-export default async function fetchPlayers(playerName: string) {
-  // TODO: specify return type
+export default async function fetchPlayers(
+  playerName: string,
+): Promise<Player[]> {
   const queryParam = playerName
     ? `?search=${encodeURIComponent(playerName)}`
     : "";
