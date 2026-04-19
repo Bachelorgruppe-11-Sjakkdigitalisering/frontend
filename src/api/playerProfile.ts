@@ -29,7 +29,6 @@ export async function fetchPlayerProfile(
 export async function fetchPlayerGames(
   playerId: string,
 ): Promise<ArchivedGame[]> {
-  // TODO: specify return type
   const response = await fetch(
     `http://127.0.0.1:8000/api/players/${playerId}/games`,
   );
