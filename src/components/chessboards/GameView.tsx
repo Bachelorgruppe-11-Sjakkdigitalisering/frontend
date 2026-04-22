@@ -5,6 +5,7 @@ import Evalbar from "../evalbar/Evalbar";
 import { BLACK, Chess, WHITE } from "chess.js";
 import { useNavigate } from "react-router";
 import type { StockfishResponse } from "../../types";
+import { useChessClock } from "../../hooks/chess-clock/useChessClock";
 
 const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -17,14 +18,14 @@ type GameViewProps = {
   fen: string;
   /** The display name of the player with the white pieces. */
   whitePlayerName: string;
-  /** The formatted time string (e.g., "10:00", "05:23") for the player with the white pieces. */
-  whitePlayerTime: string;
+  /** The unformatted time for the player with the white pieces. */
+  whitePlayerTime: number;
   /** The unique UUID of the player with the white pieces from the database. */
   whitePlayerId: number;
   /** The display name of the player with the black pieces. */
   blackPlayerName: string;
-  /** The formatted time string (e.g., "10:00", "05:23") for the player with the black pieces. */
-  blackPlayerTime: string;
+  /** The unformatted time for the player with the black pieces. */
+  blackPlayerTime: number;
   /** The unique UUID of the player with the black pieces from the database. */
   blackPlayerId: number;
   /**
@@ -64,6 +65,11 @@ export default function GameView({
   onPieceDrop,
 }: GameViewProps) {
   const navigate = useNavigate();
+
+  // Initialize clock hooks
+  const whiteClock = useChessClock(whitePlayerTime, status === "WHITE_TO_MOVE");
+
+  const blackClock = useChessClock(blackPlayerTime, status === "BLACK_TO_MOVE");
 
   // analyze position locally to check if game is over (checkmate or stalemate)
   const game = new Chess(fen);
@@ -118,7 +124,7 @@ export default function GameView({
         <Typography
           className={"time " + (status === "BLACK_TO_MOVE" ? "active" : "")}
         >
-          {blackPlayerTime}
+          {blackClock.fomattedTime}
         </Typography>
       </div>
 
@@ -188,7 +194,7 @@ export default function GameView({
         <Typography
           className={"time " + (status === "WHITE_TO_MOVE" ? "active" : "")}
         >
-          {whitePlayerTime}
+          {whiteClock.fomattedTime}
         </Typography>
       </div>
     </div>
