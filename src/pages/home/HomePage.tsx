@@ -47,6 +47,27 @@ export default function HomePage() {
     gameType === "live" ? liveGamesLoading : archivedGamesLoading;
   const isError = gameType === "live" ? liveGamesError : archivedGamesError;
 
+  /**
+   * Extratcs whose turn it is from the FEN string
+   */
+  const getGameStatus = (
+    game: LiveGameState,
+  ): "WHITE_TO_MOVE" | "BLACK_TO_MOVE" | "PENDING" | "FINISHED" => {
+    if (!game.is_active) {
+      // If the game isn't active, assume it's finished
+      return "FINISHED";
+    }
+
+    if (!game.fen) {
+      return "PENDING";
+    }
+
+    // Split the FEN string by space and grab the second item (index 1)
+    const turnIndicator = game.fen.split(" ")[1];
+
+    return turnIndicator === "w" ? "WHITE_TO_MOVE" : "BLACK_TO_MOVE";
+  };
+
   return (
     <div
       style={{
@@ -136,6 +157,7 @@ export default function HomePage() {
                   whitePlayerName={game.white_player_name}
                   blackPlayerTime={game.black_time}
                   whitePlayerTime={game.white_time}
+                  status={getGameStatus(game)}
                 />
               ))
             )}

@@ -8,8 +8,8 @@ export interface ArchivedGame {
   black_player_name: string;
   white_player_id: number;
   black_player_id: number;
-  white_time: string;
-  black_time: string;
+  white_time: number;
+  black_time: number;
   pgn: string;
 }
 
@@ -21,8 +21,8 @@ export interface LiveGameState {
   black_player_id: number;
   pgn: string;
   fen: string;
-  white_time: string;
-  black_time: string;
+  white_time: number;
+  black_time: number;
   is_active: boolean;
 }
 

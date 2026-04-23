@@ -26,9 +26,10 @@ export const Default: Story = {
     width: 180,
     fen: "rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14",
     blackPlayerName: "Herman Lundby-Holen",
-    blackPlayerTime: "00:23",
+    blackPlayerTime: 360,
     whitePlayerName: "Dennis Johansen",
-    whitePlayerTime: "00:14",
+    whitePlayerTime: 400,
+    status: "BLACK_TO_MOVE",
   },
 };
 
@@ -39,8 +40,9 @@ export const Loading: Story = {
     width: 180,
     fen: "rn3rk1/4Qpp1/p1p4p/2p1p3/2P3b1/3P1NP1/PP2PPBP/R4RK1 b - - 0 14",
     blackPlayerName: "Herman Lundby-Holen",
-    blackPlayerTime: "00:23",
+    blackPlayerTime: 560,
     whitePlayerName: "Dennis Johansen",
-    whitePlayerTime: "00:14",
+    whitePlayerTime: 20,
+    status: "WHITE_TO_MOVE",
   },
 };
