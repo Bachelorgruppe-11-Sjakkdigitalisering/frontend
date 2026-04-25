@@ -17,6 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router";
+import { useChessStore } from "../../store/useChessStore";
 
 /**
  * The 'source of truth' for the application's primary navigation routes.
@@ -50,6 +51,10 @@ export default function Navbar() {
 
   // Determines the active state to highlight the correct nav item
   const currentPath = location.pathname;
+
+  // Global state for toggling stockfish view
+  const isStockfishEnabled = useChessStore((state) => state.isStockfishEnabled);
+  const toggleStockfish = useChessStore((state) => state.toggleStockfish);
 
   if (isDesktop) {
     return (
@@ -113,7 +118,6 @@ export default function Navbar() {
         {/* Game view toggle */}
         <Box
           sx={{
-            // mt: "5em",
             py: "1em",
             px: "2em",
             display: "flex",
@@ -122,7 +126,14 @@ export default function Navbar() {
         >
           <FormControlLabel
             sx={{ display: "flex", gap: "0.5em" }}
-            control={<Switch checked={true} color="primary" sx={{ m: 0 }} />}
+            control={
+              <Switch
+                checked={isStockfishEnabled}
+                onChange={toggleStockfish}
+                color="primary"
+                sx={{ m: 0 }}
+              />
+            }
             label={"Stockfish"}
             labelPlacement="end"
           />
@@ -181,7 +192,8 @@ export default function Navbar() {
           <FormControlLabel
             control={
               <Switch
-                checked={true}
+                checked={isStockfishEnabled}
+                onChange={toggleStockfish}
                 color="primary"
                 size="small"
                 sx={{ m: 0 }}
