@@ -1,14 +1,18 @@
-import { HouseRounded, InboxRounded, Settings } from "@mui/icons-material";
+import { HouseRounded, InboxRounded } from "@mui/icons-material";
 import {
   BottomNavigation,
   BottomNavigationAction,
+  Box,
+  Divider,
   Drawer,
+  FormControlLabel,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Paper,
+  Switch,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -21,7 +25,6 @@ import { Link, useLocation, useNavigate } from "react-router";
 const NAV_ITEMS = [
   { label: "Hjem", icon: <HouseRounded />, path: "/" },
   { label: "Database", icon: <InboxRounded />, path: "/database" },
-  { label: "Innstillinger", icon: <Settings />, path: "/settings" },
 ];
 
 /**
@@ -60,10 +63,11 @@ export default function Navbar() {
             backgroundColor: theme.palette.background.nav,
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
+            height: "100%",
           },
         }}
       >
-        <List>
+        <List sx={{ p: 0 }}>
           {NAV_ITEMS.map((item) => (
             <ListItem key={item.label}>
               <ListItemButton
@@ -96,6 +100,33 @@ export default function Navbar() {
             </ListItem>
           ))}
         </List>
+
+        <Divider
+          sx={{
+            bgcolor: theme.palette.text.nav,
+            my: "2em",
+            mx: "auto",
+            width: "90%",
+          }}
+        />
+
+        {/* Game view toggle */}
+        <Box
+          sx={{
+            // mt: "5em",
+            py: "1em",
+            px: "2em",
+            display: "flex",
+            color: theme.palette.text.nav,
+          }}
+        >
+          <FormControlLabel
+            sx={{ display: "flex", gap: "0.5em" }}
+            control={<Switch checked={true} color="primary" sx={{ m: 0 }} />}
+            label={"Stockfish"}
+            labelPlacement="end"
+          />
+        </Box>
       </Drawer>
     );
   }

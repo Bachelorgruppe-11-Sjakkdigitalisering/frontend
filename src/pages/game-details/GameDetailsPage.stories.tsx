@@ -17,8 +17,8 @@ const liveGameProgression = [
 const mockGameData = {
   white_player_name: "Magnus Carlsen",
   black_player_name: "Hikaru Nakamura",
-  white_time: "10:00",
-  black_time: "09:45",
+  white_time: 5000,
+  black_time: 5000,
   pgn: "1. e4 e5 2. Nf3 Nc6 3. Bb5",
 };
 
