@@ -37,3 +37,8 @@ export interface PlayerStats {
   draws: number;
   losses: number;
 }
+
+export interface ChessState {
+  isStockfishEnabled: boolean;
+  toggleStockfish: () => void;
+}
