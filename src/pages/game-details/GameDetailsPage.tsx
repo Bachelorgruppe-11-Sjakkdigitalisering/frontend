@@ -22,6 +22,7 @@ import useGame from "../../hooks/useGame";
 import useLiveGame from "../../hooks/useLiveGame";
 import { useGameAnalysis } from "../../hooks/game-analysis/useGameAnalysis";
 import { useState } from "react";
+import { useChessStore } from "../../store/useChessStore";
 
 const pageLayoutStyles = {
   ml: { xs: 0, lg: "13rem" },
@@ -75,6 +76,8 @@ export default function GameDetailsPage({
     handleReturnToGame,
     navigateMoves,
   } = useGameAnalysis(gameData?.pgn, isLive);
+
+  const isStockfishEnabled = useChessStore((state) => state.isStockfishEnabled);
 
   /**
    * Copies the FEN string of the current position to the user's clipboard.
@@ -314,55 +317,61 @@ export default function GameDetailsPage({
                 </Box>
               </Box>
 
-              <Box
-                sx={{
-                  padding: "0.5rem 1rem",
-                  bgcolor: "primary.dark",
-                  borderRadius: "16px",
-                  color: "text.secondary",
-                  order: { xs: "2", md: "1" },
-                  flexShrink: 0,
-                }}
-              >
-                <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
-                {stockfishData ? (
-                  <Box
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    {/* Move and Evaluation */}
+              {/* Evaluation */}
+              {isStockfishEnabled && (
+                <Box
+                  sx={{
+                    padding: "0.5rem 1rem",
+                    bgcolor: "primary.dark",
+                    borderRadius: "16px",
+                    color: "text.secondary",
+                    order: { xs: "2", md: "1" },
+                    flexShrink: 0,
+                  }}
+                >
+                  <h3 style={{ margin: 0 }}>Stockfish anbefaler:</h3>
+                  {stockfishData ? (
+                    <Box
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography variant="caption">
+                        {isLoading ? (
+                          <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                        ) : (
+                          stockfishData.san
+                        )}
+                      </Typography>
+                      <Typography variant="caption">
+                        {isLoading ? (
+                          <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                        ) : stockfishData.eval > 0 ? (
+                          "+"
+                        ) : (
+                          ""
+                        )}
+                        {isLoading ? (
+                          <Skeleton sx={{ bgcolor: "text.secondary" }} />
+                        ) : (
+                          stockfishData.eval
+                        )}
+                      </Typography>
+                    </Box>
+                  ) : (
                     <Typography variant="caption">
                       {isLoading ? (
                         <Skeleton sx={{ bgcolor: "text.secondary" }} />
                       ) : (
-                        stockfishData.san
+                        "Evaluering ikke tilgjengelig"
                       )}
                     </Typography>
-                    <Typography variant="caption">
-                      {isLoading ? (
-                        <Skeleton sx={{ bgcolor: "text.secondary" }} />
-                      ) : stockfishData.eval > 0 ? (
-                        "+"
-                      ) : (
-                        ""
-                      )}
-                      {isLoading ? (
-                        <Skeleton sx={{ bgcolor: "text.secondary" }} />
-                      ) : (
-                        stockfishData.eval
-                      )}
-                    </Typography>
-                  </Box>
-                ) : (
-                  <Typography variant="caption">
-                    {isLoading ? (
-                      <Skeleton sx={{ bgcolor: "text.secondary" }} />
-                    ) : (
-                      "Evaluering ikke tilgjengelig"
-                    )}
-                  </Typography>
-                )}
-              </Box>
+                  )}
+                </Box>
+              )}
 
+              {/* Move list */}
               <Box
                 sx={{
                   order: { xs: "1", md: "2" },

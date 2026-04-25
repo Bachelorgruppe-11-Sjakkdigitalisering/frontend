@@ -6,6 +6,7 @@ import { BLACK, Chess, WHITE } from "chess.js";
 import { useNavigate } from "react-router";
 import type { StockfishResponse } from "../../types";
 import { useChessClock } from "../../hooks/chess-clock/useChessClock";
+import { useChessStore } from "../../store/useChessStore";
 
 const RANKS = ["8", "7", "6", "5", "4", "3", "2", "1"];
 const FILES = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -68,8 +69,10 @@ export default function GameView({
 
   // Initialize clock hooks
   const whiteClock = useChessClock(whitePlayerTime, status === "WHITE_TO_MOVE");
-
   const blackClock = useChessClock(blackPlayerTime, status === "BLACK_TO_MOVE");
+
+  // Global state for displaying stockfish or not
+  const isStockfishEnabled = useChessStore((state) => state.isStockfishEnabled);
 
   // analyze position locally to check if game is over (checkmate or stalemate)
   const game = new Chess(fen);
@@ -130,10 +133,12 @@ export default function GameView({
 
       <div className="board-eval">
         {/* Eval bar */}
-        <Evalbar
-          winChance={evalbarProps.height}
-          evalLabel={evalbarProps.label}
-        />
+        {isStockfishEnabled && (
+          <Evalbar
+            winChance={evalbarProps.height}
+            evalLabel={evalbarProps.label}
+          />
+        )}
 
         <div
           style={{ display: "flex", flexDirection: "column", width: "100%" }}
