@@ -160,6 +160,42 @@ export default function Navbar() {
             value={item.path}
           />
         ))}
+
+        <Divider
+          orientation="vertical"
+          sx={{
+            bgcolor: theme.palette.text.nav,
+            my: "auto",
+            height: "80%",
+          }}
+        />
+
+        {/* Game view toggle */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            color: theme.palette.text.nav,
+          }}
+        >
+          <FormControlLabel
+            control={
+              <Switch
+                checked={true}
+                color="primary"
+                size="small"
+                sx={{ m: 0 }}
+              />
+            }
+            label={"Stockfish"}
+            labelPlacement="bottom"
+            sx={{
+              "& .MuiFormControlLabel-label": {
+                fontSize: "0.7rem",
+              },
+            }}
+          />
+        </Box>
       </BottomNavigation>
     </Paper>
   );
