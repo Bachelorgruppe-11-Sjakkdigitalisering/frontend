@@ -1,5 +1,8 @@
 import type { ArchivedGame } from "../types";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
 /**
  * Fetches a list of archived chess games from the backend, optionally filtered by a player's name.
  *
@@ -15,7 +18,7 @@ export default async function fetchArchivedGames(
     : "";
 
   const response = await fetch(
-    `http://127.0.0.1:8000/api/archive/search${queryParam}`,
+    `${API_BASE_URL}/api/archive/search${queryParam}`,
   );
 
   if (!response.ok) {
@@ -35,7 +38,7 @@ export default async function fetchArchivedGames(
 export async function fetchArchivedGameDetails(
   gameId: string | undefined,
 ): Promise<ArchivedGame> {
-  const response = await fetch(`http://127.0.0.1:8000/api/archive/${gameId}`);
+  const response = await fetch(`${API_BASE_URL}/api/archive/${gameId}`);
 
   if (!response.ok) {
     throw new Error(`Could not fetch game details: ${response.statusText}`);

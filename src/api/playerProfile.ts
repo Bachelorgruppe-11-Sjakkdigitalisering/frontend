@@ -1,5 +1,8 @@
 import type { ArchivedGame, PlayerProfileResponse } from "../types";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
 /**
  * Fetches all player data of a specific player by the `playerId` from the backend.
  *
@@ -10,7 +13,7 @@ import type { ArchivedGame, PlayerProfileResponse } from "../types";
 export async function fetchPlayerProfile(
   playerId: string,
 ): Promise<PlayerProfileResponse> {
-  const response = await fetch(`http://127.0.0.1:8000/api/players/${playerId}`);
+  const response = await fetch(`${API_BASE_URL}/api/players/${playerId}`);
 
   if (!response.ok) {
     throw new Error(`Could not fetch player profile: ${response.statusText}`);
@@ -29,9 +32,7 @@ export async function fetchPlayerProfile(
 export async function fetchPlayerGames(
   playerId: string,
 ): Promise<ArchivedGame[]> {
-  const response = await fetch(
-    `http://127.0.0.1:8000/api/players/${playerId}/games`,
-  );
+  const response = await fetch(`${API_BASE_URL}/api/players/${playerId}/games`);
 
   if (!response.ok) {
     throw new Error(`Could not fetch player games: ${response.statusText}`);

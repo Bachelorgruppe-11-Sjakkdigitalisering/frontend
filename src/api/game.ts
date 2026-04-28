@@ -1,5 +1,8 @@
 import type { LiveGameState } from "../types";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
 /**
  * Fetches the data from a specific live game from the backend.
  *
@@ -10,7 +13,7 @@ import type { LiveGameState } from "../types";
 export default async function fetchLiveGameData(
   boardId: string | undefined,
 ): Promise<LiveGameState> {
-  const response = await fetch(`http://127.0.0.1:8000/api/game/${boardId}`);
+  const response = await fetch(`${API_BASE_URL}/api/game/${boardId}`);
 
   if (!response.ok) {
     throw new Error(`Could not fetch game: ${response.statusText}`);
@@ -26,7 +29,7 @@ export default async function fetchLiveGameData(
  * @throws {Error} Throws an error if the backend returns a non-2xx status code.
  */
 export async function fetchAllLiveGames(): Promise<LiveGameState[]> {
-  const response = await fetch(`http://127.0.0.1:8000/api/games`);
+  const response = await fetch(`${API_BASE_URL}/api/games`);
 
   if (!response.ok) {
     throw new Error(`Could not fetch live games: ${response.statusText}`);

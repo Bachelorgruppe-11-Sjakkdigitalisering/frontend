@@ -52,15 +52,17 @@ Sørg for at du har følgende installert på din lokale maskin:
    cd frontend
    ```
 2. Installer avhengigheter:
+
    ```bash
    npm install
    ```
 
-  <!-- TODO: Sette opp miljøvariabler! -->
-  <!-- 3. Sett opp miljøvariabler (opprett en \`.env\`-fil i rotkatalogen):
-    ```env
-    VITE_API_BASE_URL=http://127.0.0.1:8000
-    ``` -->
+3. Sett opp miljøvariabler:
+
+- Opprett en `.env`-fil i rotkatalogen (eller kopier `.env.example`) og legg til API-adressen til backenden:
+  ```env
+  VITE_API_BASE_URL=http://127.0.0.1:8000
+  ```
 
 ### Kjøring av applikasjonen
 
