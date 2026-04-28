@@ -1,8 +1,10 @@
 import {
   Alert,
+  Box,
   CircularProgress,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -86,9 +88,23 @@ export default function HomePage() {
       }
     >
       {/* logo */}
-      <div>
-        <h1>LOGO</h1>
-      </div>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img
+          src="/sjakk-logo-removebg-preview.png"
+          alt="Logo for Sjakkdigitalisering"
+          style={{ maxWidth: "40%" }}
+        />
+        <Typography variant={isDesktop ? "h3" : "h5"} component="h1">
+          Sjakkdigitalisering
+        </Typography>
+      </Box>
 
       {/* switch between live games and newly played games */}
       <ToggleButtonGroup
