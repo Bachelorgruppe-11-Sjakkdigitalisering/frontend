@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
  * Defines the properties for the {@link PlayerCard} component.
  */
 type PlayerCardProps = {
-  // TODO: legge til avatar her hvis vi skal beholde det
   /** The display name of the player. */
   name: string;
   /** The unique UUID or string identifier for the player in the database. */
